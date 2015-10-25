@@ -1,0 +1,54 @@
+
+// Prefixer
+@mixin vendor-prefix($name, $argument) {
+  -webkit-#{$name}: #{$argument};
+  -ms-#{$name}: #{$argument};
+  -moz-#{$name}: #{$argument};
+  -o-#{$name}: #{$argument};
+  #{$name}: #{$argument};
+}
+
+material-waves {
+  display: block;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  overflow: hidden;
+  #waves {
+    // Container
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+    @include vendor-prefix(user-select,none);
+    vertical-align: middle;
+    // Chrome overflow rounded elements bug
+    -webkit-transform: rotate(0.000001deg);
+    z-index: 1;
+    .wave {
+      // Base wave an appearance
+      position: absolute;
+      @include vendor-prefix(border-radius,50%);
+      width: 20px;
+      height: 20px;
+      margin-top:-10px;
+      margin-left:-10px;
+      z-index: 0;
+      // Startup for transition
+      opacity: 0;
+      @include vendor-prefix(transform,scale(0));
+      // Set Transition Property
+      @include vendor-prefix(transition-property,"transform,opacity");
+      pointer-events: none;
+    }
+  }
+  &[rounded="true"] {
+    border-radius: 50%;
+    #waves {
+      border-radius: 50%;
+    }
+  }
+}

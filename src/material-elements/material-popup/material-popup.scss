@@ -1,0 +1,85 @@
+$material-popup-background: #fff;
+$material-popup-top: 20%;
+$material-popup-width: 50%;
+$material-popup-centring: -$material-popup-width/2;
+$material-popup-min-height: 400px;
+$material-popup-vertical-centring: -$material-popup-min-height/2;
+$material-popup-max-height: 650px;
+$material-popup-color: #25313b;
+$material-popup-border-color: #3b4e5e;
+$material-popup-offset: 50px;
+// Prefixer
+@mixin vendor-prefix($name, $argument) {
+  -webkit-#{$name}: #{$argument};
+  -ms-#{$name}: #{$argument};
+  -moz-#{$name}: #{$argument};
+  -o-#{$name}: #{$argument};
+  #{$name}: #{$argument};
+}
+
+material-popup {
+  /** POPUP **/
+  .popup {
+    z-index: 100;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-top: $material-popup-vertical-centring;
+    width: $material-popup-width;
+    margin-left: $material-popup-centring;
+    min-height: $material-popup-min-height;
+    background-color: $material-popup-background;
+    overflow-y: auto;
+    will-change: width, height;
+    @include vendor-prefix(box-shadow,'0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12)');
+    // Animation
+    transform:translateY(0px);
+    opacity: 1;
+    @include vendor-prefix(transition,'transform .2s ease-in,opacity .2s');
+    /** OPENING **/
+    &.opening {
+      &.top {
+        transform:translateY(-$material-popup-offset);
+        opacity: 0;
+        @include vendor-prefix(transition,'transform .2s cubic-bezier(0.23, 1, 0.32, 1),opacity .2s');
+      }
+      &.bottom {
+        transform:translateY($material-popup-offset);
+        opacity: 0;
+        @include vendor-prefix(transition,'transform .2s cubic-bezier(0.23, 1, 0.32, 1),opacity .2s');
+      }
+    }
+    /** CLOSE **/
+    .close {
+      cursor: pointer;
+      width: 24px;
+      height: 24px;
+      position: absolute;
+      left: 100%;
+      margin-left: -29px;
+      top: 3px;
+    }
+    /** CONTENT STYLING **/
+    .content {
+      padding: 10px;
+      color: $material-popup-color;
+      .material-popup-title {
+        font-size: 20px;
+        padding: 0px 0px 10px 0;
+        text-align: center;
+        border-bottom: 1px solid $material-popup-border-color;
+        text-transform: uppercase;
+      }
+    }
+  }
+  /** OVERLAY **/
+  .overlay {
+    z-index: 99;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left:0;
+    position: fixed;
+    background: rgba(0,0,0,0.2);
+  }
+}

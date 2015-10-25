@@ -1,0 +1,13 @@
+$material-combo-input-value-color: #2f6975;
+material-combo{
+  display: block;
+  position: relative;
+  *[hidden] {
+    display: none;
+  }
+  material-input {
+    input {
+      color: $material-combo-input-value-color;
+    }
+  }
+}

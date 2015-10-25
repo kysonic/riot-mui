@@ -1,0 +1,42 @@
+// Basic vars to quick styling
+$material-navbar-font-color: #fff;
+$material-navbar-background-color: #25313b;
+$material-navbar-height: 70px;
+// Prefixer
+@mixin vendor-prefix($name, $argument) {
+  -webkit-#{$name}: #{$argument};
+  -ms-#{$name}: #{$argument};
+  -moz-#{$name}: #{$argument};
+  -o-#{$name}: #{$argument};
+  #{$name}: #{$argument};
+}
+
+material-navbar {
+  display: block;
+  color: $material-navbar-font-color;
+  @include vendor-prefix(box-shadow,"0 8px 17px 0 rgba(0, 0, 0, 0.12), 0 6px 20px 0 rgba(0, 0, 0, 0.14)");
+  background-color: $material-navbar-background-color;
+  width: 100%;
+  height: $material-navbar-height;
+  line-height: $material-navbar-height;
+  &:not(material-input) {
+    line-height: 0px;
+  }
+  a { color: $material-navbar-font-color; }
+
+  .nav-wrapper {
+    position: relative;
+    height: 100%;
+    .logo {
+      line-height: $material-navbar-height - 4;
+    }
+    // Include a possible elements or blocks
+    // like a logotype or links
+  }
+  &[fixed] {
+    position: relative;
+    height: $material-navbar-height;
+    z-index: 998;
+  }
+}
+

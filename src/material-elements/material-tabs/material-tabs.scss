@@ -1,0 +1,54 @@
+// Base variable to easy stylization
+$material-tabs-selected-button-text-color: #61bdcc;
+$material-tabs-line-wrapper-background: #c2c7b6;
+$material-tabs-line-background: #61bdcc;
+$material-tabs-button-background: #070731;
+// Prefixer
+@mixin vendor-prefix($name, $argument) {
+  -webkit-#{$name}: #{$argument};
+  -ms-#{$name}: #{$argument};
+  -moz-#{$name}: #{$argument};
+  -o-#{$name}: #{$argument};
+  #{$name}: #{$argument};
+}
+
+material-tabs {
+    display: inline-block;
+    line-height: 0;
+    position: relative;
+    width: 100%;
+    /** BUTTONS **/
+    material-button  {
+      background: $material-tabs-button-background;
+      border-radius: 0px;
+      text-align: center;
+      padding: 0px;
+      .content{
+        position: relative;
+        .text {
+          font-size:0.8vw;
+        }
+      }
+      &.selected {
+        .content{
+          .text {
+            color: $material-tabs-selected-button-text-color;
+            @include vendor-prefix(transition, color 0.3s);
+          }
+        }
+      }
+    }
+    /** LINE **/
+    .line-wrapper {
+      width: 100%;
+      height: 3px;
+      background: $material-tabs-line-wrapper-background;
+      position: relative;
+      .line {
+        height: 100%;
+        background: $material-tabs-line-background;
+        position: absolute;
+        @include vendor-prefix(transition, left 0.4s);
+      }
+    }
+}

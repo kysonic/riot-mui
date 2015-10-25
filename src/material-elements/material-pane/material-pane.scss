@@ -1,0 +1,31 @@
+material-pane {
+  display: block;
+  material-navbar {
+    .nav-wrapper {
+      display: flex;
+      justify-content: space-between;
+      flex-grow: 1;
+      .material-pane-left-bar {
+
+      }
+      .material-pane-title {
+        font-size: 26px;
+        text-transform: uppercase;
+        text-align: center;
+      }
+      .material-pane-right-bar {
+
+      }
+      /** USE MaTRIAL-BUTTON INTO PANE**/
+      material-button {
+        background: transparent;
+      }
+    }
+  }
+  .content {
+    .material-pane-content {
+      padding: 10px;
+      background: #f2f2f2;
+    }
+  }
+}

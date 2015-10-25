@@ -1,0 +1,118 @@
+// Basic vars to quick styling
+$material-button-height: 40px;
+$material-button-background: #61bdcc;
+$material-button-disabled-background: #ccc;
+$material-button-color: #fff;
+$material-button-padding: 0 2rem;
+$material-button-font-size: 18px;
+$material-button-icon-size: 20px;
+
+// Prefixer
+@mixin vendor-prefix($name, $argument) {
+  -webkit-#{$name}: #{$argument};
+  -ms-#{$name}: #{$argument};
+  -moz-#{$name}: #{$argument};
+  -o-#{$name}: #{$argument};
+  #{$name}: #{$argument};
+}
+
+material-button {
+  border: none;
+  border-radius: 2px;
+  display: inline-block;
+  position: relative;
+  height: $material-button-height;
+  line-height: $material-button-height - 4;
+  background: $material-button-background;
+  color: $material-button-color;
+  padding: $material-button-padding;
+  cursor: pointer;
+  text-transform: uppercase;
+  vertical-align: middle;
+  outline: 0;
+  -webkit-tap-highlight-color: transparent;
+  // Statements
+  &:hover {
+    material-waves {
+      background: rgba(255,255,255,0.2);
+      @include vendor-prefix(transition,"background .2s ease-in");
+    }
+  }
+  material-waves {
+    background: rgba(255,255,255,0);
+    @include vendor-prefix(transition,"background .2s ease-in");
+  }
+  /** CONTENT **/
+  .content {
+    width: 101%;
+    height: 100%;
+    display: block;
+    text-align: center;
+    .text,i.material-icons, i.icon {
+      display: inline-block;
+      vertical-align: middle;
+      font-size: $material-button-font-size;
+      color: $material-button-color;
+      line-height: $material-button-height;
+      &.material-icons {
+        font-size: $material-button-icon-size;
+      }
+      //@include vendor-prefix(transform,'color .3s ease-in');
+      svg {
+        fill: $material-button-color;
+        stroke: $material-button-color;
+      }
+    }
+  }
+  /** Rounded **/
+  &[rounded="true"] {
+    border-radius: 50%;
+    width: $material-button-height;
+    padding: 0;
+    .content {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      text-align: center;
+      i.material-icons, i.icon {
+        display: inline-block;
+        text-align: center;
+        width: 100%;
+        height: 100%;
+        @include vendor-prefix(user-select,"none");
+      }
+    }
+  }
+  /** Shady **/
+  &[shady="true"] {
+    @include vendor-prefix( box-shadow,"0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12)");
+    transition: box-shadow .2s;
+    // Statement
+    &:hover {
+      @include vendor-prefix( box-shadow,"0 2px 7px 0 rgba(0, 0, 0, 0.14), 0 2px 12px 0 rgba(0, 0, 0, 0.12)");
+      transition: box-shadow .2s;
+    }
+  }
+  /**Disabled **/
+  &[disabled="true"] {
+    background: $material-button-disabled-background;
+    color: darken($material-button-disabled-background,20);
+    cursor: default;
+    #content {
+      .text,i.material-icons, i.icon {
+        color: darken($material-button-disabled-background,20);
+        svg {
+          fill: darken($material-button-disabled-background,20);
+          stroke: darken($material-button-disabled-background,20);
+        }
+      }
+    }
+    // Statements
+    &:hover {
+      material-waves {
+        background: transparent;
+      }
+    }
+  }
+}

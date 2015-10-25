@@ -1,0 +1,135 @@
+$material-textarea-font-size: 16px;
+$material-textarea-underline-unfocused-background: #2f6975;
+$material-textarea-underline-disabled-background: #ccc;
+$material-textarea-error-underline-background: #941212;
+$material-textarea-underline-height: 1px;
+$material-textarea-color: #17242e;
+
+// Prefixer
+@mixin vendor-prefix($name, $argument) {
+  -webkit-#{$name}: #{$argument};
+  -ms-#{$name}: #{$argument};
+  -moz-#{$name}: #{$argument};
+  -o-#{$name}: #{$argument};
+  #{$name}: #{$argument};
+}
+
+material-textarea {
+    display: block;
+    padding: 8px 0;
+    /** LABEL PLACEHOLDER **/
+    // It was be created only for prevent a label overflowing
+    .label-placeholder {
+      height: 15px;
+      width: 100%;
+    }
+    .textarea-content {
+      font-size: $material-textarea-font-size;
+      color: $material-textarea-color;
+      position: relative;
+      /** LABEL **/
+      label {
+        position: absolute;
+        top: 0;
+        right: 0;
+        left: 0;
+        font: inherit;
+        color: $material-textarea-underline-unfocused-background;
+        -webkit-font-smoothing: antialiased;
+        text-rendering: optimizeLegibility;
+        font-size: $material-textarea-font-size;
+        font-weight: 400;
+        line-height: 24px;
+        @include vendor-prefix(transform,none);
+        @include vendor-prefix(transition,'transform .2s');
+        @include vendor-prefix(transform-origin,left top);
+      }
+      &.not-empty {
+        label {
+          @include vendor-prefix(transform, "translate3d(0, -70%, 0) scale(0.70)"); 
+          @include vendor-prefix(transition,'transform .2s');
+          @include vendor-prefix(transform-origin,left top);
+        }
+      }
+      /** textarea **/
+      .textarea-container {
+        position: absolute;
+        top: 0;
+        right: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        textarea {
+          position: relative;
+          outline: none;
+          box-shadow: none;
+          padding: 0;
+          width: 100%;
+          height: 100%;
+          background: transparent;
+          border: none;
+          -webkit-font-smoothing: antialiased;
+          text-rendering: optimizeLegibility;
+          font-weight: 400;
+          line-height: 24px;
+          resize: none;
+          overflow: hidden;
+        }
+      }
+
+      /** MIRROR **/
+      .mirror {
+        visibility: hidden;
+        word-wrap: break-word;
+        width: 100%;
+        height: auto;
+        -webkit-font-smoothing: antialiased;
+        text-rendering: optimizeLegibility;
+        font-weight: 400;
+        line-height: 24px;
+        outline: none;
+        min-height: 24px;
+      }
+    }
+    /** UNDERLINE **/
+    .underline {
+      position: relative;
+      display: block;
+      .unfocused-line {
+        height: $material-textarea-underline-height;
+        background: $material-textarea-underline-unfocused-background;
+      }
+      .focused-line {
+        height: $material-textarea-underline-height+1;
+        background: $material-textarea-underline-unfocused-background;
+        @include vendor-prefix(transform,scale3d(0,1,1));
+        @include vendor-prefix(transition,"transform .2s ease-in");
+      }
+      /** Focused behavior **/
+      &.focused {
+        .focused-line {
+          @include vendor-prefix(transform,none);
+          @include vendor-prefix(transition,"transform .2s ease-out");
+        }
+      }
+      /** Error **/
+      &.error {
+        .unfocused-line, .focused-line {
+          background: $material-textarea-error-underline-background;
+          @include vendor-prefix(transition,"background .2s ease-out");
+        }
+      }
+    }
+  /** Disabled **/
+  &[disabled="true"] {
+    label {
+      color: $material-textarea-underline-disabled-background;
+    }
+    .underline {
+      .unfocused-line {
+        background: $material-textarea-underline-disabled-background;
+      }
+    }
+  }
+}

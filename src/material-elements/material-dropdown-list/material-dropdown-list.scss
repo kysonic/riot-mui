@@ -1,0 +1,84 @@
+$material-dropdown-background: #fff;
+$material-dropdown-min-width: 100px;
+$material-dropdown-max-height: 650px;
+$material-dropdown-color: #25313b;
+
+// Prefixer
+@mixin vendor-prefix($name, $argument) {
+  -webkit-#{$name}: #{$argument};
+  -ms-#{$name}: #{$argument};
+  -moz-#{$name}: #{$argument};
+  -o-#{$name}: #{$argument};
+  #{$name}: #{$argument};
+}
+
+material-dropdown-list {
+  position: absolute;
+  z-index: 100;
+  width: 100%;
+  // Dropdown
+  ul.dropdown-content {
+    list-style: none;
+    z-index: 100;
+    background-color: $material-dropdown-background;
+    margin: 0;
+    padding: 0;
+    min-width: $material-dropdown-min-width;
+    max-height: $material-dropdown-max-height;
+    overflow-y: auto;
+    will-change: width, height;
+    @include vendor-prefix(box-shadow,'0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12)');
+    transform:translateY(0px);
+    opacity: 1;
+    @include vendor-prefix(transition,'transform .2s cubic-bezier(0.23, 1, 0.32, 1),opacity .2s');
+    &.opening {
+      transform:translateY(-50px);
+      opacity: 0;
+      @include vendor-prefix(transition,'transform .2s cubic-bezier(0.23, 1, 0.32, 1),opacity .2s');
+    }
+
+    li {
+      clear: both;
+      cursor: pointer;
+      line-height: 1.5rem;
+      width: 100%;
+      text-align: left;
+      text-transform: none;
+      background-color: $material-dropdown-background;
+      @include vendor-prefix(transition,'background-color .2s ease-in');
+      span, a {
+        font-size: 1.2rem;
+        color: $material-dropdown-color;
+        display: block;
+        padding: 1rem 1rem;
+      }
+      // State
+      &:hover {
+        background-color: darken($material-dropdown-background,7);
+        @include vendor-prefix(transition,'background-color .2s ease-out');
+      }
+      a {
+        text-decoration: none;
+        color: $material-dropdown-color;
+      }
+      // Revert styles
+      &.selected {
+        background-color:lighten($material-dropdown-color,10);
+        @include vendor-prefix(transition,'background-color .2s ease-out');
+        span {
+          color: $material-dropdown-background;
+        }
+      }
+    }
+  }
+}
+/** OVERLAY **/
+.material-dropdown-list-overlay {
+  z-index: 99;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left:0;
+  position: fixed;
+  background: rgba(0,0,0,0);
+}

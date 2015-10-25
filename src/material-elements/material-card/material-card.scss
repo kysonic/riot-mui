@@ -1,0 +1,37 @@
+// Basic vars to quick styling
+$material-card-background: #fff;
+$material-card-min-width: 100px;
+$material-card-max-height: 650px;
+$material-card-color: #25313b;
+$material-card-offset: 50px;
+// Prefixer
+@mixin vendor-prefix($name, $argument) {
+  -webkit-#{$name}: #{$argument};
+  -ms-#{$name}: #{$argument};
+  -moz-#{$name}: #{$argument};
+  -o-#{$name}: #{$argument};
+  #{$name}: #{$argument};
+}
+
+material-card {
+  display: block;
+  background-color: $material-card-background;
+  margin: 0;
+  overflow-y: auto;
+  will-change: width, height;
+  @include vendor-prefix(box-shadow,'0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12)');
+  // Animation
+  transform:translateY(0px);
+  opacity: 1;
+  @include vendor-prefix(transition,'transform .2s ease-in,opacity .2s');
+  .title {
+    padding: 20px 10px;
+    font-size: 22px;
+    color: #25313b;
+    @include vendor-prefix(box-shadow,'0 2px 3px 0 rgba(0, 0, 0, 0.08), 0 2px 7px 0 rgba(0, 0, 0, 0.02)');
+  }
+  .material-card-content {
+    padding: 20px;
+  }
+}
+

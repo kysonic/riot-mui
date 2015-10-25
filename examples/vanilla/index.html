@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <title>RiotMUI</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href="../../build/styles/style.css" rel="stylesheet">
+</head>
+<body>
+    <form style="max-width: 550px;padding: 20px">
+        <material-input laebel="Label" type="email"></material-input>
+        <material-checkbox>Sign UP</material-checkbox>
+        <material-button style="margin-top: 10px">
+            <div class="text">Submit</div>
+        </material-button>
+    </form>
+
+    <script src="https://cdn.jsdelivr.net/g/riot@2.2(riot.min.js+compiler.min.js"></script>
+    <script src="../../build/js/riot-mui-mixins-min.js"></script>
+    <script src="../../build/js/riot-mui.js"></script>
+    <script>
+        window.addEventListener('load',function(){
+            riot.settings.brackets = "{{ }}";
+            riot.mount('*');
+        });
+    </script>
+</body>
+</html>
