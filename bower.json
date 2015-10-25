@@ -1,0 +1,27 @@
+{
+  "name": "riot-mui",
+  "description": "Set of material ui components for riot js.",
+  "main": "build/bundle.js",
+  "authors": [
+    "Anton Miroshnichenko"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "riot",
+    "mui",
+    "material",
+    "interface"
+  ],
+  "homepage": "https://github.com/kysonic/riot-mui",
+  "moduleType": [
+    "es6",
+    "node"
+  ],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

@@ -48,7 +48,7 @@ material-button {
     height: 100%;
     display: block;
     text-align: center;
-    .text,i.material-icons, i.icon {
+    .text,i.material-icons, i.icon, a {
       display: inline-block;
       vertical-align: middle;
       font-size: $material-button-font-size;
@@ -100,7 +100,7 @@ material-button {
     color: darken($material-button-disabled-background,20);
     cursor: default;
     #content {
-      .text,i.material-icons, i.icon {
+      .text,i.material-icons, i.icon, a {
         color: darken($material-button-disabled-background,20);
         svg {
           fill: darken($material-button-disabled-background,20);

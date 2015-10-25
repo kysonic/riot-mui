@@ -28,7 +28,7 @@ gulp.task('mixins', function () {
 gulp.task('sass', function () {
     gulp.src('./src/**/*.scss')
         .pipe(sass().on('error', sass.logError))
-        .pipe(concat('style.css'))
+        .pipe(concat('riot-mui.min.css'))
         .pipe(minifyCss())
         .pipe(sourcemaps.write())
         .pipe(gulp.dest('./build/styles/'));

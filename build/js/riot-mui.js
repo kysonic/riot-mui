@@ -1,6 +1,6 @@
-//require('./material-button.scss');
-//require('../../mixins/dynamicAttributes.es6');
-//require('../material-waves/material-waves.tag');
+require('./material-button.scss');
+require('../../mixins/dynamicAttributes.es6');
+require('../material-waves/material-waves.tag');
 riot.tag('material-button', '<material-waves onclick="{{click}}" onmousedown="{{launch}}" center="{{opts[\'waves-center\']}}" rounded="{{opts[\'rounded\']}}" opacity="{{opts[\'waves-opacity\']}}" color="{{opts[\'waves-color\']}}" duration="{{opts[\'waves-duration\']}}"></material-waves> <div class="content"><yield></yield></div>', function(opts) {var _this = this;
 
 // Dynamic attribute for using special styles.
@@ -13,12 +13,12 @@ this.launch = function (e) {
 };
 // Trigger the click
 this.click = function () {
+    if (opts.link) window.location.href = opts.link;
     _this.trigger('click');
 };
 // Add mixin
 this.mixin('dynamicAttributes');
 });
-//require('./material-checkbox.scss');
 riot.tag('material-checkbox', '<div class="{{checkbox:true,checked:checked}}" onclick="{{toggle}}"> <div class="checkmark"></div> </div> <div class="label" onclick="{{toggle}}"><yield></yield></div> <input type="hidden" name="{{opts.name}}" value="{{checked}}">', function(opts) {var _this = this;
 
 this.checked = opts.checked || false;
@@ -33,8 +33,6 @@ this.toggle = function () {
     _this.trigger('toggle', _this.checked);
 };
 });
-//require('./material-card.scss');
-//require('../../mixins/content.es6');
 riot.tag('material-card', '<div class="title" if="{{titleExist}}"> <content select=".material-card-title"></content> </div> <yield></yield>', function(opts) {var _this = this;
 
 this.titleExist = false;
@@ -43,10 +41,6 @@ this.on('mount', function () {
 });
 this.mixin('content');
 });
-//require('./material-combo.scss');
-//require('../../mixins/collection.es6');
-//require('../material-dropdown-list/material-dropdown-list.tag');
-//require('../material-input/material-input.tag');
 riot.tag('material-combo', '<material-input name="input" ></material-input> <material-dropdown-list __selected="{{opts.selected}}" name="dropdown"></material-dropdown-list> <input type="hidden" value="{{value}}" name="{{opts.name}}"> <div name="options" hidden if="{{!isParsed}}"> <yield></yield> </div>', function(opts) {var _this = this;
 
 // Basics
@@ -129,7 +123,6 @@ this.tags.input.on('focusChanged', function (focus) {
 // Manage collection
 this.mixin('collection');
 });
-//require('./material-dropdown.scss');
 riot.tag('material-dropdown', '<div name="dropdown" class="{{dropdown:true,opening:opening}}" if="{{opened}}"> <yield></yield> </div>', function(opts) {var _this = this;
 
 // Basics
@@ -155,7 +148,6 @@ this.close = function () {
     }, 200);
 };
 });
-//require('./material-dropdown-list.scss');
 riot.tag('material-dropdown-list', '<ul class="{{dropdown-content:true,opening:opening}}" if="{{opened}}" > <li each="{{item,key in items}}" class="{{selected:parent.selected==key}}"> <span if="{{!item.link}}" onclick="{{parent.select}}">{{item.title}}</span> <a if="{{item.link}}" href="{{item.link}}" onclick="{{parent.select}}" title="{{item.title}}">{{item.title}}</a> </li> </ul> <div name="overlay" if="{{opts.extraclose && opened}}" onclick="{{close}}" class="material-dropdown-list-overlay"></div>', function(opts) {var _this = this;
 
 // Basics
@@ -206,8 +198,6 @@ this.close = function () {
     }, 200);
 };
 });
-//require('./material-input.scss');
-//require('../../mixins/validate.es6');
 riot.tag('material-input', '<div class="label-placeholder"></div> <div class="{{input-content:true,not-empty:value,error:error}}"> <label for="input" name="label" if="{{opts.label}}">{{opts.label}}</label> <input type="{{opts.type || \'text\'}}" __disabled="{{disabled}}" placeholder="{{opts.placeholder}}" onkeyup="{{changeValue}}" value="{{value}}" autocomplete="off" name="{{this.name}}"> <div class="iconWrapper" name="iconWrapper" if="{{opts.icon}}" > <material-button name="iconButton" center="true" waves-center="true" waves-color="{{opts[\'waves-color\']||\'#fff\'}}" rounded="true" waves-opacity="{{opts[\'waves-opacity\']||\'0.6\'}}" waves-duration="{{opts[\'waves-duration\']||\'600\'}}"> <yield></yield> </material-button> </div> </div> <div class="{{underline:true,focused:focused,error:error}}"> <div class="unfocused-line"></div> <div class="focused-line"></div> </div>', function(opts) {var _this = this;
 
 // Attributes
@@ -259,17 +249,12 @@ this.isValid = function (isValid) {
 };
 this.mixin('validate');
 });
-//require('./material-navbar.scss');
 riot.tag('material-navbar', '<div class="nav-wrapper"> <yield></yield> </div>', 'role="toolbar"', function(opts) {
 
 });
-//require('./material-pane.scss');
-//require('../../mixins/content.es6');
 riot.tag('material-pane', '<material-navbar riot-style="height:{{opts[\'material-navbar-height\'] || \'60px\'}};line-height: {{opts[\'material-navbar-height\'] || \'60px\'}};background-color:{{opts[\'material-navbar-color\'] || \'#ccc\'}}"> <content select=".material-pane-left-bar"></content> <content select=".material-pane-title"></content> <content select=".material-pane-right-bar"></content> </material-navbar> <div class="content"> <content select=".material-pane-content"></content> <yield></yield> </div>', function(opts) {
 this.mixin('content');
 });
-//require('./material-popup.scss');
-//require('../../mixins/content.es6');
 riot.tag('material-popup', '<div name="popup" class="{{popup:true,opening:opening}}" if="{{opened}}"> <div class="content"> <content select=".material-popup-title"></content> <div class="close" onclick="{{close}}"> <i class="material-icons">close</i> </div> <yield></yield> </div> </div> <div class="overlay" onclick="{{close}}" if="{{opened}}"></div>', function(opts) {var _this = this;
 
 // Basics
@@ -303,7 +288,6 @@ this.close = function () {
 };
 this.mixin('content');
 });
-//require('./material-snackbar.scss');
 riot.tag('material-snackbar', '<div class="{{toast:true,error:toast.isError,opening:toast.opening}}" onclick="{{parent.removeToastByClick}}" each="{{toast,key in toasts}}" > {{toast.message}} </div>', function(opts) {var _this = this;
 
 // Basics
@@ -374,7 +358,6 @@ this.removeToast = function (toastID) {
     }
 };
 });
-//require('./material-tabs.scss');
 riot.tag('material-tabs', '<material-button each="{{tab,k in tabs}}" onclick="{{parent.onChangeTab}}" class="{{selected:parent.selected==k}}" waves-opacity="{{parent.opts[\'waves-opacity\']}}" waves-duration="{{parent.opts[\'waves-duration\']}}" waves-center="{{parent.opts[\'waves-center\']}}" waves-color="{{parent.opts[\'waves-color\']}}" > <div class="text" title="{{tab.title}}">{{parent.opts.cut ? parent.cut(tab.title) : tab.title}}</div> </material-button> <div class="line-wrapper" if="{{opts.useline}}"> <div class="line" name="line"></div> </div> <yield></yield>', function(opts) {var _this = this;
 
 // Basics
@@ -437,8 +420,6 @@ this.cut = function (title) {
     return title.length > opts.cut ? title.substr(0, opts.cut) + '...' : title;
 };
 });
-//require('./material-textarea.scss');
-//require('../../mixins/validate.es6');
 riot.tag('material-textarea', '<div class="label-placeholder"></div> <div class="{{textarea-content:true,not-empty:value,error:error}}"> <label for="{{opts.name}}" name="label" if="{{opts.label}}">{{opts.label}}</label> <div class="mirror" name="mirror"></div> <div class="textarea-container"> <textarea __disabled="{{disabled}}" name="{{opts.name}}" value="{{value}}"></textarea> </div> </div> <div class="{{underline:true,focused:focused,error:error}}"> <div class="unfocused-line"></div> <div class="focused-line"></div> </div>', function(opts) {var _this = this;
 
 // Defaults
@@ -499,8 +480,6 @@ this.format = function (value) {
 };
 this.mixin('validate');
 });
-//require('./material-waves.scss');
-//require('../../mixins/bound.es6');
 riot.tag('material-waves', '<div id="waves" name="waves"></div>', function(opts) {var _this3 = this;
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
