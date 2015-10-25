@@ -1,5 +1,3 @@
-//require('./material-textarea.scss');
-//require('../../mixins/validate.es6');
 <material-textarea>
     <div class="label-placeholder"></div>
     <div class="{{textarea-content:true,not-empty:value,error:error}}">

@@ -1,5 +1,3 @@
-//require('./material-waves.scss');
-//require('../../mixins/bound.es6');
 <material-waves>
     <div id="waves" name="waves"></div>
     <script type="es6">

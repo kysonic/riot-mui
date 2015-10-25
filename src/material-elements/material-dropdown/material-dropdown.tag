@@ -1,4 +1,3 @@
-//require('./material-dropdown.scss');
 <material-dropdown>
     <div name="dropdown" class="{{dropdown:true,opening:opening}}" if="{{opened}}">
         <yield></yield>

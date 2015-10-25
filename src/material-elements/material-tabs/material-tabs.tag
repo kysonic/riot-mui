@@ -1,4 +1,3 @@
-//require('./material-tabs.scss');
 <material-tabs>
         <material-button each="{{tab,k in tabs}}" onclick="{{parent.onChangeTab}}" class="{{selected:parent.selected==k}}" waves-opacity="{{parent.opts['waves-opacity']}}" waves-duration="{{parent.opts['waves-duration']}}" waves-center="{{parent.opts['waves-center']}}" waves-color="{{parent.opts['waves-color']}}" >
             <div class="text" title="{{tab.title}}">{{parent.opts.cut ? parent.cut(tab.title) : tab.title}}</div>

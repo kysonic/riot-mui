@@ -1,4 +1,3 @@
-//require('./material-dropdown-list.scss');
 <material-dropdown-list>
     <ul class="{{dropdown-content:true,opening:opening}}" if="{{opened}}" >
         <li each="{{item,key in items}}" class="{{selected:parent.selected==key}}">

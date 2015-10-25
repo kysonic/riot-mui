@@ -1,5 +1,3 @@
-//require('./material-pane.scss');
-//require('../../mixins/content.es6');
 <material-pane>
     <material-navbar style="height:{{opts['material-navbar-height'] || '60px'}};line-height: {{opts['material-navbar-height'] || '60px'}};background-color:{{opts['material-navbar-color'] || '#ccc'}}">
         <content select=".material-pane-left-bar"></content>

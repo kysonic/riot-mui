@@ -1,4 +1,3 @@
-//require('./material-checkbox.scss');
 <material-checkbox>
     <div class="{{checkbox:true,checked:checked}}" onclick="{{toggle}}">
         <div class="checkmark"></div>

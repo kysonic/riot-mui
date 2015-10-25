@@ -1,5 +1,3 @@
-//require('./material-popup.scss');
-//require('../../mixins/content.es6');
 <material-popup>
     <div name="popup" class="{{popup:true,opening:opening}}" if="{{opened}}">
         <div class="content">

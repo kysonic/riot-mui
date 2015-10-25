@@ -1,7 +1,3 @@
-//require('./material-combo.scss');
-//require('../../mixins/collection.es6');
-//require('../material-dropdown-list/material-dropdown-list.tag');
-//require('../material-input/material-input.tag');
 <material-combo>
     <material-input name="input" ></material-input>
     <material-dropdown-list selected="{{opts.selected}}" name="dropdown"></material-dropdown-list>

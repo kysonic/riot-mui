@@ -1,5 +1,3 @@
-//require('./material-input.scss');
-//require('../../mixins/validate.es6');
 <material-input>
     <div class="label-placeholder"></div>
     <div class="{{input-content:true,not-empty:value,error:error}}">

@@ -1,5 +1,3 @@
-//require('./material-card.scss');
-//require('../../mixins/content.es6');
 <material-card>
     <div class="title" if="{{titleExist}}">
         <content select=".material-card-title"></content>
