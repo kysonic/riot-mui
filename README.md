@@ -23,7 +23,7 @@ Bower:
 ##Getting started
 
 
-If don't use some build system like webpack or gulp you can just include riot-mui.js and riot-mui.css on your project. For this you should clone repo from github next copy appropriate files to your project.
+If you don't use some build system like webpack or gulp you can just include riot-mui.js and riot-mui.css on your project. 
 
 ```
  <link href="build/styles/riot-mui.min.css" rel="stylesheet">
@@ -42,6 +42,20 @@ Add material ui component:
 And mount it: 
 ```
 riot.mount('material-button');
+```
+In another case you can use source files of this project: 
+
+```
+require('material-elements/material-checkbox/material-checkbox.scss');
+require('material-elements/material-checkbox/material-checkbox.tag');
+```
+Don't forget that some components have dependency of another components, for example material-button include material-waves. In this case you should to include it at first: 
+
+```
+require('material-elements/material-waves/material-waves.scss');
+require('material-elements/material-waves/material-waves.tag');
+require('material-elements/material-button/material-button.scss');
+require('material-elements/material-button/material-button.tag');
 ```
 
 Learn more about riot-mui [here](https://github.com/kysonic/riot-mui/tree/master/examples).
