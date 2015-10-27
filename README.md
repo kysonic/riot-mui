@@ -23,7 +23,7 @@ Bower:
 ##Getting started
 
 
-If you don't use some build system like webpack or gulp you can just include riot-mui.js and riot-mui.css on your project. 
+If you don't use some build system like webpack or gulp (+broserify) you can just include riot-mui.js, riot-mui-mixins.js and riot-mui.css on your project. 
 
 ```
  <link href="build/styles/riot-mui.min.css" rel="stylesheet">
