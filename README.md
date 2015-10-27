@@ -52,3 +52,15 @@ All components styles located in Sass file which has same name like a component 
 All components styles encapsulated using tag name like a name space of component. 
 All components styles has special section - "Variables for quick styling" which will help you to style main features of components really quickly. Also you have possibility to override it whatever you want.
 
+## Bugs, enhancements, suggestions
+
+If you want to help make this project better you can add your suggestions [here](https://github.com/kysonic/riot-mui/issues). This also applies to bugs and enhancements. 
+
+## Contributing 
+
+1. Fork the repo. 
+2. Write your code. 
+3. Submit your pull request to dev branch of this project. 
+
+
+
