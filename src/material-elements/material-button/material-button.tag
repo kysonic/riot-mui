@@ -1,11 +1,7 @@
-require('./material-button.scss');
-require('../../mixins/dynamicAttributes.es6');
-require('../material-waves/material-waves.tag');
 <material-button>
     <material-waves onclick="{{click}}" onmousedown="{{launch}}" center="{{opts['waves-center']}}" rounded="{{opts['rounded']}}" opacity="{{opts['waves-opacity']}}" color="{{opts['waves-color']}}"
                     duration="{{opts['waves-duration']}}"></material-waves>
     <div class="content"><yield></yield></div>
-
     <script type="es6">
         // Dynamic attribute for using special styles.
         this.dynamicAttributes = ['disabled'];
