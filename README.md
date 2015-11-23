@@ -6,6 +6,10 @@ Any person who loves Riot and material UI willing to be a part of this project -
 
 ###[DEMO](http://kysonic.github.io/riot-mui/)
 
+### Demo Source code is placed here: 
+
+[https://github.com/kysonic/riot-mui-page](https://github.com/kysonic/riot-mui-page)
+
 ##How to get riot-mui?
 
 Github:
