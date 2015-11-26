@@ -2,6 +2,8 @@ require('material-elements/material-input/material-input.scss');
 require('material-elements/material-input/material-input.tag');
 require('material-elements/material-checkbox/material-checkbox.scss');
 require('material-elements/material-checkbox/material-checkbox.tag');
+require('material-elements/material-waves/material-waves.scss');
+require('material-elements/material-waves/material-waves.tag');
 require('material-elements/material-button/material-button.scss');
 require('material-elements/material-button/material-button.tag');
 <app>

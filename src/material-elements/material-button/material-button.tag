@@ -2,7 +2,6 @@
     <material-waves onclick="{{click}}" onmousedown="{{launch}}" center="{{opts['waves-center']}}" rounded="{{opts['rounded']}}" opacity="{{opts['waves-opacity']}}" color="{{opts['waves-color']}}"
                     duration="{{opts['waves-duration']}}"></material-waves>
     <div class="content"><yield></yield></div>
-
     <script type="es6">
         // Dynamic attribute for using special styles.
         this.dynamicAttributes = ['disabled'];
