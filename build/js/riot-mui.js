@@ -1,6 +1,3 @@
-require('./material-button.scss');
-require('../../mixins/dynamicAttributes.es6');
-require('../material-waves/material-waves.tag');
 riot.tag('material-button', '<material-waves onclick="{{click}}" onmousedown="{{launch}}" center="{{opts[\'waves-center\']}}" rounded="{{opts[\'rounded\']}}" opacity="{{opts[\'waves-opacity\']}}" color="{{opts[\'waves-color\']}}" duration="{{opts[\'waves-duration\']}}"></material-waves> <div class="content"><yield></yield></div>', function(opts) {var _this = this;
 
 // Dynamic attribute for using special styles.
@@ -19,6 +16,14 @@ this.click = function () {
 // Add mixin
 this.mixin('dynamicAttributes');
 });
+riot.tag('material-card', '<div class="title" if="{{titleExist}}"> <content select=".material-card-title"></content> </div> <yield></yield>', function(opts) {var _this = this;
+
+this.titleExist = false;
+this.on('mount', function () {
+    _this.update({ titleExist: !!_this.root.querySelector('.material-card-title') });
+});
+this.mixin('content');
+});
 riot.tag('material-checkbox', '<div class="{{checkbox:true,checked:checked}}" onclick="{{toggle}}"> <div class="checkmark"></div> </div> <div class="label" onclick="{{toggle}}"><yield></yield></div> <input type="hidden" name="{{opts.name}}" value="{{checked}}">', function(opts) {var _this = this;
 
 this.checked = opts.checked || false;
@@ -32,14 +37,6 @@ this.toggle = function () {
     _this.update({ checked: !_this.checked });
     _this.trigger('toggle', _this.checked);
 };
-});
-riot.tag('material-card', '<div class="title" if="{{titleExist}}"> <content select=".material-card-title"></content> </div> <yield></yield>', function(opts) {var _this = this;
-
-this.titleExist = false;
-this.on('mount', function () {
-    _this.update({ titleExist: !!_this.root.querySelector('.material-card-title') });
-});
-this.mixin('content');
 });
 riot.tag('material-combo', '<material-input name="input" ></material-input> <material-dropdown-list __selected="{{opts.selected}}" name="dropdown"></material-dropdown-list> <input type="hidden" value="{{value}}" name="{{opts.name}}"> <div name="options" hidden if="{{!isParsed}}"> <yield></yield> </div>', function(opts) {var _this = this;
 
