@@ -1,6 +1,6 @@
 # riot-mui
 ##Welcome!
-[Riot JS](http://riotjs.com/) is tiniest (by size) library allowing to create user interfaces. Riot is robust, fast and has enjoyable syntax. Unfortunately Riot doesn't have library of material UI components. This project aims to fix this problem.
+[Riot JS](http://riotjs.com/) is the tiniest (by size) library allowing to create user interfaces. Riot is robust, fast and has enjoyable syntax. Unfortunately Riot doesn't have library of material UI components. This project aims to fix this problem.
 
 Any person who loves Riot and material UI willing to be a part of this project - welcome! We have great chance to create set of components which will provide basic features of [Material UI](https://www.google.com/design/spec/material-design/introduction.html) for Riot.
 
@@ -47,13 +47,13 @@ And mount it:
 ```
 riot.mount('material-button');
 ```
-In another case you can use source files of this project: 
+In another case you will be able to use source files of this project: 
 
 ```
 require('material-elements/material-checkbox/material-checkbox.scss');
 require('material-elements/material-checkbox/material-checkbox.tag');
 ```
-Don't forget that some components have dependency of another components, for example material-button include material-waves. In this case you should to include it at first: 
+Don't forget that some components have dependency of another components, for example material-button includes material-waves. In this case you have to include it before material-button: 
 
 ```
 require('material-elements/material-waves/material-waves.scss');
