@@ -4,6 +4,13 @@
 
 Any person who loves Riot and material UI willing to be a part of this project - welcome! We have great chance to create set of components which will provide basic features of [Material UI](https://www.google.com/design/spec/material-design/introduction.html) for Riot.
 
+## WARNING! 
+Currently Riot mui uses "double curly brackets" syntax for for html markup. Don't forget setup special riot settings before tag mounting: 
+
+```
+riot.settings.brackets = '{{ }}'; 
+```
+
 ###[DEMO](http://kysonic.github.io/riot-mui/)
 
 ### Source code of demo pages is placed here: 
