@@ -1,8 +1,8 @@
 <material-combo>
     <material-input name="input" ></material-input>
-    <material-dropdown-list selected="{{opts.selected}}" name="dropdown"></material-dropdown-list>
-    <input type="hidden" value="{{value}}" name="{{opts.name}}"/>
-    <div name="options" hidden if="{{!isParsed}}">
+    <material-dropdown-list selected="{opts.selected}" name="dropdown"></material-dropdown-list>
+    <input type="hidden" value="{value}" name="{opts.name}"/>
+    <div name="options" hidden if="{!isParsed}">
         <yield></yield>
     </div>
     <script type="es6">

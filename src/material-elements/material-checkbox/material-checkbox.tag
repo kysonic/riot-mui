@@ -1,9 +1,9 @@
 <material-checkbox>
-    <div class="{{checkbox:true,checked:checked}}" onclick="{{toggle}}">
+    <div class="{checkbox:true,checked:checked}" onclick="{toggle}">
         <div class="checkmark"></div>
     </div>
-    <div class="label" onclick="{{toggle}}"><yield></yield></div>
-    <input type="hidden" name="{{opts.name}}" value="{{checked}}">
+    <div class="label" onclick="{toggle}"><yield></yield></div>
+    <input type="hidden" name="{opts.name}" value="{checked}">
     <script type="es6">
         this.checked = opts.checked || false;
         // Attributes

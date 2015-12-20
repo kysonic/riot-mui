@@ -1,5 +1,5 @@
 <material-card>
-    <div class="title" if="{{titleExist}}">
+    <div class="title" if="{titleExist}">
         <content select=".material-card-title"></content>
     </div>
     <yield/>

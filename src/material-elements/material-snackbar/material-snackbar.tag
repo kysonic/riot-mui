@@ -1,6 +1,6 @@
 <material-snackbar>
-    <div class="{{toast:true,error:toast.isError,opening:toast.opening}}" onclick="{{parent.removeToastByClick}}" each="{{toast,key in toasts}}" >
-        {{toast.message}}
+    <div class="{toast:true,error:toast.isError,opening:toast.opening}" onclick="{parent.removeToastByClick}" each="{toast,key in toasts}" >
+        {toast.message}
     </div>
     <script type="es6">
         // Basics

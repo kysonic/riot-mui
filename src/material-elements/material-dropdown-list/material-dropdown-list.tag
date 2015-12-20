@@ -1,11 +1,11 @@
 <material-dropdown-list>
-    <ul class="{{dropdown-content:true,opening:opening}}" if="{{opened}}" >
-        <li each="{{item,key in items}}" class="{{selected:parent.selected==key}}">
-            <span if="{{!item.link}}" onclick="{{parent.select}}">{{item.title}}</span>
-            <a if="{{item.link}}" href="{{item.link}}" onclick="{{parent.select}}" title="{{item.title}}">{{item.title}}</a>
+    <ul class="{dropdown-content:true,opening:opening}" if="{opened}" >
+        <li each="{item,key in items}" class="{selected:parent.selected==key}">
+            <span if="{!item.link}" onclick="{parent.select}">{item.title}</span>
+            <a if="{item.link}" href="{item.link}" onclick="{parent.select}" title="{item.title}">{item.title}</a>
         </li>
     </ul>
-    <div name="overlay" if="{{opts.extraclose && opened}}" onclick="{{close}}" class="material-dropdown-list-overlay"></div>
+    <div name="overlay" if="{opts.extraclose && opened}" onclick="{close}" class="material-dropdown-list-overlay"></div>
     <script type="es6">
         // Basics
         this.opened = false;

@@ -9,7 +9,7 @@ var babel = require('gulp-babel');
 
 gulp.task('riot', function () {
     gulp.src('./src/**/*.tag')
-        .pipe(riot())
+        .pipe(riot({brackets:'{{ }}'}))
         .pipe(concat('riot-mui.js'))
         .pipe(minify())
         .pipe(sourcemaps.write())
