@@ -1,5 +1,5 @@
 <material-pane>
-    <material-navbar style="height:{opts['material-navbar-height'] || '60px'};line-height: {opts['material-navbar-height'] || '60px'};background-color:{opts['material-navbar-color'] || '#ccc'}">
+    <material-navbar style="height:{opts.materialNavbarHeight || '60px'};line-height: {opts.materialNavbarHeight || '60px'};background-color:{opts.materialNavbarColor || '#ccc'}">
         <content select=".material-pane-left-bar"></content>
         <content select=".material-pane-title"></content>
         <content select=".material-pane-right-bar"></content>

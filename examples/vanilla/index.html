@@ -4,24 +4,166 @@
     <title>RiotMUI</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link href="../../build/styles/riot-mui.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700italic,700,800,800italic' rel='stylesheet' type='text/css'>
+    <style>
+        body {
+            font-size: 16px;
+            font-family: 'Open Sans';
+        }
+        .wrapper {
+            display: flex;
+        }
+        .row {
+            flex-grow: 1;
+            padding: 20px;
+        }
+        .item {
+            padding: 10px 0;
+        }
+        .button-container {
+            width: 100%;
+            position: relative;
+        }
+        .logo {
+            font-size: 30px;
+            padding: 0 10px;
+        }
+        .logo a {
+            text-decoration: none;
+        }
+    </style>
 </head>
 <body>
-    <form style="max-width: 550px;padding: 20px">
-        <material-input label="Label" type="email"></material-input>
-        <material-checkbox>Sign UP</material-checkbox>
-        <material-button style="margin-top: 10px">
-            <div class="text">Submit</div>
-        </material-button>
-    </form>
+    <div class="wrapper">
+        <div class="row">
+            <div class="item">
+                <material-input icon="true" waves-color="#2f6975" label="Icon input">
+                    <i class="material-icons">search</i>
+                </material-input>
+            </div>
+            <div class="item">
+                <material-button>
+                    <div class="text">BUTTON</div>
+                </material-button>
+            </div>
+            <div class="item">
+                <div class="item">
+                    <div class="button-container">
+                        <material-button name="buttonOne" onclick="openDropdown()">
+                            <div class="text">Toggle Dropdown</div>
+                        </material-button><br>
+                        <material-dropdown name="dropdown" name="dropDownOne">
+                            <p>DropDown content</p>
+                        </material-dropdown>
+                    </div>
+                </div>
+                <div class="item">
+                    <material-navbar>
+                        <div class="logo"><a href="#">Logo</a></div>
+                    </material-navbar>
+                </div>
+            </div>
+            <div class="item" style="margin-top: 22px">
+                <material-button onclick="openPopup()">
+                    <div class="text">Open</div>
+                </material-button>
+                <material-popup name="popupOne">
+                    <p>Accerso alius sententia ut mihi, phasmatis of interregnum ego dico, solvo meus mens mei,
+                        ego dico phasmatis audite meus placitum meus mens quod iacio (Nombre de la persona)</p>
+                </material-popup>
+            </div>
+            <div class="item" style="margin-top: 8px">
+                <material-tabs useLine="true" tabs="[\{title:'ONE'\},\{title:'TWO'\}]"></material-tabs>
+            </div>
+        </div>
 
-    <script src="https://cdn.jsdelivr.net/g/riot@2.2(riot.min.js+compiler.min.js"></script>
+        <div class="row">
+            <div class="item">
+                <material-combo  defaultText="Select one">
+                    <option value="1">One</option>
+                    <option value="2">Two</option>
+                </material-combo>
+            </div>
+            <div class="item">
+                <material-checkbox name="checker">
+                    Label
+                </material-checkbox>
+            </div>
+            <div class="item" style="margin-top: 26px">
+                <div class="button-container">
+                    <material-button name="buttonOne" onclick="openDropdownTwo()">
+                        <div class="text">Toggle Dropdown</div>
+                    </material-button><br>
+                    <material-dropdown-list items="[\{title:'One'\},\{title:'Two'\}]" name="dropdown2" name="dropDownOne">
+                        <p>DropDown content</p>
+                    </material-dropdown-list>
+                </div>
+            </div>
+            <div class="item">
+                <material-pane>
+                    <div class="material-pane-left-bar">
+                        <material-button rounded="true">
+                            <i class="material-icons">arrow_back</i>
+                        </material-button>
+                    </div>
+                    <div class="material-pane-title">TITLE</div>
+                    <div class="material-pane-right-bar">
+                        <material-button rounded="true">
+                            <i class="material-icons">more_vert</i>
+                        </material-button>
+                    </div>
+                    <div class="material-pane-content">
+                        CONTENT
+                    </div>
+                </material-pane>
+            </div>
+            <div class="item">
+                <material-button onclick="launchToast()">
+                    <div class="text">Launch</div>
+                </material-button>
+                <material-snackbar name="snackbar"></material-snackbar>
+            </div>
+            <div class="item">
+                <material-textarea label="Textarea"></material-textarea>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/riot/2.3/riot+compiler.min.js"></script>
     <script src="../../build/js/riot-mui-mixins-min.js"></script>
     <script src="../../build/js/riot-mui-min.js"></script>
     <script>
+        var mounted = null;
         window.addEventListener('load',function(){
-            //riot.settings.brackets = "{{ }}";
-            riot.mount('*');
+            mounted = riot.mount('*');
         });
+        function openDropdown(){
+            var dropdown = findTag(mounted,'dropdown');
+            !dropdown.opened?dropdown.open():dropdown.close(); 
+        }
+        function openDropdownTwo(){
+            var dropdown = findTag(mounted,'dropdown2');
+            !dropdown.opened?dropdown.open():dropdown.close();
+        }
+        function openPopup() {
+            var popup = findTag(mounted,'popupOne');
+            !popup.opened?popup.open():popup.close();
+        }
+        function launchToast(){
+            var snackbar = findTag(mounted,'snackbar');
+            snackbar.addToast({message:'Toast was fired. To close it just click on it!'})
+        }
+        function findTag(pack,name){
+            var searched = null;
+            pack.forEach(function(tag){
+                if((tag.root.getAttribute('name') && tag.root.getAttribute('name').toLowerCase()==name.toLowerCase())
+                        || (tag.root.tagName && tag.root.tagName.toLowerCase()==name.toLowerCase())) {
+                    searched = tag;
+                }
+            });
+            return searched;
+        }
     </script>
 </body>
 </html>

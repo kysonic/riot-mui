@@ -1,4 +1,4 @@
-riot.tag('material-button', '<material-waves onclick="{click}" onmousedown="{launch}" center="{opts[\'waves-center\']}" rounded="{opts[\'rounded\']}" opacity="{opts[\'waves-opacity\']}" color="{opts[\'waves-color\']}" duration="{opts[\'waves-duration\']}"></material-waves> <div class="content"><yield></yield></div>', function(opts) {var _this = this;
+riot.tag('material-button', '<material-waves onclick="{click}" onmousedown="{launch}" center="{opts.wavesCenter}" rounded="{opts.rounded}" opacity="{opts.wavesOpacity}" color="{opts.wavesColor}" duration="{opts[\'waves-duration\']}"></material-waves> <div class="content"><yield></yield></div>', function(opts) {var _this = this;
 
 // Dynamic attribute for using special styles.
 this.dynamicAttributes = ['disabled'];
@@ -38,7 +38,7 @@ this.toggle = function () {
     _this.trigger('toggle', _this.checked);
 };
 });
-riot.tag('material-combo', '<material-input name="input" ></material-input> <material-dropdown-list selected="{opts.selected}" name="dropdown"></material-dropdown-list> <input type="hidden" value="{value}" name="{opts.name}"> <div name="options" hidden if="{!isParsed}"> <yield></yield> </div>', function(opts) {var _this = this;
+riot.tag('material-combo', '<material-input name="input"></material-input> <material-dropdown-list selected="{opts.selected}" name="dropdown"></material-dropdown-list> <input type="hidden" value="{value}" name="{opts.name || \'combo\'}"> <div name="options" hidden if="{!isParsed}"> <yield></yield> </div>', function(opts) {var _this = this;
 
 // Basics
 this.items = [];
@@ -91,6 +91,7 @@ this.on('mount', function () {
  * update material-input and hidden
  */
 this.tags.dropdown.on('selectChanged', function (selected) {
+    console.log(selected);
     _this.update({ value: _this.tags.dropdown.items[selected].value || _this.tags.dropdown.items[selected].title });
     _this.tags.input.update({ value: _this.tags.dropdown.items[selected].title });
     // After animation end
@@ -115,7 +116,7 @@ this.tags.input.on('focusChanged', function (focus) {
     if (_this.tags.input.value == '' && !focus) {
         _this.tags.input.update({ value: opts.defaulttext || 'Choose item' });
     }
-    focus ? _this.tags.dropdown.open() : _this.tags.dropdown.close();
+    focus ? _this.tags.dropdown.open() : null;
 });
 // Manage collection
 this.mixin('collection');
@@ -195,7 +196,7 @@ this.close = function () {
     }, 200);
 };
 });
-riot.tag('material-input', '<div class="label-placeholder"></div> <div class="{input-content:true,not-empty:value,error:error}"> <label for="input" name="label" if="{opts.label}">{opts.label}</label> <input type="{opts.type || \'text\'}" disabled="{disabled}" placeholder="{opts.placeholder}" onkeyup="{changeValue}" value="{value}" autocomplete="off" name="{this.name}"> <div class="iconWrapper" name="iconWrapper" if="{opts.icon}" > <material-button name="iconButton" center="true" waves-center="true" waves-color="{opts[\'waves-color\']||\'#fff\'}" rounded="true" waves-opacity="{opts[\'waves-opacity\']||\'0.6\'}" waves-duration="{opts[\'waves-duration\']||\'600\'}"> <yield></yield> </material-button> </div> </div> <div class="{underline:true,focused:focused,error:error}"> <div class="unfocused-line"></div> <div class="focused-line"></div> </div>', function(opts) {var _this = this;
+riot.tag('material-input', '<div class="label-placeholder"></div> <div class="{input-content:true,not-empty:value,error:error}"> <label for="input" name="label" if="{opts.label}">{opts.label}</label> <input type="{opts.type || \'text\'}" disabled="{disabled}" placeholder="{opts.placeholder}" onkeyup="{changeValue}" value="{value}" autocomplete="off" name="input"> <div class="iconWrapper" name="iconWrapper" if="{opts.icon}" > <material-button name="iconButton" center="true" waves-center="true" waves-color="{opts[\'waves-color\']||\'#fff\'}" rounded="true" waves-opacity="{opts[\'waves-opacity\']||\'0.6\'}" waves-duration="{opts[\'waves-duration\']||\'600\'}"> <yield></yield> </material-button> </div> </div> <div class="{underline:true,focused:focused,error:error}"> <div class="unfocused-line"></div> <div class="focused-line"></div> </div>', function(opts) {var _this = this;
 
 // Attributes
 this.update({ value: opts.value || '' });
@@ -209,12 +210,16 @@ this.notSupportedTypes = ['date', 'color', 'datetime', 'month', 'range', 'time']
 if (this.notSupportedTypes.indexOf(opts.type) != -1) throw new Error('Sorry but we not support ' + date + ' type yet!');
 // Icons
 this.update({ showIcon: false });
+// Ready
+this.on('mount', function () {
+    _this.input.name = _this.name || 'textarea';
+});
 /**
  * When element focus changed update expressions.
  */
 this.changeFocus = function (e) {
     if (_this.disabled) return false;
-    _this.update({ focused: _this['{this.name}'] == document.activeElement });
+    _this.update({ focused: _this['input'] == document.activeElement });
     _this.trigger('focusChanged', _this.focused, e);
 };
 /**
@@ -222,13 +227,13 @@ this.changeFocus = function (e) {
  * @param e
  */
 this.changeValue = function (e) {
-    _this.update({ value: _this['{this.name}'].value });
-    _this.trigger('valueChanged', _this['{this.name}'].value, e);
+    _this.update({ value: _this['input'].value });
+    _this.trigger('valueChanged', _this['input'].value, e);
 };
 // Add event listeners to input. It is wat which will help us
 // to provide focus\blur on material-input
-this['{this.name}'].addEventListener('focus', this.changeFocus);
-this['{this.name}'].addEventListener('blur', this.changeFocus);
+this['input'].addEventListener('focus', this.changeFocus);
+this['input'].addEventListener('blur', this.changeFocus);
 // Validation
 this.on('update', function (updated) {
     if (updated && updated.value != undefined) {
@@ -249,7 +254,40 @@ this.mixin('validate');
 riot.tag('material-navbar', '<div class="nav-wrapper"> <yield></yield> </div>', 'role="toolbar"', function(opts) {
 
 });
-riot.tag('material-pane', '<material-navbar style="height:{opts[\'material-navbar-height\'] || \'60px\'};line-height: {opts[\'material-navbar-height\'] || \'60px\'};background-color:{opts[\'material-navbar-color\'] || \'#ccc\'}"> <content select=".material-pane-left-bar"></content> <content select=".material-pane-title"></content> <content select=".material-pane-right-bar"></content> </material-navbar> <div class="content"> <content select=".material-pane-content"></content> <yield></yield> </div>', function(opts) {
+riot.tag('material-pane', '<material-navbar style="height:{opts.materialNavbarHeight || \'60px\'};line-height: {opts.materialNavbarHeight || \'60px\'};background-color:{opts.materialNavbarColor || \'#ccc\'}"> <content select=".material-pane-left-bar"></content> <content select=".material-pane-title"></content> <content select=".material-pane-right-bar"></content> </material-navbar> <div class="content"> <content select=".material-pane-content"></content> <yield></yield> </div>', function(opts) {
+this.mixin('content');
+});
+riot.tag('material-popup', '<div name="popup" class="{popup:true,opening:opening}" if="{opened}"> <div class="content"> <content select=".material-popup-title"></content> <div class="close" onclick="{close}"> <i class="material-icons">close</i> </div> <yield></yield> </div> </div> <div class="overlay" onclick="{close}" if="{opened}"></div>', function(opts) {var _this = this;
+
+// Basics
+this.opened = opts.opened || false;
+// Attributes
+this.popup.classList.add(opts.animation || 'top');
+/**
+ * Ready
+ */
+this.on('mount', function () {
+    // Transfer a root node to body
+    document.body.appendChild(_this.root);
+});
+/**
+ * Open dropdown
+ */
+this.open = function () {
+    _this.update({ opened: true, opening: true });
+    setTimeout(function () {
+        _this.update({ opening: false });
+    }, 0);
+};
+/**
+ * Close dropdown
+ */
+this.close = function () {
+    _this.update({ opening: true });
+    setTimeout(function () {
+        _this.update({ opened: false });
+    }, 200);
+};
 this.mixin('content');
 });
 riot.tag('material-snackbar', '<div class="{toast:true,error:toast.isError,opening:toast.opening}" onclick="{parent.removeToastByClick}" each="{toast,key in toasts}" > {toast.message} </div>', function(opts) {var _this = this;
@@ -322,40 +360,7 @@ this.removeToast = function (toastID) {
     }
 };
 });
-riot.tag('material-popup', '<div name="popup" class="{popup:true,opening:opening}" if="{opened}"> <div class="content"> <content select=".material-popup-title"></content> <div class="close" onclick="{close}"> <i class="material-icons">close</i> </div> <yield></yield> </div> </div> <div class="overlay" onclick="{close}" if="{opened}"></div>', function(opts) {var _this = this;
-
-// Basics
-this.opened = opts.opened || false;
-// Attributes
-this.popup.classList.add(opts.animation || 'top');
-/**
- * Ready
- */
-this.on('mount', function () {
-    // Transfer a root node to body
-    document.body.appendChild(_this.root);
-});
-/**
- * Open dropdown
- */
-this.open = function () {
-    _this.update({ opened: true, opening: true });
-    setTimeout(function () {
-        _this.update({ opening: false });
-    }, 0);
-};
-/**
- * Close dropdown
- */
-this.close = function () {
-    _this.update({ opening: true });
-    setTimeout(function () {
-        _this.update({ opened: false });
-    }, 200);
-};
-this.mixin('content');
-});
-riot.tag('material-tabs', '<material-button each="{tab,k in tabs}" onclick="{parent.onChangeTab}" class="{selected:parent.selected==k}" waves-opacity="{parent.opts[\'waves-opacity\']}" waves-duration="{parent.opts[\'waves-duration\']}" waves-center="{parent.opts[\'waves-center\']}" waves-color="{parent.opts[\'waves-color\']}" > <div class="text" title="{tab.title}">{parent.opts.cut ? parent.cut(tab.title) : tab.title}</div> </material-button> <div class="line-wrapper" if="{opts.useline}"> <div class="line" name="line"></div> </div> <yield></yield>', function(opts) {var _this = this;
+riot.tag('material-tabs', '<material-button each="{tab,k in tabs}" onclick="{parent.onChangeTab}" class="{selected:parent.selected==k}" waves-opacity="{parent.opts.wavesOpacity}" waves-duration="{parent.opts.wavesDuration}" waves-center="{parent.opts.wavesCenter}" waves-color="{parent.opts.wavesColor}" > <div class="text" title="{tab.title}">{parent.opts.cut ? parent.cut(tab.title) : tab.title}</div> </material-button> <div class="line-wrapper" if="{opts.useline}"> <div class="line" name="line"></div> </div> <yield></yield>', function(opts) {var _this = this;
 
 // Basics
 this.selected = 0;
@@ -417,10 +422,10 @@ this.cut = function (title) {
     return title.length > opts.cut ? title.substr(0, opts.cut) + '...' : title;
 };
 });
-riot.tag('material-textarea', '<div class="label-placeholder"></div> <div class="{textarea-content:true,not-empty:value,error:error}"> <label for="{opts.name}" name="label" if="{opts.label}">{opts.label}</label> <div class="mirror" name="mirror"></div> <div class="textarea-container"> <textarea disabled="{disabled}" name="{opts.name}" value="{value}"></textarea> </div> </div> <div class="{underline:true,focused:focused,error:error}"> <div class="unfocused-line"></div> <div class="focused-line"></div> </div>', function(opts) {var _this = this;
+riot.tag('material-textarea', '<div class="label-placeholder"></div> <div class="{textarea-content:true,not-empty:value,error:error}"> <label for="textarea" name="label" if="{opts.label}">{opts.label}</label> <div class="mirror" name="mirror"></div> <div class="textarea-container"> <textarea disabled="{disabled}" name="textarea" value="{value}"></textarea> </div> </div> <div class="{underline:true,focused:focused,error:error}"> <div class="unfocused-line"></div> <div class="focused-line"></div> </div>', function(opts) {var _this = this;
 
 // Defaults
-this["{opts.name}"].scrollTop = this["{opts.name}"].scrollHeight;
+this["textarea"].scrollTop = this["textarea"].scrollHeight;
 // For Validation Mixin
 this.opts = opts;
 // From options
@@ -428,14 +433,15 @@ this.disabled = opts.disabled || false;
 // Ready
 this.on('mount', function () {
     // Set max height to mirror, if we have max-rows option.
-    if (opts['max-rows']) _this.mirror.style.maxHeight = opts['max-rows'] * _this["{opts.name}"].getBoundingClientRect().height + 'px';
+    if (opts.maxRows) _this.mirror.style.maxHeight = opts.maxRows * _this["textarea"].getBoundingClientRect().height + 'px';
+    _this.input.name = opts.name || 'textarea';
 });
 /**
  * When element focus changed update expressions.
  */
 this.changeFocus = function (e) {
     if (_this.disabled) return false;
-    var focused = _this["{opts.name}"] == document.activeElement;
+    var focused = _this["textarea"] == document.activeElement;
     _this.update({ focused: focused });
     _this.trigger('focusChanged', focused);
 };
@@ -444,16 +450,16 @@ this.changeFocus = function (e) {
  * @param e
  */
 this.inputHandler = function (e) {
-    var value = _this["{opts.name}"].value;
+    var value = _this["textarea"].value;
     _this.mirror.innerHTML = _this.format(value);
     _this.update({ value: value });
     _this.trigger('valueChanged', value);
 };
 // Add event listeners to input. It is wat which will help us
 // to provide focus\blur on material-input
-this["{opts.name}"].addEventListener('focus', this.changeFocus);
-this["{opts.name}"].addEventListener('blur', this.changeFocus);
-this["{opts.name}"].addEventListener('input', this.inputHandler);
+this["textarea"].addEventListener('focus', this.changeFocus);
+this["textarea"].addEventListener('blur', this.changeFocus);
+this["textarea"].addEventListener('input', this.inputHandler);
 // Validation
 this.on('update', function (updated) {
     if (updated && updated.value != undefined) {

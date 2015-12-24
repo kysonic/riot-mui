@@ -1,7 +1,7 @@
 <material-combo>
-    <material-input name="input" ></material-input>
+    <material-input name="input"></material-input>
     <material-dropdown-list selected="{opts.selected}" name="dropdown"></material-dropdown-list>
-    <input type="hidden" value="{value}" name="{opts.name}"/>
+    <input type="hidden" value="{value}" name="{opts.name || 'combo'}"/>
     <div name="options" hidden if="{!isParsed}">
         <yield></yield>
     </div>
@@ -56,6 +56,7 @@
          * update material-input and hidden
          */
         this.tags.dropdown.on('selectChanged',(selected)=>{
+            console.log(selected);
             this.update({value:this.tags.dropdown.items[selected].value || this.tags.dropdown.items[selected].title});
             this.tags.input.update({value:this.tags.dropdown.items[selected].title});
             // After animation end
@@ -76,7 +77,7 @@
         this.tags.input.on('focusChanged',(focus)=>{
             if(this.tags.input.value==(opts.defaulttext || 'Choose item') && focus) {this.tags.input.update({value:''})}
             if(this.tags.input.value=='' && !focus) {this.tags.input.update({value:(opts.defaulttext || 'Choose item')})}
-            focus ? this.tags.dropdown.open() : this.tags.dropdown.close();
+            focus ? this.tags.dropdown.open() : null;
         });
         // Manage collection
         this.mixin('collection');

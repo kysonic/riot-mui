@@ -2,7 +2,7 @@
     <div class="label-placeholder"></div>
     <div class="{input-content:true,not-empty:value,error:error}">
         <label for="input" name="label" if="{opts.label}">{opts.label}</label>
-        <input type="{opts.type || 'text'}" disabled="{disabled}" placeholder="{opts.placeholder}" onkeyup="{changeValue}" value="{value}" autocomplete="off" name="{this.name}"/>
+        <input type="{opts.type || 'text'}" disabled="{disabled}" placeholder="{opts.placeholder}" onkeyup="{changeValue}" value="{value}" autocomplete="off" name="input"/>
         <div class="iconWrapper" name="iconWrapper" if="{opts.icon}" >
             <material-button name="iconButton" center="true" waves-center="true" waves-color="{opts['waves-color']||'#fff'}"
                              rounded="true" waves-opacity="{opts['waves-opacity']||'0.6'}" waves-duration="{opts['waves-duration']||'600'}">
@@ -28,12 +28,16 @@
         if(this.notSupportedTypes.indexOf(opts.type)!=-1) throw new Error(`Sorry but we not support ${date} type yet!`);
         // Icons
         this.update({showIcon:false});
+        // Ready
+        this.on('mount',()=>{
+            this.input.name = this.name || 'textarea';
+        });
         /**
          * When element focus changed update expressions.
          */
         this.changeFocus = (e)=>{
             if(this.disabled) return false;
-            this.update({focused:this['{this.name}']==document.activeElement});
+            this.update({focused:this['input']==document.activeElement});
             this.trigger('focusChanged',this.focused,e);
         }
         /**
@@ -41,13 +45,13 @@
          * @param e
          */
         this.changeValue = (e)=>{
-            this.update({value:this['{this.name}'].value});
-            this.trigger('valueChanged',this['{this.name}'].value,e);
+            this.update({value:this['input'].value});
+            this.trigger('valueChanged',this['input'].value,e);
         }
         // Add event listeners to input. It is wat which will help us
         // to provide focus\blur on material-input
-        this['{this.name}'].addEventListener('focus',this.changeFocus);
-        this['{this.name}'].addEventListener('blur',this.changeFocus);
+        this['input'].addEventListener('focus',this.changeFocus);
+        this['input'].addEventListener('blur',this.changeFocus);
         // Validation
         this.on('update',(updated)=>{
             if(updated && updated.value!=undefined) {

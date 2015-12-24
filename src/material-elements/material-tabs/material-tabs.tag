@@ -1,5 +1,5 @@
 <material-tabs>
-        <material-button each="{tab,k in tabs}" onclick="{parent.onChangeTab}" class="{selected:parent.selected==k}" waves-opacity="{parent.opts['waves-opacity']}" waves-duration="{parent.opts['waves-duration']}" waves-center="{parent.opts['waves-center']}" waves-color="{parent.opts['waves-color']}" >
+        <material-button each="{tab,k in tabs}" onclick="{parent.onChangeTab}" class="{selected:parent.selected==k}" waves-opacity="{parent.opts.wavesOpacity}" waves-duration="{parent.opts.wavesDuration}" waves-center="{parent.opts.wavesCenter}" waves-color="{parent.opts.wavesColor}" >
             <div class="text" title="{tab.title}">{parent.opts.cut ? parent.cut(tab.title) : tab.title}</div>
         </material-button>
         <div class="line-wrapper" if="{opts.useline}">
