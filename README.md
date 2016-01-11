@@ -1,6 +1,6 @@
 # riot-mui
 ##Welcome!
-[Riot JS](http://riotjs.com/) is tiniest (by size) library allowing to create user interfaces. Riot is robust, fast and has enjoyable syntax. Unfortunately Riot doesn't have library of material UI components. This project aims to fix this problem.
+[Riot JS](http://riotjs.com/) is the tiniest (by size) library allowing to create user interfaces. Riot is robust, fast and has enjoyable syntax. Unfortunately Riot doesn't have library of material UI components. This project aims to fix this problem.
 
 Any person who loves Riot and material UI willing to be a part of this project - welcome! We have great chance to create set of components which will provide basic features of [Material UI](https://www.google.com/design/spec/material-design/introduction.html) for Riot.
 
@@ -27,7 +27,7 @@ Bower:
 ##Getting started
 
 
-If you don't use some build system like webpack or gulp (+broserify) you can just include riot-mui.js, riot-mui-mixins.js and riot-mui.css on your project. 
+If you don't use some build system like webpack or gulp (+broserify) you can just include riot-mui.js, riot-mui-mixins.js and riot-mui.css in your project. 
 
 ```
  <link href="build/styles/riot-mui.min.css" rel="stylesheet">
@@ -53,7 +53,7 @@ In another case you can use source files of this project:
 require('material-elements/material-checkbox/material-checkbox.scss');
 require('material-elements/material-checkbox/material-checkbox.tag');
 ```
-Don't forget that some components have dependency of another components, for example material-button include material-waves. In this case you should to include it at first: 
+Don't forget that some components have dependency of another components, for example material-button include material-waves. In this case you have to include it at first: 
 
 ```
 require('material-elements/material-waves/material-waves.scss');
