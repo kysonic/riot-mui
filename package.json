@@ -1,6 +1,6 @@
 {
   "name": "riot-mui",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Set of material ui components for riot js.",
   "main": "build/bundle.js",
   "author": "Anton Miroshnichenko",
@@ -14,7 +14,7 @@
     "gulp-concat": "^2.6.0",
     "gulp-minify": "0.0.5",
     "gulp-minify-css": "^1.2.1",
-    "gulp-riot": "^0.3.1",
+    "gulp-riot": "^0.4.4",
     "gulp-sass": "^2.0.4",
     "gulp-sourcemaps": "^1.6.0"
   }

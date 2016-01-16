@@ -64,7 +64,7 @@ var Bound = (function () {
         }
 
         /**
-         * Simple mixin. Unfortunately, babel don't support Object.assign \ or mixin
+         * Simple mixin. Unfortunately, babel doesn't support Object.assign \ or mixin
          * @param so
          * @param to
          * @returns {*}

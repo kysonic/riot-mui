@@ -1,0 +1,148 @@
+$material-snackbar-toast-height: 40px;
+$material-snackbar-toast-color: #25313b;
+$material-snackbar-toast-text-color: #fff;
+$material-snackbar-toast-offset: 15px;
+$material-snackbar-toast-width: 320px;
+// Prefixer
+@mixin vendor-prefix($name, $argument) {
+    -webkit-#{$name}: #{$argument};
+    -ms-#{$name}: #{$argument};
+    -moz-#{$name}: #{$argument};
+    -o-#{$name}: #{$argument};
+    #{$name}: #{$argument};
+}
+
+material-spinner {
+    display: inline-block;
+    .loader-circular {
+        @include vendor-prefix(animation, loader-rotate 2s linear infinite);
+    }
+    .loader-path {
+        stroke-dasharray: 1, 200;
+        stroke-dashoffset: 0;
+        -webkit-animation: dash 1.5s ease-in-out infinite, color 6s ease-in-out infinite;
+        animation: dash 1.5s ease-in-out infinite, color 6s ease-in-out infinite;
+        stroke-linecap: round;
+        stroke: #db652d;
+    }
+}
+
+@-o-keyframes loader-rotate {
+    from {
+        -o-transform: rotate(0deg);
+    }
+    to {
+        -o-transform: rotate(360deg);
+    }
+}
+
+@-moz-keyframes loader-rotate {
+    from {
+        -moz-transform: rotate(0deg);
+    }
+    to {
+        -moz-transform: rotate(360deg);
+    }
+}
+
+@-webkit-keyframes loader-rotate {
+    from {
+        -webkit-transform: rotate(0deg);
+    }
+    to {
+        -webkit-transform: rotate(360deg);
+    }
+}
+
+@keyframes loader-rotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@-webkit-keyframes dash {
+    0% {
+        stroke-dasharray: 1, 200;
+        stroke-dashoffset: 0;
+    }
+    50% {
+        stroke-dasharray: 89, 200;
+        stroke-dashoffset: -35;
+    }
+    100% {
+        stroke-dasharray: 89, 200;
+        stroke-dashoffset: -124;
+    }
+}
+
+@keyframes dash {
+    0% {
+        stroke-dasharray: 1, 200;
+        stroke-dashoffset: 0;
+    }
+    50% {
+        stroke-dasharray: 89, 200;
+        stroke-dashoffset: -35;
+    }
+    100% {
+        stroke-dasharray: 89, 200;
+        stroke-dashoffset: -124;
+    }
+}
+
+@-webkit-keyframes color {
+    0% {
+        stroke: #3f88f8;
+    }
+    20% {
+        stroke: #3f88f8;
+    }
+    25% {
+        stroke: #dd413b;
+    }
+    45% {
+        stroke: #dd413b;
+    }
+    50% {
+        stroke: #f6ae2e;
+    }
+    70% {
+        stroke: #f6ae2e;
+    }
+    75% {
+        stroke: #259a5d;
+    }
+    95% {
+        stroke: #259a5d;
+    }
+}
+
+@keyframes color {
+    0% {
+        stroke: #3f88f8;
+    }
+    20% {
+        stroke: #3f88f8;
+    }
+    25% {
+        stroke: #dd413b;
+    }
+    45% {
+        stroke: #dd413b;
+    }
+    50% {
+        stroke: #f6ae2e;
+    }
+    70% {
+        stroke: #f6ae2e;
+    }
+    75% {
+        stroke: #259a5d;
+    }
+    95% {
+        stroke: #259a5d;
+    }
+}
