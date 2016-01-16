@@ -22,7 +22,7 @@
         this.on('mount',()=>{
             // Set max height to mirror, if we have max-rows option.
             if(opts.maxRows) this.mirror.style.maxHeight = opts.maxRows*this["textarea"].getBoundingClientRect().height + 'px';
-            this.input.name = opts.name || 'textarea';
+            this.textarea.name = opts.name || 'textarea';
         })
         /**
          * When element focus changed update expressions.

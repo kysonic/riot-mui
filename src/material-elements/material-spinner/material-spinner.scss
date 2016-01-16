@@ -1,8 +1,3 @@
-$material-snackbar-toast-height: 40px;
-$material-snackbar-toast-color: #25313b;
-$material-snackbar-toast-text-color: #fff;
-$material-snackbar-toast-offset: 15px;
-$material-snackbar-toast-width: 320px;
 // Prefixer
 @mixin vendor-prefix($name, $argument) {
     -webkit-#{$name}: #{$argument};
@@ -11,7 +6,6 @@ $material-snackbar-toast-width: 320px;
     -o-#{$name}: #{$argument};
     #{$name}: #{$argument};
 }
-
 material-spinner {
     display: inline-block;
     .loader-circular {

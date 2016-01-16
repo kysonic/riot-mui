@@ -38,27 +38,6 @@ this.toggle = function () {
     _this.trigger('toggle', _this.checked);
 };
 });
-riot.tag2('material-dropdown', '<div name="dropdown" class="{dropdown:true,opening:opening}" if="{opened}"> <yield></yield> </div>', '', '', function(opts) {
-var _this = this;
-
-this.opened = opts.opened || false;
-
-this.dropdown.classList.add(opts.animation || 'top');
-
-this.open = function () {
-    _this.update({ opened: true, opening: true });
-    setTimeout(function () {
-        _this.update({ opening: false });
-    }, 0);
-};
-
-this.close = function () {
-    _this.update({ opening: true });
-    setTimeout(function () {
-        _this.update({ opened: false });
-    }, 200);
-};
-});
 riot.tag2('material-combo', '<material-input name="input"></material-input> <material-dropdown-list selected="{opts.selected}" name="dropdown"></material-dropdown-list> <input type="hidden" value="{value}" name="{opts.name || \'combo\'}"> <div name="options" hidden if="{!isParsed}"> <yield></yield> </div>', '', '', function(opts) {
 var _this = this;
 
@@ -129,6 +108,27 @@ this.tags.input.on('focusChanged', function (focus) {
 });
 
 this.mixin('collection');
+});
+riot.tag2('material-dropdown', '<div name="dropdown" class="{dropdown:true,opening:opening}" if="{opened}"> <yield></yield> </div>', '', '', function(opts) {
+var _this = this;
+
+this.opened = opts.opened || false;
+
+this.dropdown.classList.add(opts.animation || 'top');
+
+this.open = function () {
+    _this.update({ opened: true, opening: true });
+    setTimeout(function () {
+        _this.update({ opening: false });
+    }, 0);
+};
+
+this.close = function () {
+    _this.update({ opening: true });
+    setTimeout(function () {
+        _this.update({ opened: false });
+    }, 200);
+};
 });
 riot.tag2('material-dropdown-list', '<ul class="{dropdown-content:true,opening:opening}" if="{opened}"> <li each="{item,key in items}" class="{selected:parent.selected==key}"> <span if="{!item.link}" onclick="{parent.select}">{item.title}</span> <a if="{item.link}" href="{item.link}" onclick="{parent.select}" title="{item.title}">{item.title}</a> </li> </ul> <div name="overlay" if="{opts.extraclose && opened}" onclick="{close}" class="material-dropdown-list-overlay"></div>', '', '', function(opts) {
 var _this = this;
@@ -219,9 +219,6 @@ this.mixin('validate');
 });
 riot.tag2('material-navbar', '<div class="nav-wrapper"> <yield></yield> </div>', '', 'role="toolbar"', function(opts) {
 });
-riot.tag2('material-pane', '<material-navbar style="height:{opts.materialNavbarHeight || \'60px\'};line-height: {opts.materialNavbarHeight || \'60px\'};background-color:{opts.materialNavbarColor || \'#ccc\'}"> <content select=".material-pane-left-bar"></content> <content select=".material-pane-title"></content> <content select=".material-pane-right-bar"></content> </material-navbar> <div class="content"> <content select=".material-pane-content"></content> <yield></yield> </div>', '', '', function(opts) {
-this.mixin('content');
-});
 riot.tag2('material-popup', '<div name="popup" class="{popup:true,opening:opening}" if="{opened}"> <div class="content"> <content select=".material-popup-title"></content> <div class="close" onclick="{close}"> <i class="material-icons">close</i> </div> <yield></yield> </div> </div> <div class="overlay" onclick="{close}" if="{opened}"></div>', '', '', function(opts) {
 var _this = this;
 
@@ -246,6 +243,9 @@ this.close = function () {
         _this.update({ opened: false });
     }, 200);
 };
+this.mixin('content');
+});
+riot.tag2('material-pane', '<material-navbar style="height:{opts.materialNavbarHeight || \'60px\'};line-height: {opts.materialNavbarHeight || \'60px\'};background-color:{opts.materialNavbarColor || \'#ccc\'}"> <content select=".material-pane-left-bar"></content> <content select=".material-pane-title"></content> <content select=".material-pane-right-bar"></content> </material-navbar> <div class="content"> <content select=".material-pane-content"></content> <yield></yield> </div>', '', '', function(opts) {
 this.mixin('content');
 });
 riot.tag2('material-snackbar', '<div class="{toast:true,error:toast.isError,opening:toast.opening}" onclick="{parent.removeToastByClick}" each="{toast,key in toasts}"> {toast.message} </div>', '', '', function(opts) {
@@ -300,7 +300,7 @@ this.removeToast = function (toastID) {
     }
 };
 });
-riot.tag2('material-spinner', '<rp-loader> <svg class="loader-circular" height="50" width="50"> <circle class="loader-path" cx="25" cy="25.2" r="19.9" fill="none" stroke-width="{opts.strokewidth||3}" stroke-miterlimit="10"></circle> </svg> </rp-loader>', '', '', function(opts) {
+riot.tag2('material-spinner', '<svg class="loader-circular" height="50" width="50"> <circle class="loader-path" cx="25" cy="25.2" r="19.9" fill="none" stroke-width="{opts.strokewidth||3}" stroke-miterlimit="10"></circle> </svg>', '', '', function(opts) {
 });
 riot.tag2('material-tabs', '<material-button each="{tab,k in tabs}" onclick="{parent.onChangeTab}" class="{selected:parent.selected==k}" waves-opacity="{parent.opts.wavesOpacity}" waves-duration="{parent.opts.wavesDuration}" waves-center="{parent.opts.wavesCenter}" waves-color="{parent.opts.wavesColor}"> <div class="text" title="{tab.title}">{parent.opts.cut ? parent.cut(tab.title) : tab.title}</div> </material-button> <div class="line-wrapper" if="{opts.useline}"> <div class="line" name="line"></div> </div> <yield></yield>', '', '', function(opts) {
 var _this = this;
@@ -358,7 +358,7 @@ this.disabled = opts.disabled || false;
 
 this.on('mount', function () {
     if (opts.maxRows) _this.mirror.style.maxHeight = opts.maxRows * _this["textarea"].getBoundingClientRect().height + 'px';
-    _this.input.name = opts.name || 'textarea';
+    _this.textarea.name = opts.name || 'textarea';
 });
 
 this.changeFocus = function (e) {
