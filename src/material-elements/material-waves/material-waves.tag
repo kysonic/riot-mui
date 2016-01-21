@@ -53,7 +53,7 @@
             /**
              * Fade out wave ripple. Just disappear...
              */
-            waveOut() {
+            waveOut(cb) {
                 var delta = Date.now() - this.created;
                 var deltaX = Math.round(this.duration / 2) - delta;
                 var delay = deltaX > 0 ? deltaX : 0;
@@ -62,6 +62,7 @@
                     setTimeout(()=>{
                         if(this.wave.parentNode===this.container) {
                             this.container.removeChild(this.wave);
+                            cb();
                         }
                     },this.duration);
                 },delay);
@@ -102,7 +103,9 @@
         this._events = [];
         // Launch the ripple
         this.on('launch',(e)=>{
-            this._waves.push(new Wave(this.waves,opts,e));
+            var wave = new Wave(this.waves,opts,e);
+            this._waves.push(wave);
+            this.trigger('wavestart',wave);
             if(!this._events.length) {
                 this._events.push(e.target.addEventListener('mouseup',()=>this.trigger('hold')));
                 this._events.push(e.target.addEventListener('mouseleave',()=>this.trigger('hold')));
@@ -111,8 +114,14 @@
         // Hold the ripple. After it will be removed.
         this.on('hold',()=>{
             // The last of waves
-            if(this._waves[this._waves.length-1]) this._waves[this._waves.length-1].waveOut();
+            if(this._waves[this._waves.length-1]) this._waves[this._waves.length-1].waveOut(this.waveOut);
             if(this._waves[this._waves.length-1]) this._waves.slice(this._waves.length-1,1);
         });
+        /**
+         * When a wave has been done its work.
+         */
+        this.waveOut = ()=>{
+            this.trigger('waveend');
+        }
     </script>
 </material-waves>

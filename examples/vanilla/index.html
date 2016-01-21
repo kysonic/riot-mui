@@ -43,7 +43,7 @@
                 </material-input>
             </div>
             <div class="item">
-                <material-button>
+                <material-button name="button">
                     <div class="text">BUTTON</div>
                 </material-button>
             </div>
@@ -143,6 +143,13 @@
         var mounted = null;
         window.addEventListener('load',function(){
             mounted = riot.mount('*');
+            var button = findTag(mounted,'button');
+            button.on('wavestart',function(waveInstance){
+                console.log('Wave has started',waveInstance);
+            });
+            button.on('waveend',function(){
+                console.log('Wave has eneded');
+            });
         });
         function openDropdown(){
             var dropdown = findTag(mounted,'dropdown');

@@ -9,6 +9,14 @@ this.launch = function (e) {
     if (!_this.disabled) _this.tags['material-waves'].trigger('launch', e);
 };
 
+this.tags['material-waves'].on('wavestart', function (wave) {
+    _this.trigger('wavestart', wave);
+});
+
+this.tags['material-waves'].on('waveend', function () {
+    _this.trigger('waveend');
+});
+
 this.click = function () {
     if (opts.link) window.location.href = opts.link;
     _this.trigger('click');
@@ -219,6 +227,9 @@ this.mixin('validate');
 });
 riot.tag2('material-navbar', '<div class="nav-wrapper"> <yield></yield> </div>', '', 'role="toolbar"', function(opts) {
 });
+riot.tag2('material-pane', '<material-navbar style="height:{opts.materialNavbarHeight || \'60px\'};line-height: {opts.materialNavbarHeight || \'60px\'};background-color:{opts.materialNavbarColor || \'#ccc\'}"> <content select=".material-pane-left-bar"></content> <content select=".material-pane-title"></content> <content select=".material-pane-right-bar"></content> </material-navbar> <div class="content"> <content select=".material-pane-content"></content> <yield></yield> </div>', '', '', function(opts) {
+this.mixin('content');
+});
 riot.tag2('material-popup', '<div name="popup" class="{popup:true,opening:opening}" if="{opened}"> <div class="content"> <content select=".material-popup-title"></content> <div class="close" onclick="{close}"> <i class="material-icons">close</i> </div> <yield></yield> </div> </div> <div class="overlay" onclick="{close}" if="{opened}"></div>', '', '', function(opts) {
 var _this = this;
 
@@ -243,9 +254,6 @@ this.close = function () {
         _this.update({ opened: false });
     }, 200);
 };
-this.mixin('content');
-});
-riot.tag2('material-pane', '<material-navbar style="height:{opts.materialNavbarHeight || \'60px\'};line-height: {opts.materialNavbarHeight || \'60px\'};background-color:{opts.materialNavbarColor || \'#ccc\'}"> <content select=".material-pane-left-bar"></content> <content select=".material-pane-title"></content> <content select=".material-pane-right-bar"></content> </material-navbar> <div class="content"> <content select=".material-pane-content"></content> <yield></yield> </div>', '', '', function(opts) {
 this.mixin('content');
 });
 riot.tag2('material-snackbar', '<div class="{toast:true,error:toast.isError,opening:toast.opening}" onclick="{parent.removeToastByClick}" each="{toast,key in toasts}"> {toast.message} </div>', '', '', function(opts) {
@@ -461,7 +469,7 @@ var Wave = (function (_Bound) {
         }
     }, {
         key: 'waveOut',
-        value: function waveOut() {
+        value: function waveOut(cb) {
             var _this2 = this;
 
             var delta = Date.now() - this.created;
@@ -472,6 +480,7 @@ var Wave = (function (_Bound) {
                 setTimeout(function () {
                     if (_this2.wave.parentNode === _this2.container) {
                         _this2.container.removeChild(_this2.wave);
+                        cb();
                     }
                 }, _this2.duration);
             }, delay);
@@ -509,7 +518,9 @@ this._waves = [];
 this._events = [];
 
 this.on('launch', function (e) {
-    _this3._waves.push(new Wave(_this3.waves, opts, e));
+    var wave = new Wave(_this3.waves, opts, e);
+    _this3._waves.push(wave);
+    _this3.trigger('wavestart', wave);
     if (!_this3._events.length) {
         _this3._events.push(e.target.addEventListener('mouseup', function () {
             return _this3.trigger('hold');
@@ -521,7 +532,11 @@ this.on('launch', function (e) {
 });
 
 this.on('hold', function () {
-    if (_this3._waves[_this3._waves.length - 1]) _this3._waves[_this3._waves.length - 1].waveOut();
+    if (_this3._waves[_this3._waves.length - 1]) _this3._waves[_this3._waves.length - 1].waveOut(_this3.waveOut);
     if (_this3._waves[_this3._waves.length - 1]) _this3._waves.slice(_this3._waves.length - 1, 1);
 });
+
+this.waveOut = function () {
+    _this3.trigger('waveend');
+};
 });
