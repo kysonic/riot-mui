@@ -106,6 +106,9 @@
             var wave = new Wave(this.waves,opts,e);
             this._waves.push(wave);
             this.trigger('wavestart',wave);
+            if(this.parent&&this.parent.opts&&this.parent.opts.wavestart){
+                this.parent.opts.wavestart(wave);
+            }
             if(!this._events.length) {
                 this._events.push(e.target.addEventListener('mouseup',()=>this.trigger('hold')));
                 this._events.push(e.target.addEventListener('mouseleave',()=>this.trigger('hold')));
@@ -122,6 +125,10 @@
          */
         this.waveOut = ()=>{
             this.trigger('waveend');
+
+            if(this.parent&&this.parent.opts&&this.parent.opts.waveend){
+                this.parent.opts.waveend();
+            }
         }
     </script>
 </material-waves>

@@ -9,29 +9,12 @@ this.launch = function (e) {
     if (!_this.disabled) _this.tags['material-waves'].trigger('launch', e);
 };
 
-this.tags['material-waves'].on('wavestart', function (wave) {
-    _this.trigger('wavestart', wave);
-});
-
-this.tags['material-waves'].on('waveend', function () {
-    _this.trigger('waveend');
-});
-
 this.click = function () {
     if (opts.link) window.location.href = opts.link;
     _this.trigger('click');
 };
 
 this.mixin('dynamicAttributes');
-});
-riot.tag2('material-card', '<div class="title" if="{titleExist}"> <content select=".material-card-title"></content> </div> <yield></yield>', '', '', function(opts) {
-var _this = this;
-
-this.titleExist = false;
-this.on('mount', function () {
-    _this.update({ titleExist: !!_this.root.querySelector('.material-card-title') });
-});
-this.mixin('content');
 });
 riot.tag2('material-checkbox', '<div class="{checkbox:true,checked:checked}" onclick="{toggle}"> <div class="checkmark"></div> </div> <div class="label" onclick="{toggle}"><yield></yield></div> <input type="hidden" name="{opts.name}" value="{checked}">', '', '', function(opts) {
 var _this = this;
@@ -45,6 +28,15 @@ this.toggle = function () {
     _this.update({ checked: !_this.checked });
     _this.trigger('toggle', _this.checked);
 };
+});
+riot.tag2('material-card', '<div class="title" if="{titleExist}"> <content select=".material-card-title"></content> </div> <yield></yield>', '', '', function(opts) {
+var _this = this;
+
+this.titleExist = false;
+this.on('mount', function () {
+    _this.update({ titleExist: !!_this.root.querySelector('.material-card-title') });
+});
+this.mixin('content');
 });
 riot.tag2('material-combo', '<material-input name="input"></material-input> <material-dropdown-list selected="{opts.selected}" name="dropdown"></material-dropdown-list> <input type="hidden" value="{value}" name="{opts.name || \'combo\'}"> <div name="options" hidden if="{!isParsed}"> <yield></yield> </div>', '', '', function(opts) {
 var _this = this;
@@ -521,6 +513,9 @@ this.on('launch', function (e) {
     var wave = new Wave(_this3.waves, opts, e);
     _this3._waves.push(wave);
     _this3.trigger('wavestart', wave);
+    if (_this3.parent && _this3.parent.opts && _this3.parent.opts.wavestart) {
+        _this3.parent.opts.wavestart(wave);
+    }
     if (!_this3._events.length) {
         _this3._events.push(e.target.addEventListener('mouseup', function () {
             return _this3.trigger('hold');
@@ -538,5 +533,9 @@ this.on('hold', function () {
 
 this.waveOut = function () {
     _this3.trigger('waveend');
+
+    if (_this3.parent && _this3.parent.opts && _this3.parent.opts.waveend) {
+        _this3.parent.opts.waveend();
+    }
 };
 });
