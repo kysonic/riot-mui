@@ -202,13 +202,16 @@ this.changeFocus = function (e) {
     if (_this.disabled) return false;
     _this.update({ focused: _this['input'] == document.activeElement });
     _this.trigger('focusChanged', _this.focused, e);
+    if (opts.focuschanged && typeof opts.focuschanged === "function") {
+        opts.focuschanged(_this.focused);
+    }
 };
 
 this.changeValue = function (e) {
     _this.update({ value: _this['input'].value });
     _this.trigger('valueChanged', _this['input'].value, e);
-    if (opts.valueChanged && typeof opts.valueChanged === "function") {
-        opts.valueChanged(_this['input'].value);
+    if (opts.valuechanged && typeof opts.valuechanged === "function") {
+        opts.valuechanged(_this['input'].value);
     }
 };
 
@@ -348,8 +351,8 @@ this.changeTab = function (index) {
     _this.setLinePosition();
 
     _this.trigger('tabChanged', _this.tabs[index], index);
-    if (opts.tabChanged && typeof opts.tabChanged === "function") {
-        opts.tabChanged(_this.tabs[index], index);
+    if (opts.tabchanged && typeof opts.tabchanged === "function") {
+        opts.tabchanged(_this.tabs[index], index);
     }
 };
 
