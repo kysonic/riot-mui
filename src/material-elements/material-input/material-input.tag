@@ -39,6 +39,9 @@
             if(this.disabled) return false;
             this.update({focused:this['input']==document.activeElement});
             this.trigger('focusChanged',this.focused,e);
+            if(opts.focuschanged&&(typeof(opts.focuschanged)==="function")){
+                opts.focuschanged(this.focused);
+            }
         }
         /**
          * Change input value should change tag behavior.
@@ -47,6 +50,9 @@
         this.changeValue = (e)=>{
             this.update({value:this['input'].value});
             this.trigger('valueChanged',this['input'].value,e);
+            if(opts.valuechanged&&(typeof(opts.valuechanged)==="function")){
+                opts.valuechanged(this['input'].value);
+            }
         }
         // Add event listeners to input. It is wat which will help us
         // to provide focus\blur on material-input

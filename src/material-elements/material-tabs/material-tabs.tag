@@ -51,6 +51,9 @@
             this.setLinePosition();
             // Fire
             this.trigger('tabChanged',this.tabs[index],index);
+            if(opts.tabchanged&&(typeof(opts.tabchanged)==="function")){
+                opts.tabchanged(this.tabs[index],index);
+            }
         }
         /**
          * Set line left style.

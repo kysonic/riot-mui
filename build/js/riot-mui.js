@@ -33,19 +33,6 @@ this.on('mount', function () {
 });
 this.mixin('content');
 });
-riot.tag2('material-checkbox', '<div class="{checkbox:true,checked:checked}" onclick="{toggle}"> <div class="checkmark"></div> </div> <div class="label" onclick="{toggle}"><yield></yield></div> <input type="hidden" name="{opts.name}" value="{checked}">', '', '', function(opts) {
-var _this = this;
-
-this.checked = opts.checked || false;
-
-this.disabled = opts.disabled || false;
-
-this.toggle = function () {
-    if (_this.disabled) return false;
-    _this.update({ checked: !_this.checked });
-    _this.trigger('toggle', _this.checked);
-};
-});
 riot.tag2('material-combo', '<material-input name="input"></material-input> <material-dropdown-list selected="{opts.selected}" name="dropdown"></material-dropdown-list> <input type="hidden" value="{value}" name="{opts.name || \'combo\'}"> <div name="options" hidden if="{!isParsed}"> <yield></yield> </div>', '', '', function(opts) {
 var _this = this;
 
@@ -117,6 +104,19 @@ this.tags.input.on('focusChanged', function (focus) {
 
 this.mixin('collection');
 });
+riot.tag2('material-checkbox', '<div class="{checkbox:true,checked:checked}" onclick="{toggle}"> <div class="checkmark"></div> </div> <div class="label" onclick="{toggle}"><yield></yield></div> <input type="hidden" name="{opts.name}" value="{checked}">', '', '', function(opts) {
+var _this = this;
+
+this.checked = opts.checked || false;
+
+this.disabled = opts.disabled || false;
+
+this.toggle = function () {
+    if (_this.disabled) return false;
+    _this.update({ checked: !_this.checked });
+    _this.trigger('toggle', _this.checked);
+};
+});
 riot.tag2('material-dropdown', '<div name="dropdown" class="{dropdown:true,opening:opening}" if="{opened}"> <yield></yield> </div>', '', '', function(opts) {
 var _this = this;
 
@@ -137,52 +137,6 @@ this.close = function () {
         _this.update({ opened: false });
     }, 200);
 };
-});
-riot.tag2('material-input', '<div class="label-placeholder"></div> <div class="{input-content:true,not-empty:value,error:error}"> <label for="input" name="label" if="{opts.label}">{opts.label}</label> <input type="{opts.type || \'text\'}" disabled="{disabled}" placeholder="{opts.placeholder}" onkeyup="{changeValue}" value="{value}" autocomplete="off" name="input"> <div class="iconWrapper" name="iconWrapper" if="{opts.icon}"> <material-button name="iconButton" center="true" waves-center="true" waves-color="{opts[\'waves-color\']||\'#fff\'}" rounded="true" waves-opacity="{opts[\'waves-opacity\']||\'0.6\'}" waves-duration="{opts[\'waves-duration\']||\'600\'}"> <yield></yield> </material-button> </div> </div> <div class="{underline:true,focused:focused,error:error}"> <div class="unfocused-line"></div> <div class="focused-line"></div> </div>', '', '', function(opts) {
-var _this = this;
-
-this.update({ value: opts.value || '' });
-
-this.opts = opts;
-
-this.disabled = opts.disabled || false;
-this.name = opts.name || 'input';
-
-this.notSupportedTypes = ['date', 'color', 'datetime', 'month', 'range', 'time'];
-if (this.notSupportedTypes.indexOf(opts.type) != -1) throw new Error('Sorry but we not support ' + date + ' type yet!');
-
-this.update({ showIcon: false });
-
-this.on('mount', function () {
-    _this.input.name = _this.name || 'textarea';
-});
-
-this.changeFocus = function (e) {
-    if (_this.disabled) return false;
-    _this.update({ focused: _this['input'] == document.activeElement });
-    _this.trigger('focusChanged', _this.focused, e);
-};
-
-this.changeValue = function (e) {
-    _this.update({ value: _this['input'].value });
-    _this.trigger('valueChanged', _this['input'].value, e);
-};
-
-this['input'].addEventListener('focus', this.changeFocus);
-this['input'].addEventListener('blur', this.changeFocus);
-
-this.on('update', function (updated) {
-    if (updated && updated.value != undefined) {
-        if (_this.validationType) {
-            _this.isValid(_this.validate(updated.value));
-        }
-    }
-});
-
-this.isValid = function (isValid) {
-    _this.update({ error: !isValid });
-};
-this.mixin('validate');
 });
 riot.tag2('material-dropdown-list', '<ul class="{dropdown-content:true,opening:opening}" if="{opened}"> <li each="{item,key in items}" class="{selected:parent.selected==key}"> <span if="{!item.link}" onclick="{parent.select}">{item.title}</span> <a if="{item.link}" href="{item.link}" onclick="{parent.select}" title="{item.title}">{item.title}</a> </li> </ul> <div name="overlay" if="{opts.extraclose && opened}" onclick="{close}" class="material-dropdown-list-overlay"></div>', '', '', function(opts) {
 var _this = this;
@@ -225,10 +179,62 @@ this.close = function () {
     }, 200);
 };
 });
-riot.tag2('material-pane', '<material-navbar style="height:{opts.materialNavbarHeight || \'60px\'};line-height: {opts.materialNavbarHeight || \'60px\'};background-color:{opts.materialNavbarColor || \'#ccc\'}"> <content select=".material-pane-left-bar"></content> <content select=".material-pane-title"></content> <content select=".material-pane-right-bar"></content> </material-navbar> <div class="content"> <content select=".material-pane-content"></content> <yield></yield> </div>', '', '', function(opts) {
-this.mixin('content');
+riot.tag2('material-input', '<div class="label-placeholder"></div> <div class="{input-content:true,not-empty:value,error:error}"> <label for="input" name="label" if="{opts.label}">{opts.label}</label> <input type="{opts.type || \'text\'}" disabled="{disabled}" placeholder="{opts.placeholder}" onkeyup="{changeValue}" value="{value}" autocomplete="off" name="input"> <div class="iconWrapper" name="iconWrapper" if="{opts.icon}"> <material-button name="iconButton" center="true" waves-center="true" waves-color="{opts[\'waves-color\']||\'#fff\'}" rounded="true" waves-opacity="{opts[\'waves-opacity\']||\'0.6\'}" waves-duration="{opts[\'waves-duration\']||\'600\'}"> <yield></yield> </material-button> </div> </div> <div class="{underline:true,focused:focused,error:error}"> <div class="unfocused-line"></div> <div class="focused-line"></div> </div>', '', '', function(opts) {
+var _this = this;
+
+this.update({ value: opts.value || '' });
+
+this.opts = opts;
+
+this.disabled = opts.disabled || false;
+this.name = opts.name || 'input';
+
+this.notSupportedTypes = ['date', 'color', 'datetime', 'month', 'range', 'time'];
+if (this.notSupportedTypes.indexOf(opts.type) != -1) throw new Error('Sorry but we not support ' + date + ' type yet!');
+
+this.update({ showIcon: false });
+
+this.on('mount', function () {
+    _this.input.name = _this.name || 'textarea';
+});
+
+this.changeFocus = function (e) {
+    if (_this.disabled) return false;
+    _this.update({ focused: _this['input'] == document.activeElement });
+    _this.trigger('focusChanged', _this.focused, e);
+    if (opts.focuschanged && typeof opts.focuschanged === "function") {
+        opts.focuschanged(_this.focused);
+    }
+};
+
+this.changeValue = function (e) {
+    _this.update({ value: _this['input'].value });
+    _this.trigger('valueChanged', _this['input'].value, e);
+    if (opts.valuechanged && typeof opts.valuechanged === "function") {
+        opts.valuechanged(_this['input'].value);
+    }
+};
+
+this['input'].addEventListener('focus', this.changeFocus);
+this['input'].addEventListener('blur', this.changeFocus);
+
+this.on('update', function (updated) {
+    if (updated && updated.value != undefined) {
+        if (_this.validationType) {
+            _this.isValid(_this.validate(updated.value));
+        }
+    }
+});
+
+this.isValid = function (isValid) {
+    _this.update({ error: !isValid });
+};
+this.mixin('validate');
 });
 riot.tag2('material-navbar', '<div class="nav-wrapper"> <yield></yield> </div>', '', 'role="toolbar"', function(opts) {
+});
+riot.tag2('material-pane', '<material-navbar style="height:{opts.materialNavbarHeight || \'60px\'};line-height: {opts.materialNavbarHeight || \'60px\'};background-color:{opts.materialNavbarColor || \'#ccc\'}"> <content select=".material-pane-left-bar"></content> <content select=".material-pane-title"></content> <content select=".material-pane-right-bar"></content> </material-navbar> <div class="content"> <content select=".material-pane-content"></content> <yield></yield> </div>', '', '', function(opts) {
+this.mixin('content');
 });
 riot.tag2('material-popup', '<div name="popup" class="{popup:true,opening:opening}" if="{opened}"> <div class="content"> <content select=".material-popup-title"></content> <div class="close" onclick="{close}"> <i class="material-icons">close</i> </div> <yield></yield> </div> </div> <div class="overlay" onclick="{close}" if="{opened}"></div>', '', '', function(opts) {
 var _this = this;
@@ -310,6 +316,54 @@ this.removeToast = function (toastID) {
 });
 riot.tag2('material-spinner', '<svg class="loader-circular" height="50" width="50"> <circle class="loader-path" cx="25" cy="25.2" r="19.9" fill="none" stroke-width="{opts.strokewidth||3}" stroke-miterlimit="10"></circle> </svg>', '', '', function(opts) {
 });
+riot.tag2('material-tabs', '<material-button each="{tab,k in tabs}" onclick="{parent.onChangeTab}" class="{selected:parent.selected==k}" waves-opacity="{parent.opts.wavesOpacity}" waves-duration="{parent.opts.wavesDuration}" waves-center="{parent.opts.wavesCenter}" waves-color="{parent.opts.wavesColor}"> <div class="text" title="{tab.title}">{parent.opts.cut ? parent.cut(tab.title) : tab.title}</div> </material-button> <div class="line-wrapper" if="{opts.useline}"> <div class="line" name="line"></div> </div> <yield></yield>', '', '', function(opts) {
+var _this = this;
+
+this.selected = 0;
+this.tabs = [];
+
+if (opts.tabs) {
+    var tabs = [];
+    try {
+        tabs = opts.tabs ? eval(opts.tabs) : [];
+        this.tabs = tabs;
+    } catch (e) {}
+}
+
+this.on('mount', function () {
+    _this.setWidth();
+    _this.setLinePosition();
+});
+
+this.setWidth = function () {
+    [].forEach.call(_this.root.querySelectorAll('material-button'), function (node) {
+        node.style.width = _this.line.style.width = (100 / _this.tabs.length).toFixed(2) + '%';
+    });
+};
+
+this.onChangeTab = function (e) {
+    var selected = _this.tabs.indexOf(e.item.tab);
+    _this.changeTab(selected);
+};
+
+this.changeTab = function (index) {
+    _this.update({ selected: index });
+    _this.setLinePosition();
+
+    _this.trigger('tabChanged', _this.tabs[index], index);
+    if (opts.tabchanged && typeof opts.tabchanged === "function") {
+        opts.tabchanged(_this.tabs[index], index);
+    }
+};
+
+this.setLinePosition = function () {
+    _this.line.style.left = _this.line.getBoundingClientRect().width * _this.selected + 'px';
+};
+
+this.cut = function (title) {
+    return title.length > opts.cut ? title.substr(0, opts.cut) + '...' : title;
+};
+});
 riot.tag2('material-textarea', '<div class="label-placeholder"></div> <div class="{textarea-content:true,not-empty:value,error:error}"> <label for="textarea" name="label" if="{opts.label}">{opts.label}</label> <div class="mirror" name="mirror"></div> <div class="textarea-container"> <textarea disabled="{disabled}" name="textarea" value="{value}"></textarea> </div> </div> <div class="{underline:true,focused:focused,error:error}"> <div class="unfocused-line"></div> <div class="focused-line"></div> </div>', '', '', function(opts) {
 var _this = this;
 
@@ -358,51 +412,6 @@ this.format = function (value) {
     return value.replace(/\n/g, '<br/>&nbsp;');
 };
 this.mixin('validate');
-});
-riot.tag2('material-tabs', '<material-button each="{tab,k in tabs}" onclick="{parent.onChangeTab}" class="{selected:parent.selected==k}" waves-opacity="{parent.opts.wavesOpacity}" waves-duration="{parent.opts.wavesDuration}" waves-center="{parent.opts.wavesCenter}" waves-color="{parent.opts.wavesColor}"> <div class="text" title="{tab.title}">{parent.opts.cut ? parent.cut(tab.title) : tab.title}</div> </material-button> <div class="line-wrapper" if="{opts.useline}"> <div class="line" name="line"></div> </div> <yield></yield>', '', '', function(opts) {
-var _this = this;
-
-this.selected = 0;
-this.tabs = [];
-
-if (opts.tabs) {
-    var tabs = [];
-    try {
-        tabs = opts.tabs ? eval(opts.tabs) : [];
-        this.tabs = tabs;
-    } catch (e) {}
-}
-
-this.on('mount', function () {
-    _this.setWidth();
-    _this.setLinePosition();
-});
-
-this.setWidth = function () {
-    [].forEach.call(_this.root.querySelectorAll('material-button'), function (node) {
-        node.style.width = _this.line.style.width = (100 / _this.tabs.length).toFixed(2) + '%';
-    });
-};
-
-this.onChangeTab = function (e) {
-    var selected = _this.tabs.indexOf(e.item.tab);
-    _this.changeTab(selected);
-};
-
-this.changeTab = function (index) {
-    _this.update({ selected: index });
-    _this.setLinePosition();
-
-    _this.trigger('tabChanged', _this.tabs[index], index);
-};
-
-this.setLinePosition = function () {
-    _this.line.style.left = _this.line.getBoundingClientRect().width * _this.selected + 'px';
-};
-
-this.cut = function (title) {
-    return title.length > opts.cut ? title.substr(0, opts.cut) + '...' : title;
-};
 });
 riot.tag2('material-waves', '<div id="waves" name="waves"></div>', '', '', function(opts) {
 var _this3 = this;
