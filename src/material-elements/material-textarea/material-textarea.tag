@@ -4,17 +4,14 @@
         <label for="textarea" name="label" if="{opts.label}">{opts.label}</label>
         <div class="mirror" name="mirror"></div>
         <div class="textarea-container">
-            <textarea disabled="{disabled}" name="textarea" value="{value}"></textarea>
+            <textarea disabled="{disabled}" name="{opts.name||'default-textarea'}" value="{value}"></textarea>
         </div>
-        <input type="hidden" value="{value}" name="{opts.name||'default'}">
     </div>
     <div class="{underline:true,focused:focused,error:error}">
         <div class="unfocused-line"></div>
         <div class="focused-line"></div>
     </div>
     <script type="es6">
-        // Defaults
-        this["textarea"].scrollTop = this["textarea"].scrollHeight;
         // For Validation Mixin
         this.opts = opts;
         // From options
@@ -22,15 +19,22 @@
         // Ready
         this.on('mount',()=>{
             // Set max height to mirror, if we have max-rows option.
-            if(opts.maxRows) this.mirror.style.maxHeight = opts.maxRows*this["textarea"].getBoundingClientRect().height + 'px';
-            this.textarea.name = opts.name || 'textarea';
+            if(opts.maxRows) this.mirror.style.maxHeight = opts.maxRows*this[this.n].getBoundingClientRect().height + 'px';
+            this.n = opts.name||'default-textarea';
+            // Defaults
+            this[this.n].scrollTop = this[this.n].scrollHeight;
+            // Add event listeners to input. It is wat which will help us
+            // to provide focus\blur on material-input
+            this[this.n].addEventListener('focus',this.changeFocus);
+            this[this.n].addEventListener('blur',this.changeFocus);
+            this[this.n].addEventListener('input',this.inputHandler);
         })
         /**
          * When element focus changed update expressions.
          */
         this.changeFocus = (e)=>{
            if(this.disabled) return false;
-           let focused = this["textarea"]==document.activeElement;
+           let focused = this[this.n]==document.activeElement;
            this.update({focused:focused});
            this.trigger('focusChanged',focused);
         }
@@ -39,16 +43,11 @@
          * @param e
          */
         this.inputHandler = (e)=>{
-            let value = this["textarea"].value;
+            let value = this[this.n].value;
             this.mirror.innerHTML = this.format(value);
             this.update({value:value});
             this.trigger('valueChanged',value);
         }
-        // Add event listeners to input. It is wat which will help us
-        // to provide focus\blur on material-input
-        this["textarea"].addEventListener('focus',this.changeFocus);
-        this["textarea"].addEventListener('blur',this.changeFocus);
-        this["textarea"].addEventListener('input',this.inputHandler);
         // Validation
         this.on('update',(updated)=>{
             if(updated && updated.value!=undefined) {

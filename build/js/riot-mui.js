@@ -179,7 +179,7 @@ this.close = function () {
     }, 200);
 };
 });
-riot.tag2('material-input', '<div class="label-placeholder"></div> <div class="{input-content:true,not-empty:value,error:error}"> <label for="input" name="label" if="{opts.label}">{opts.label}</label> <input type="{opts.type || \'text\'}" disabled="{disabled}" placeholder="{opts.placeholder}" onkeyup="{changeValue}" value="{value}" autocomplete="off" name="input"> <input type="hidden" value="{value}" name="{opts.name||\'default\'}"> <div class="iconWrapper" name="iconWrapper" if="{opts.icon}"> <material-button name="iconButton" center="true" waves-center="true" waves-color="{opts[\'waves-color\']||\'#fff\'}" rounded="true" waves-opacity="{opts[\'waves-opacity\']||\'0.6\'}" waves-duration="{opts[\'waves-duration\']||\'600\'}"> <yield></yield> </material-button> </div> </div> <div class="{underline:true,focused:focused,error:error}"> <div class="unfocused-line"></div> <div class="focused-line"></div> </div>', '', '', function(opts) {
+riot.tag2('material-input', '<div class="label-placeholder"></div> <div class="{input-content:true,not-empty:value,error:error}"> <label for="input" name="label" if="{opts.label}">{opts.label}</label> <input type="{opts.type||\'text\'}" disabled="{disabled}" placeholder="{opts.placeholder}" onkeyup="{changeValue}" value="{value}" autocomplete="off" name="{opts.name||\'default-input\'}"> <div class="iconWrapper" name="iconWrapper" if="{opts.icon}"> <material-button name="iconButton" center="true" waves-center="true" waves-color="{opts[\'waves-color\']||\'#fff\'}" rounded="true" waves-opacity="{opts[\'waves-opacity\']||\'0.6\'}" waves-duration="{opts[\'waves-duration\']||\'600\'}"> <yield></yield> </material-button> </div> </div> <div class="{underline:true,focused:focused,error:error}"> <div class="unfocused-line"></div> <div class="focused-line"></div> </div>', '', '', function(opts) {
 var _this = this;
 
 this.update({ value: opts.value || '' });
@@ -195,12 +195,14 @@ if (this.notSupportedTypes.indexOf(opts.type) != -1) throw new Error('Sorry but 
 this.update({ showIcon: false });
 
 this.on('mount', function () {
-    _this.input.name = _this.name || 'textarea';
+    _this.n = opts.name || 'default-input';
+    _this[_this.n].addEventListener('focus', _this.changeFocus);
+    _this[_this.n].addEventListener('blur', _this.changeFocus);
 });
 
 this.changeFocus = function (e) {
     if (_this.disabled) return false;
-    _this.update({ focused: _this['input'] == document.activeElement });
+    _this.update({ focused: _this[_this.n] == document.activeElement });
     _this.trigger('focusChanged', _this.focused, e);
     if (opts.focuschanged && typeof opts.focuschanged === "function") {
         opts.focuschanged(_this.focused);
@@ -208,15 +210,12 @@ this.changeFocus = function (e) {
 };
 
 this.changeValue = function (e) {
-    _this.update({ value: _this['input'].value });
-    _this.trigger('valueChanged', _this['input'].value, e);
+    _this.update({ value: _this[_this.n].value });
+    _this.trigger('valueChanged', _this[_this.n].value, e);
     if (opts.valuechanged && typeof opts.valuechanged === "function") {
-        opts.valuechanged(_this['input'].value);
+        opts.valuechanged(_this[_this.n].value);
     }
 };
-
-this['input'].addEventListener('focus', this.changeFocus);
-this['input'].addEventListener('blur', this.changeFocus);
 
 this.on('update', function (updated) {
     if (updated && updated.value != undefined) {
@@ -314,8 +313,6 @@ this.removeToast = function (toastID) {
     }
 };
 });
-riot.tag2('material-spinner', '<svg class="loader-circular" height="50" width="50"> <circle class="loader-path" cx="25" cy="25.2" r="19.9" fill="none" stroke-width="{opts.strokewidth||3}" stroke-miterlimit="10"></circle> </svg>', '', '', function(opts) {
-});
 riot.tag2('material-tabs', '<material-button each="{tab,k in tabs}" onclick="{parent.onChangeTab}" class="{selected:parent.selected==k}" waves-opacity="{parent.opts.wavesOpacity}" waves-duration="{parent.opts.wavesDuration}" waves-center="{parent.opts.wavesCenter}" waves-color="{parent.opts.wavesColor}"> <div class="text" title="{tab.title}">{parent.opts.cut ? parent.cut(tab.title) : tab.title}</div> </material-button> <div class="line-wrapper" if="{opts.useline}"> <div class="line" name="line"></div> </div> <yield></yield>', '', '', function(opts) {
 var _this = this;
 
@@ -364,37 +361,39 @@ this.cut = function (title) {
     return title.length > opts.cut ? title.substr(0, opts.cut) + '...' : title;
 };
 });
-riot.tag2('material-textarea', '<div class="label-placeholder"></div> <div class="{textarea-content:true,not-empty:value,error:error}"> <label for="textarea" name="label" if="{opts.label}">{opts.label}</label> <div class="mirror" name="mirror"></div> <div class="textarea-container"> <textarea disabled="{disabled}" name="textarea" value="{value}"></textarea> </div> <input type="hidden" value="{value}" name="{opts.name||\'default\'}"> </div> <div class="{underline:true,focused:focused,error:error}"> <div class="unfocused-line"></div> <div class="focused-line"></div> </div>', '', '', function(opts) {
+riot.tag2('material-spinner', '<svg class="loader-circular" height="50" width="50"> <circle class="loader-path" cx="25" cy="25.2" r="19.9" fill="none" stroke-width="{opts.strokewidth||3}" stroke-miterlimit="10"></circle> </svg>', '', '', function(opts) {
+});
+riot.tag2('material-textarea', '<div class="label-placeholder"></div> <div class="{textarea-content:true,not-empty:value,error:error}"> <label for="textarea" name="label" if="{opts.label}">{opts.label}</label> <div class="mirror" name="mirror"></div> <div class="textarea-container"> <textarea disabled="{disabled}" name="{opts.name||\'default-textarea\'}" value="{value}"></textarea> </div> </div> <div class="{underline:true,focused:focused,error:error}"> <div class="unfocused-line"></div> <div class="focused-line"></div> </div>', '', '', function(opts) {
 var _this = this;
-
-this["textarea"].scrollTop = this["textarea"].scrollHeight;
 
 this.opts = opts;
 
 this.disabled = opts.disabled || false;
 
 this.on('mount', function () {
-    if (opts.maxRows) _this.mirror.style.maxHeight = opts.maxRows * _this["textarea"].getBoundingClientRect().height + 'px';
-    _this.textarea.name = opts.name || 'textarea';
+    if (opts.maxRows) _this.mirror.style.maxHeight = opts.maxRows * _this[_this.n].getBoundingClientRect().height + 'px';
+    _this.n = opts.name || 'default-textarea';
+
+    _this[_this.n].scrollTop = _this[_this.n].scrollHeight;
+
+    _this[_this.n].addEventListener('focus', _this.changeFocus);
+    _this[_this.n].addEventListener('blur', _this.changeFocus);
+    _this[_this.n].addEventListener('input', _this.inputHandler);
 });
 
 this.changeFocus = function (e) {
     if (_this.disabled) return false;
-    var focused = _this["textarea"] == document.activeElement;
+    var focused = _this[_this.n] == document.activeElement;
     _this.update({ focused: focused });
     _this.trigger('focusChanged', focused);
 };
 
 this.inputHandler = function (e) {
-    var value = _this["textarea"].value;
+    var value = _this[_this.n].value;
     _this.mirror.innerHTML = _this.format(value);
     _this.update({ value: value });
     _this.trigger('valueChanged', value);
 };
-
-this["textarea"].addEventListener('focus', this.changeFocus);
-this["textarea"].addEventListener('blur', this.changeFocus);
-this["textarea"].addEventListener('input', this.inputHandler);
 
 this.on('update', function (updated) {
     if (updated && updated.value != undefined) {
