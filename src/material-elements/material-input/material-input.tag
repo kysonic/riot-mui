@@ -3,6 +3,7 @@
     <div class="{input-content:true,not-empty:value,error:error}">
         <label for="input" name="label" if="{opts.label}">{opts.label}</label>
         <input type="{opts.type || 'text'}" disabled="{disabled}" placeholder="{opts.placeholder}" onkeyup="{changeValue}" value="{value}" autocomplete="off" name="input"/>
+        <input type="hidden" value="{value}"  name="{opts.name||'default'}">
         <div class="iconWrapper" name="iconWrapper" if="{opts.icon}" >
             <material-button name="iconButton" center="true" waves-center="true" waves-color="{opts['waves-color']||'#fff'}"
                              rounded="true" waves-opacity="{opts['waves-opacity']||'0.6'}" waves-duration="{opts['waves-duration']||'600'}">
@@ -54,8 +55,7 @@
                 opts.valuechanged(this['input'].value);
             }
         }
-        // Add event listeners to input. It is wat which will help us
-        // to provide focus\blur on material-input
+        // Add event listeners to input.
         this['input'].addEventListener('focus',this.changeFocus);
         this['input'].addEventListener('blur',this.changeFocus);
         // Validation

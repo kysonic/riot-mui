@@ -6,6 +6,7 @@
         <div class="textarea-container">
             <textarea disabled="{disabled}" name="textarea" value="{value}"></textarea>
         </div>
+        <input type="hidden" value="{value}" name="{opts.name||'default'}">
     </div>
     <div class="{underline:true,focused:focused,error:error}">
         <div class="unfocused-line"></div>
