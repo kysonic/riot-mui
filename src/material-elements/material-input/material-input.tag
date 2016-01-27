@@ -47,6 +47,9 @@
         this.changeValue = (e)=>{
             this.update({value:this['input'].value});
             this.trigger('valueChanged',this['input'].value,e);
+            if(opts.valueChanged&&(typeof(opts.valueChanged)==="function")){
+                opts.valueChanged(this['input'].value);
+            }
         }
         // Add event listeners to input. It is wat which will help us
         // to provide focus\blur on material-input
