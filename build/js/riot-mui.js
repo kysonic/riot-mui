@@ -1,3 +1,12 @@
+riot.tag2('material-card', '<div class="title" if="{titleExist}"> <content select=".material-card-title"></content> </div> <yield></yield>', '', '', function(opts) {
+var _this = this;
+
+this.titleExist = false;
+this.on('mount', function () {
+    _this.update({ titleExist: !!_this.root.querySelector('.material-card-title') });
+});
+this.mixin('content');
+});
 riot.tag2('material-button', '<material-waves onclick="{click}" onmousedown="{launch}" center="{opts.wavesCenter}" rounded="{opts.rounded}" opacity="{opts.wavesOpacity}" color="{opts.wavesColor}" duration="{opts[\'waves-duration\']}"></material-waves> <div class="content"><yield></yield></div>', '', '', function(opts) {
 var _this = this;
 
@@ -24,14 +33,18 @@ this.click = function () {
 
 this.mixin('dynamicAttributes');
 });
-riot.tag2('material-card', '<div class="title" if="{titleExist}"> <content select=".material-card-title"></content> </div> <yield></yield>', '', '', function(opts) {
+riot.tag2('material-checkbox', '<div class="{checkbox:true,checked:checked}" onclick="{toggle}"> <div class="checkmark"></div> </div> <div class="label" onclick="{toggle}"><yield></yield></div> <input type="hidden" name="{opts.name}" value="{checked}">', '', '', function(opts) {
 var _this = this;
 
-this.titleExist = false;
-this.on('mount', function () {
-    _this.update({ titleExist: !!_this.root.querySelector('.material-card-title') });
-});
-this.mixin('content');
+this.checked = opts.checked || false;
+
+this.disabled = opts.disabled || false;
+
+this.toggle = function () {
+    if (_this.disabled) return false;
+    _this.update({ checked: !_this.checked });
+    _this.trigger('toggle', _this.checked);
+};
 });
 riot.tag2('material-combo', '<material-input name="input"></material-input> <material-dropdown-list selected="{opts.selected}" name="dropdown"></material-dropdown-list> <input type="hidden" value="{value}" name="{opts.name || \'combo\'}"> <div name="options" hidden if="{!isParsed}"> <yield></yield> </div>', '', '', function(opts) {
 var _this = this;
@@ -104,19 +117,6 @@ this.tags.input.on('focusChanged', function (focus) {
 
 this.mixin('collection');
 });
-riot.tag2('material-checkbox', '<div class="{checkbox:true,checked:checked}" onclick="{toggle}"> <div class="checkmark"></div> </div> <div class="label" onclick="{toggle}"><yield></yield></div> <input type="hidden" name="{opts.name}" value="{checked}">', '', '', function(opts) {
-var _this = this;
-
-this.checked = opts.checked || false;
-
-this.disabled = opts.disabled || false;
-
-this.toggle = function () {
-    if (_this.disabled) return false;
-    _this.update({ checked: !_this.checked });
-    _this.trigger('toggle', _this.checked);
-};
-});
 riot.tag2('material-dropdown', '<div name="dropdown" class="{dropdown:true,opening:opening}" if="{opened}"> <yield></yield> </div>', '', '', function(opts) {
 var _this = this;
 
@@ -182,8 +182,6 @@ this.close = function () {
 riot.tag2('material-input', '<div class="label-placeholder"></div> <div class="{input-content:true,not-empty:value,error:error}"> <label for="input" name="label" if="{opts.label}">{opts.label}</label> <input type="{opts.type || \'text\'}" disabled="{disabled}" placeholder="{opts.placeholder}" onkeyup="{changeValue}" value="{value}" autocomplete="off" name="input"> <div class="iconWrapper" name="iconWrapper" if="{opts.icon}"> <material-button name="iconButton" center="true" waves-center="true" waves-color="{opts[\'waves-color\']||\'#fff\'}" rounded="true" waves-opacity="{opts[\'waves-opacity\']||\'0.6\'}" waves-duration="{opts[\'waves-duration\']||\'600\'}"> <yield></yield> </material-button> </div> </div> <div class="{underline:true,focused:focused,error:error}"> <div class="unfocused-line"></div> <div class="focused-line"></div> </div>', '', '', function(opts) {
 var _this = this;
 
-this.update({ value: opts.value || '' });
-
 this.opts = opts;
 
 this.disabled = opts.disabled || false;
@@ -195,6 +193,7 @@ if (this.notSupportedTypes.indexOf(opts.type) != -1) throw new Error('Sorry but 
 this.update({ showIcon: false });
 
 this.on('mount', function () {
+    _this.update({ value: opts.value || '' });
     _this.input.name = _this.name || 'textarea';
 });
 

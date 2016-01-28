@@ -16,8 +16,7 @@
     </div>
 
     <script type="es6">
-        // Attributes
-        this.update({value:opts.value || ''});
+        
         // For Validation Mixin
         this.opts = opts;
         // From options
@@ -30,6 +29,8 @@
         this.update({showIcon:false});
         // Ready
         this.on('mount',()=>{
+            // Attributes
+            this.update({value:opts.value || ''});
             this.input.name = this.name || 'textarea';
         });
         /**
