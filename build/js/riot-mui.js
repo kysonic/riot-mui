@@ -1,12 +1,3 @@
-riot.tag2('material-card', '<div class="title" if="{titleExist}"> <content select=".material-card-title"></content> </div> <yield></yield>', '', '', function(opts) {
-var _this = this;
-
-this.titleExist = false;
-this.on('mount', function () {
-    _this.update({ titleExist: !!_this.root.querySelector('.material-card-title') });
-});
-this.mixin('content');
-});
 riot.tag2('material-button', '<material-waves onclick="{click}" onmousedown="{launch}" center="{opts.wavesCenter}" rounded="{opts.rounded}" opacity="{opts.wavesOpacity}" color="{opts.wavesColor}" duration="{opts[\'waves-duration\']}"></material-waves> <div class="content"><yield></yield></div>', '', '', function(opts) {
 var _this = this;
 
@@ -33,18 +24,14 @@ this.click = function () {
 
 this.mixin('dynamicAttributes');
 });
-riot.tag2('material-checkbox', '<div class="{checkbox:true,checked:checked}" onclick="{toggle}"> <div class="checkmark"></div> </div> <div class="label" onclick="{toggle}"><yield></yield></div> <input type="hidden" name="{opts.name}" value="{checked}">', '', '', function(opts) {
+riot.tag2('material-card', '<div class="title" if="{titleExist}"> <content select=".material-card-title"></content> </div> <yield></yield>', '', '', function(opts) {
 var _this = this;
 
-this.checked = opts.checked || false;
-
-this.disabled = opts.disabled || false;
-
-this.toggle = function () {
-    if (_this.disabled) return false;
-    _this.update({ checked: !_this.checked });
-    _this.trigger('toggle', _this.checked);
-};
+this.titleExist = false;
+this.on('mount', function () {
+    _this.update({ titleExist: !!_this.root.querySelector('.material-card-title') });
+});
+this.mixin('content');
 });
 riot.tag2('material-combo', '<material-input name="input"></material-input> <material-dropdown-list selected="{opts.selected}" name="dropdown"></material-dropdown-list> <input type="hidden" value="{value}" name="{opts.name || \'combo\'}"> <div name="options" hidden if="{!isParsed}"> <yield></yield> </div>', '', '', function(opts) {
 var _this = this;
@@ -117,6 +104,19 @@ this.tags.input.on('focusChanged', function (focus) {
 
 this.mixin('collection');
 });
+riot.tag2('material-checkbox', '<div class="{checkbox:true,checked:checked}" onclick="{toggle}"> <div class="checkmark"></div> </div> <div class="label" onclick="{toggle}"><yield></yield></div> <input type="hidden" name="{opts.name}" value="{checked}">', '', '', function(opts) {
+var _this = this;
+
+this.checked = opts.checked || false;
+
+this.disabled = opts.disabled || false;
+
+this.toggle = function () {
+    if (_this.disabled) return false;
+    _this.update({ checked: !_this.checked });
+    _this.trigger('toggle', _this.checked);
+};
+});
 riot.tag2('material-dropdown', '<div name="dropdown" class="{dropdown:true,opening:opening}" if="{opened}"> <yield></yield> </div>', '', '', function(opts) {
 var _this = this;
 
@@ -179,7 +179,7 @@ this.close = function () {
     }, 200);
 };
 });
-riot.tag2('material-input', '<div class="label-placeholder"></div> <div class="{input-content:true,not-empty:value,error:error}"> <label for="input" name="label" if="{opts.label}">{opts.label}</label> <input type="{opts.type || \'text\'}" disabled="{disabled}" placeholder="{opts.placeholder}" onkeyup="{changeValue}" value="{value}" autocomplete="off" name="input"> <div class="iconWrapper" name="iconWrapper" if="{opts.icon}"> <material-button name="iconButton" center="true" waves-center="true" waves-color="{opts[\'waves-color\']||\'#fff\'}" rounded="true" waves-opacity="{opts[\'waves-opacity\']||\'0.6\'}" waves-duration="{opts[\'waves-duration\']||\'600\'}"> <yield></yield> </material-button> </div> </div> <div class="{underline:true,focused:focused,error:error}"> <div class="unfocused-line"></div> <div class="focused-line"></div> </div>', '', '', function(opts) {
+riot.tag2('material-input', '<div class="label-placeholder"></div> <div class="{input-content:true,not-empty:value,error:error}"> <label for="input" name="label" if="{opts.label}">{opts.label}</label> <input type="{opts.type||\'text\'}" disabled="{disabled}" placeholder="{opts.placeholder}" onkeyup="{changeValue}" value="{value}" autocomplete="off" name="{opts.name||\'default-input\'}"> <div class="iconWrapper" name="iconWrapper" if="{opts.icon}"> <material-button name="iconButton" center="true" waves-center="true" waves-color="{opts[\'waves-color\']||\'#fff\'}" rounded="true" waves-opacity="{opts[\'waves-opacity\']||\'0.6\'}" waves-duration="{opts[\'waves-duration\']||\'600\'}"> <yield></yield> </material-button> </div> </div> <div class="{underline:true,focused:focused,error:error}"> <div class="unfocused-line"></div> <div class="focused-line"></div> </div>', '', '', function(opts) {
 var _this = this;
 
 this.opts = opts;
@@ -194,12 +194,14 @@ this.update({ showIcon: false });
 
 this.on('mount', function () {
     _this.update({ value: opts.value || '' });
-    _this.input.name = _this.name || 'textarea';
+    _this.n = opts.name || 'default-input';
+    _this[_this.n].addEventListener('focus', _this.changeFocus);
+    _this[_this.n].addEventListener('blur', _this.changeFocus);
 });
 
 this.changeFocus = function (e) {
     if (_this.disabled) return false;
-    _this.update({ focused: _this['input'] == document.activeElement });
+    _this.update({ focused: _this[_this.n] == document.activeElement });
     _this.trigger('focusChanged', _this.focused, e);
     if (opts.focuschanged && typeof opts.focuschanged === "function") {
         opts.focuschanged(_this.focused);
@@ -207,15 +209,12 @@ this.changeFocus = function (e) {
 };
 
 this.changeValue = function (e) {
-    _this.update({ value: _this['input'].value });
-    _this.trigger('valueChanged', _this['input'].value, e);
+    _this.update({ value: _this[_this.n].value });
+    _this.trigger('valueChanged', _this[_this.n].value, e);
     if (opts.valuechanged && typeof opts.valuechanged === "function") {
-        opts.valuechanged(_this['input'].value);
+        opts.valuechanged(_this[_this.n].value);
     }
 };
-
-this['input'].addEventListener('focus', this.changeFocus);
-this['input'].addEventListener('blur', this.changeFocus);
 
 this.on('update', function (updated) {
     if (updated && updated.value != undefined) {
@@ -363,37 +362,37 @@ this.cut = function (title) {
     return title.length > opts.cut ? title.substr(0, opts.cut) + '...' : title;
 };
 });
-riot.tag2('material-textarea', '<div class="label-placeholder"></div> <div class="{textarea-content:true,not-empty:value,error:error}"> <label for="textarea" name="label" if="{opts.label}">{opts.label}</label> <div class="mirror" name="mirror"></div> <div class="textarea-container"> <textarea disabled="{disabled}" name="textarea" value="{value}"></textarea> </div> </div> <div class="{underline:true,focused:focused,error:error}"> <div class="unfocused-line"></div> <div class="focused-line"></div> </div>', '', '', function(opts) {
+riot.tag2('material-textarea', '<div class="label-placeholder"></div> <div class="{textarea-content:true,not-empty:value,error:error}"> <label for="textarea" name="label" if="{opts.label}">{opts.label}</label> <div class="mirror" name="mirror"></div> <div class="textarea-container"> <textarea disabled="{disabled}" name="{opts.name||\'default-textarea\'}" value="{value}"></textarea> </div> </div> <div class="{underline:true,focused:focused,error:error}"> <div class="unfocused-line"></div> <div class="focused-line"></div> </div>', '', '', function(opts) {
 var _this = this;
-
-this["textarea"].scrollTop = this["textarea"].scrollHeight;
 
 this.opts = opts;
 
 this.disabled = opts.disabled || false;
 
 this.on('mount', function () {
-    if (opts.maxRows) _this.mirror.style.maxHeight = opts.maxRows * _this["textarea"].getBoundingClientRect().height + 'px';
-    _this.textarea.name = opts.name || 'textarea';
+    if (opts.maxRows) _this.mirror.style.maxHeight = opts.maxRows * _this[_this.n].getBoundingClientRect().height + 'px';
+    _this.n = opts.name || 'default-textarea';
+
+    _this[_this.n].scrollTop = _this[_this.n].scrollHeight;
+
+    _this[_this.n].addEventListener('focus', _this.changeFocus);
+    _this[_this.n].addEventListener('blur', _this.changeFocus);
+    _this[_this.n].addEventListener('input', _this.inputHandler);
 });
 
 this.changeFocus = function (e) {
     if (_this.disabled) return false;
-    var focused = _this["textarea"] == document.activeElement;
+    var focused = _this[_this.n] == document.activeElement;
     _this.update({ focused: focused });
     _this.trigger('focusChanged', focused);
 };
 
 this.inputHandler = function (e) {
-    var value = _this["textarea"].value;
+    var value = _this[_this.n].value;
     _this.mirror.innerHTML = _this.format(value);
     _this.update({ value: value });
     _this.trigger('valueChanged', value);
 };
-
-this["textarea"].addEventListener('focus', this.changeFocus);
-this["textarea"].addEventListener('blur', this.changeFocus);
-this["textarea"].addEventListener('input', this.inputHandler);
 
 this.on('update', function (updated) {
     if (updated && updated.value != undefined) {
