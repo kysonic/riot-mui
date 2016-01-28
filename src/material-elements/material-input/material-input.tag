@@ -16,12 +16,11 @@
     </div>
 
     <script type="es6">
-        // Attributes
-        this.update({value:opts.value || ''});
+        
         // For Validation Mixin
         this.opts = opts;
+
         // From options
-        this.disabled = opts.disabled || false;
         this.name = opts.name || 'input';
         // Not supported types
         this.notSupportedTypes = ['date','color','datetime','month','range','time'];
@@ -30,6 +29,12 @@
         this.update({showIcon:false});
         // Ready
         this.on('mount',()=>{
+            // Attributes
+            this.update({
+                value:opts.value || '',
+                disabled : opts.disabled || false
+            });
+
             this.n = opts.name||'default-input';
             this[this.n].addEventListener('focus',this.changeFocus);
             this[this.n].addEventListener('blur',this.changeFocus);
