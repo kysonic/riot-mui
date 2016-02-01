@@ -2,7 +2,7 @@
     <div class="label-placeholder"></div>
     <div class="{input-content:true,not-empty:value,error:error}">
         <label for="input" name="label" if="{opts.label}">{opts.label}</label>
-        <input type="{opts.type||'text'}" disabled="{disabled}" placeholder="{opts.placeholder}" onkeyup="{changeValue}" value="{value}" autocomplete="off" name="{opts.name||'default-input'}"/>
+        <input type="{opts.type||'text'}" disabled="{disabled}" placeholder="{opts.placeholder}" onkeyup="{changeValue}" value="{value}" autocomplete="off" name="{opts.name||'default-input'}" required="{required}"/>
         <div class="iconWrapper" name="iconWrapper" if="{opts.icon}" >
             <material-button name="iconButton" center="true" waves-center="true" waves-color="{opts['waves-color']||'#fff'}"
                              rounded="true" waves-opacity="{opts['waves-opacity']||'0.6'}" waves-duration="{opts['waves-duration']||'600'}">
@@ -19,7 +19,7 @@
         
         // For Validation Mixin
         this.opts = opts;
-
+        this.required="";
         // From options
         this.name = opts.name || 'input';
         // Not supported types
@@ -32,7 +32,8 @@
             // Attributes
             this.update({
                 value:opts.value || '',
-                disabled : opts.disabled || false
+                disabled : opts.disabled || false,
+                required: opts.required||false
             });
 
             this.n = opts.name||'default-input';

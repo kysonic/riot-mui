@@ -7,6 +7,32 @@ this.on('mount', function () {
 });
 this.mixin('content');
 });
+riot.tag2('material-button', '<material-waves onclick="{click}" onmousedown="{launch}" center="{opts.wavesCenter}" rounded="{opts.rounded}" opacity="{opts.wavesOpacity}" color="{opts.wavesColor}" duration="{opts[\'waves-duration\']}"></material-waves> <div class="content"><yield></yield></div>', '', '', function(opts) {
+var _this = this;
+
+this.dynamicAttributes = ['disabled'];
+
+this.disabled = opts.disabled || false;
+
+this.launch = function (e) {
+    if (!_this.disabled) _this.tags['material-waves'].trigger('launch', e);
+};
+
+this.tags['material-waves'].on('wavestart', function (wave) {
+    _this.trigger('wavestart', wave);
+});
+
+this.tags['material-waves'].on('waveend', function () {
+    _this.trigger('waveend');
+});
+
+this.click = function () {
+    if (opts.link) window.location.href = opts.link;
+    _this.trigger('click');
+};
+
+this.mixin('dynamicAttributes');
+});
 riot.tag2('material-checkbox', '<div class="{checkbox:true,checked:checked}" onclick="{toggle}"> <div class="checkmark"></div> </div> <div class="label" onclick="{toggle}"><yield></yield></div> <input type="hidden" name="{opts.name}" value="{checked}">', '', '', function(opts) {
 var _this = this;
 
@@ -91,32 +117,6 @@ this.tags.input.on('focusChanged', function (focus) {
 
 this.mixin('collection');
 });
-riot.tag2('material-button', '<material-waves onclick="{click}" onmousedown="{launch}" center="{opts.wavesCenter}" rounded="{opts.rounded}" opacity="{opts.wavesOpacity}" color="{opts.wavesColor}" duration="{opts[\'waves-duration\']}"></material-waves> <div class="content"><yield></yield></div>', '', '', function(opts) {
-var _this = this;
-
-this.dynamicAttributes = ['disabled'];
-
-this.disabled = opts.disabled || false;
-
-this.launch = function (e) {
-    if (!_this.disabled) _this.tags['material-waves'].trigger('launch', e);
-};
-
-this.tags['material-waves'].on('wavestart', function (wave) {
-    _this.trigger('wavestart', wave);
-});
-
-this.tags['material-waves'].on('waveend', function () {
-    _this.trigger('waveend');
-});
-
-this.click = function () {
-    if (opts.link) window.location.href = opts.link;
-    _this.trigger('click');
-};
-
-this.mixin('dynamicAttributes');
-});
 riot.tag2('material-dropdown', '<div name="dropdown" class="{dropdown:true,opening:opening}" if="{opened}"> <yield></yield> </div>', '', '', function(opts) {
 var _this = this;
 
@@ -179,10 +179,11 @@ this.close = function () {
     }, 200);
 };
 });
-riot.tag2('material-input', '<div class="label-placeholder"></div> <div class="{input-content:true,not-empty:value,error:error}"> <label for="input" name="label" if="{opts.label}">{opts.label}</label> <input type="{opts.type||\'text\'}" disabled="{disabled}" placeholder="{opts.placeholder}" onkeyup="{changeValue}" value="{value}" autocomplete="off" name="{opts.name||\'default-input\'}"> <div class="iconWrapper" name="iconWrapper" if="{opts.icon}"> <material-button name="iconButton" center="true" waves-center="true" waves-color="{opts[\'waves-color\']||\'#fff\'}" rounded="true" waves-opacity="{opts[\'waves-opacity\']||\'0.6\'}" waves-duration="{opts[\'waves-duration\']||\'600\'}"> <yield></yield> </material-button> </div> </div> <div class="{underline:true,focused:focused,error:error}"> <div class="unfocused-line"></div> <div class="focused-line"></div> </div>', '', '', function(opts) {
+riot.tag2('material-input', '<div class="label-placeholder"></div> <div class="{input-content:true,not-empty:value,error:error}"> <label for="input" name="label" if="{opts.label}">{opts.label}</label> <input type="{opts.type||\'text\'}" disabled="{disabled}" placeholder="{opts.placeholder}" onkeyup="{changeValue}" value="{value}" autocomplete="off" name="{opts.name||\'default-input\'}" required="{required}"> <div class="iconWrapper" name="iconWrapper" if="{opts.icon}"> <material-button name="iconButton" center="true" waves-center="true" waves-color="{opts[\'waves-color\']||\'#fff\'}" rounded="true" waves-opacity="{opts[\'waves-opacity\']||\'0.6\'}" waves-duration="{opts[\'waves-duration\']||\'600\'}"> <yield></yield> </material-button> </div> </div> <div class="{underline:true,focused:focused,error:error}"> <div class="unfocused-line"></div> <div class="focused-line"></div> </div>', '', '', function(opts) {
 var _this = this;
 
 this.opts = opts;
+this.required = "";
 
 this.name = opts.name || 'input';
 
@@ -194,7 +195,8 @@ this.update({ showIcon: false });
 this.on('mount', function () {
     _this.update({
         value: opts.value || '',
-        disabled: opts.disabled || false
+        disabled: opts.disabled || false,
+        required: opts.required || false
     });
 
     _this.n = opts.name || 'default-input';
