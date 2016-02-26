@@ -26,14 +26,14 @@ Bower:
 ```
 ##Getting started
 
+If you use Browserify (or presumably other NPM-based bundlers), you can simply require('riot-mui') and all tags and mixins will be registered with Riot.js
 
-If you don't use some build system like webpack or gulp (+broserify) you can just include riot-mui.js, riot-mui-mixins.js and riot-mui.css in your project. 
+If you don't use some build system like webpack or gulp (+broserify) you can just include riot-mui.js and riot-mui.css (or their minimized versions) in your project. 
 
 ```
  <link href="build/styles/riot-mui.min.css" rel="stylesheet">
         ....
- <script src="build/js/riot-mui-mixins-min.js"></script>
- <script src="build/js/riot-mui.js"></script> 
+ <script src="build/js/riot-mui-min.js"></script> 
 ```
 
 Add material ui component: 
