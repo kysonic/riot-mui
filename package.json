@@ -22,8 +22,5 @@
     "gulp-riot": "^0.4.4",
     "gulp-sass": "^2.0.4",
     "gulp-sourcemaps": "^1.6.0"
-  },
-  "dependencies": {
-    "vanilla-masker": "^1.0.9"
   }
 }
