@@ -154,18 +154,14 @@ var CollectionMixin = {
 };
 
 riot.mixin('collection', CollectionMixin);
-riot.tag2('material-checkbox', '<div class="{checkbox:true,checked:checked}" onclick="{toggle}"> <div class="checkmark"></div> </div> <div class="label" onclick="{toggle}"><yield></yield></div> <input type="hidden" name="{opts.name}" value="{checked}">', '', '', function(opts) {
+riot.tag2('material-card', '<div class="title" if="{titleExist}"> <content select=".material-card-title"></content> </div> <yield></yield>', '', '', function(opts) {
 var _this = this;
 
-this.checked = opts.checked || false;
-
-this.disabled = opts.disabled || false;
-
-this.toggle = function () {
-    if (_this.disabled) return false;
-    _this.update({ checked: !_this.checked });
-    _this.trigger('toggle', _this.checked);
-};
+this.titleExist = false;
+this.on('mount', function () {
+    _this.update({ titleExist: !!_this.root.querySelector('.material-card-title') });
+});
+this.mixin('content');
 });
 'use strict';
 
@@ -185,14 +181,18 @@ var Content = {
     }
 };
 riot.mixin('content', Content);
-riot.tag2('material-card', '<div class="title" if="{titleExist}"> <content select=".material-card-title"></content> </div> <yield></yield>', '', '', function(opts) {
+riot.tag2('material-checkbox', '<div class="{checkbox:true,checked:checked}" onclick="{toggle}"> <div class="checkmark"></div> </div> <div class="label" onclick="{toggle}"><yield></yield></div> <input type="hidden" name="{opts.name}" value="{checked}">', '', '', function(opts) {
 var _this = this;
 
-this.titleExist = false;
-this.on('mount', function () {
-    _this.update({ titleExist: !!_this.root.querySelector('.material-card-title') });
-});
-this.mixin('content');
+this.checked = opts.checked || false;
+
+this.disabled = opts.disabled || false;
+
+this.toggle = function () {
+    if (_this.disabled) return false;
+    _this.update({ checked: !_this.checked });
+    _this.trigger('toggle', _this.checked);
+};
 });
 /**
  * The mixin ables to update root tag attributes
@@ -239,6 +239,14 @@ var _this = this;
 this.items = [];
 this.isParsed = true;
 this.title = null;
+var lastValue = this.value;
+var valueChanged = function valueChanged() {
+    if (_this.value !== lastValue) {
+        lastValue = _this.value;
+        console.log(_this.value);
+        _this.root.dispatchEvent(new CustomEvent('change', { value: _this.value }));
+    }
+};
 
 this.getOptions = function () {
     Array.prototype.forEach.call(_this.options.children, function (option, key) {
@@ -249,6 +257,7 @@ this.getOptions = function () {
             if (option.getAttribute('isSelected') != null) {
                 _this.tags.dropdown.update({ selected: key });
                 _this.update({ value: item.value || item.title });
+                valueChanged();
                 _this.title = item.title;
             }
         }
@@ -260,6 +269,7 @@ this.getOptions = function () {
         _this.update({ hValue: _this.tags.dropdown.items[_this.tags.dropdown.selected].value || _this.tags.dropdown.items[_this.tags.dropdown.selected].title });
     }
     _this.update({ isParsed: true });
+    valueChanged();
 };
 
 this.getOptions();
@@ -279,8 +289,8 @@ this.on('mount', function () {
 });
 
 this.tags.dropdown.on('selectChanged', function (selected) {
-    console.log(selected);
     _this.update({ value: _this.tags.dropdown.items[selected].value || _this.tags.dropdown.items[selected].title });
+    valueChanged();
     _this.tags.input.update({ value: _this.tags.dropdown.items[selected].title });
 
     setTimeout(function () {
@@ -304,6 +314,7 @@ this.tags.input.on('focusChanged', function (focus) {
 
 this.mixin('collection');
 });
+
 'use strict';
 
 var RiotHelpers = {
@@ -340,35 +351,15 @@ var RiotHelpers = {
 riot.findTag = RiotHelpers.findTag;
 
 riot.mixin('helpers', RiotHelpers);
-riot.tag2('material-dropdown-list', '<ul class="{dropdown-content:true,opening:opening}" if="{opened}"> <li each="{item,key in items}" class="{selected:parent.selected==key}"> <span if="{!item.link}" onclick="{parent.select}">{item.title}</span> <a if="{item.link}" href="{item.link}" onclick="{parent.select}" title="{item.title}">{item.title}</a> </li> </ul> <div name="overlay" if="{opts.extraclose && opened}" onclick="{close}" class="material-dropdown-list-overlay"></div>', '', '', function(opts) {
+riot.tag2('material-dropdown', '<div name="dropdown" class="{dropdown:true,opening:opening}" if="{opened}"> <yield></yield> </div>', '', '', function(opts) {
 var _this = this;
 
-this.opened = false;
+this.opened = opts.opened || false;
 
-if (opts.items) {
-    try {
-        this.items = eval(opts.items) || [];
-    } catch (e) {
-        console.error('Something wrong with your items. For details look at it - ' + e);
-    }
-    this.update({ items: this.items });
-}
-
-if (opts.selected) {
-    this.update({ selected: opts.selected });
-}
-
-this.select = function (e) {
-    _this.update({ selected: e.item.key });
-    _this.close();
-
-    _this.trigger('selectChanged', e.item.key, e.item.item);
-    return true;
-};
+this.dropdown.classList.add(opts.animation || 'top');
 
 this.open = function () {
     _this.update({ opened: true, opening: true });
-    if (_this.opts.extraclose) document.body.appendChild(_this.overlay);
     setTimeout(function () {
         _this.update({ opening: false });
     }, 0);
@@ -437,15 +428,35 @@ var ValidateMixin = Object.defineProperties({
 });
 
 riot.mixin('validate', ValidateMixin);
-riot.tag2('material-dropdown', '<div name="dropdown" class="{dropdown:true,opening:opening}" if="{opened}"> <yield></yield> </div>', '', '', function(opts) {
+riot.tag2('material-dropdown-list', '<ul class="{dropdown-content:true,opening:opening}" if="{opened}"> <li each="{item,key in items}" class="{selected:parent.selected==key}"> <span if="{!item.link}" onclick="{parent.select}">{item.title}</span> <a if="{item.link}" href="{item.link}" onclick="{parent.select}" title="{item.title}">{item.title}</a> </li> </ul> <div name="overlay" if="{opts.extraclose && opened}" onclick="{close}" class="material-dropdown-list-overlay"></div>', '', '', function(opts) {
 var _this = this;
 
-this.opened = opts.opened || false;
+this.opened = false;
 
-this.dropdown.classList.add(opts.animation || 'top');
+if (opts.items) {
+    try {
+        this.items = eval(opts.items) || [];
+    } catch (e) {
+        console.error('Something wrong with your items. For details look at it - ' + e);
+    }
+    this.update({ items: this.items });
+}
+
+if (opts.selected) {
+    this.update({ selected: opts.selected });
+}
+
+this.select = function (e) {
+    _this.update({ selected: e.item.key });
+    _this.close();
+
+    _this.trigger('selectChanged', e.item.key, e.item.item);
+    return true;
+};
 
 this.open = function () {
     _this.update({ opened: true, opening: true });
+    if (_this.opts.extraclose) document.body.appendChild(_this.overlay);
     setTimeout(function () {
         _this.update({ opening: false });
     }, 0);
@@ -513,6 +524,9 @@ this.isValid = function (isValid) {
 };
 this.mixin('validate');
 });
+riot.tag2('material-pane', '<material-navbar style="height:{opts.materialNavbarHeight || \'60px\'};line-height: {opts.materialNavbarHeight || \'60px\'};background-color:{opts.materialNavbarColor || \'#ccc\'}"> <content select=".material-pane-left-bar"></content> <content select=".material-pane-title"></content> <content select=".material-pane-right-bar"></content> </material-navbar> <div class="content"> <content select=".material-pane-content"></content> <yield></yield> </div>', '', '', function(opts) {
+this.mixin('content');
+});
 riot.tag2('material-navbar', '<div class="nav-wrapper"> <yield></yield> </div>', '', 'role="toolbar"', function(opts) {
 });
 riot.tag2('material-popup', '<div name="popup" class="{popup:true,opening:opening}" if="{opened}"> <div class="content"> <content select=".material-popup-title"></content> <div class="close" onclick="{close}"> <i class="material-icons">close</i> </div> <yield></yield> </div> </div> <div class="overlay" onclick="{close}" if="{opened}"></div>', '', '', function(opts) {
@@ -539,9 +553,6 @@ this.close = function () {
         _this.update({ opened: false });
     }, 200);
 };
-this.mixin('content');
-});
-riot.tag2('material-pane', '<material-navbar style="height:{opts.materialNavbarHeight || \'60px\'};line-height: {opts.materialNavbarHeight || \'60px\'};background-color:{opts.materialNavbarColor || \'#ccc\'}"> <content select=".material-pane-left-bar"></content> <content select=".material-pane-title"></content> <content select=".material-pane-right-bar"></content> </material-navbar> <div class="content"> <content select=".material-pane-content"></content> <yield></yield> </div>', '', '', function(opts) {
 this.mixin('content');
 });
 riot.tag2('material-snackbar', '<div class="{toast:true,error:toast.isError,opening:toast.opening}" onclick="{parent.removeToastByClick}" each="{toast,key in toasts}"> {toast.message} </div>', '', '', function(opts) {
