@@ -1,14 +1,17 @@
+'use strict';
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
 /**
  * Bound class contain methods for
  * receiving bounds of DOM element.
  */
-'use strict';
 
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-
-var Bound = (function () {
+var Bound = function () {
     function Bound() {
         _classCallCheck(this, Bound);
     }
@@ -29,7 +32,7 @@ var Bound = (function () {
             // Get document
             document = doc.documentElement;
             // Get container
-            if (typeof this.container.getBoundingClientRect !== typeof undefined) {
+            if (_typeof(this.container.getBoundingClientRect) !== (typeof undefined === 'undefined' ? 'undefined' : _typeof(undefined))) {
                 box = this.container.getBoundingClientRect();
             }
             window = this.getWindow(doc);
@@ -46,6 +49,7 @@ var Bound = (function () {
          * @param o - supposing object
          * @returns {boolean}
          */
+
     }, {
         key: 'isWindow',
         value: function isWindow(o) {
@@ -57,6 +61,7 @@ var Bound = (function () {
          * @param e - supposing object
          * @returns {*}
          */
+
     }, {
         key: 'getWindow',
         value: function getWindow(o) {
@@ -69,6 +74,7 @@ var Bound = (function () {
          * @param to
          * @returns {*}
          */
+
     }, {
         key: 'mix',
         value: function mix(so, to) {
@@ -83,7 +89,7 @@ var Bound = (function () {
     }]);
 
     return Bound;
-})();
+}();
 
 riot.mixin('Bound', Bound);
 riot.tag2('material-button', '<material-waves onclick="{click}" onmousedown="{launch}" center="{opts.wavesCenter}" rounded="{opts.rounded}" opacity="{opts.wavesOpacity}" color="{opts.wavesColor}" duration="{opts[\'waves-duration\']}"></material-waves> <div class="content"><yield></yield></div>', '', '', function(opts) {
@@ -120,6 +126,7 @@ var CollectionMixin = {
      * @params prop - collection name
      * @params criteria - object (Which field should be filtred)
      */
+
     filter: function filter(prop, criteria) {
         return this[prop].filter(function (item) {
             var criteriaPass = false;
@@ -131,6 +138,7 @@ var CollectionMixin = {
             return criteriaPass;
         });
     },
+
     /**
      * Find something in collection
      * @params prop - collection name
@@ -194,6 +202,8 @@ this.toggle = function () {
     _this.trigger('toggle', _this.checked);
 };
 });
+'use strict';
+
 /**
  * The mixin ables to update root tag attributes
  * if in this.dynamicAttributes array contains
@@ -214,8 +224,6 @@ this.toggle = function () {
  * will be changed after 1s and we will see following HTML
  * <my-tag disabled="false"></my-tag>
  */
-'use strict';
-
 var DynamicAttributesMixin = {
     init: function init() {
         var _this = this;
@@ -243,7 +251,6 @@ var lastValue = this.value;
 var valueChanged = function valueChanged() {
     if (_this.value !== lastValue) {
         lastValue = _this.value;
-        console.log(_this.value);
         _this.root.dispatchEvent(new CustomEvent('change', { value: _this.value }));
     }
 };
@@ -321,6 +328,7 @@ var RiotHelpers = {
     /**
      * Find tag in pack
      */
+
     findTag: function findTag(pack, name) {
         var searched = null;
         pack.forEach(function (tag) {
@@ -330,6 +338,7 @@ var RiotHelpers = {
         });
         return searched;
     },
+
     /**
      * By the default riot don't support a camel case options
      * but in some cases we just use camel case, like a options
@@ -374,7 +383,15 @@ this.close = function () {
 });
 'use strict';
 
-var ValidateMixin = Object.defineProperties({
+var ValidateMixin = {
+    get base() {
+        return {
+            'email': /^(([\w\.\-_]+)@[\w\-\_]+(\.\w+){1,}|)$/i,
+            'number': /^(\d+|)$/i,
+            'tel': /^((\+|\d)?([\d\-\(\)\#])|)+$/i,
+            'url': /([--:\w?@%&+~#=]*\.[a-z]{2,4}\/{0,2})((?:[?&](?:\w+)=(?:\w+))+|[--:\w?@%&+~#=]+)?/i
+        };
+    },
     init: function init() {
         if (!this.opts) console.debug('Sorry, but for using validate mixin you should add following code in your component: this.opts = opts;');
         if (this.opts && this.opts.valid) {
@@ -412,20 +429,7 @@ var ValidateMixin = Object.defineProperties({
     validateByType: function validateByType(value) {
         return this.base[this.opts.type].test(value);
     }
-}, {
-    base: {
-        get: function get() {
-            return {
-                'email': /^(([\w\.\-_]+)@[\w\-\_]+(\.\w+){1,}|)$/i,
-                'number': /^(\d+|)$/i,
-                'tel': /^((\+|\d)?([\d\-\(\)\#])|)+$/i,
-                'url': /([--:\w?@%&+~#=]*\.[a-z]{2,4}\/{0,2})((?:[?&](?:\w+)=(?:\w+))+|[--:\w?@%&+~#=]+)?/i
-            };
-        },
-        configurable: true,
-        enumerable: true
-    }
-});
+};
 
 riot.mixin('validate', ValidateMixin);
 riot.tag2('material-dropdown-list', '<ul class="{dropdown-content:true,opening:opening}" if="{opened}"> <li each="{item,key in items}" class="{selected:parent.selected==key}"> <span if="{!item.link}" onclick="{parent.select}">{item.title}</span> <a if="{item.link}" href="{item.link}" onclick="{parent.select}" title="{item.title}">{item.title}</a> </li> </ul> <div name="overlay" if="{opts.extraclose && opened}" onclick="{close}" class="material-dropdown-list-overlay"></div>', '', '', function(opts) {
@@ -524,10 +528,10 @@ this.isValid = function (isValid) {
 };
 this.mixin('validate');
 });
+riot.tag2('material-navbar', '<div class="nav-wrapper"> <yield></yield> </div>', '', 'role="toolbar"', function(opts) {
+});
 riot.tag2('material-pane', '<material-navbar style="height:{opts.materialNavbarHeight || \'60px\'};line-height: {opts.materialNavbarHeight || \'60px\'};background-color:{opts.materialNavbarColor || \'#ccc\'}"> <content select=".material-pane-left-bar"></content> <content select=".material-pane-title"></content> <content select=".material-pane-right-bar"></content> </material-navbar> <div class="content"> <content select=".material-pane-content"></content> <yield></yield> </div>', '', '', function(opts) {
 this.mixin('content');
-});
-riot.tag2('material-navbar', '<div class="nav-wrapper"> <yield></yield> </div>', '', 'role="toolbar"', function(opts) {
 });
 riot.tag2('material-popup', '<div name="popup" class="{popup:true,opening:opening}" if="{opened}"> <div class="content"> <content select=".material-popup-title"></content> <div class="close" onclick="{close}"> <i class="material-icons">close</i> </div> <yield></yield> </div> </div> <div class="overlay" onclick="{close}" if="{opened}"></div>', '', '', function(opts) {
 var _this = this;
@@ -716,8 +720,6 @@ var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_ag
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var Bound = riot.mixin('Bound');
 
 var Wave = (function (_Bound) {
     _inherits(Wave, _Bound);
