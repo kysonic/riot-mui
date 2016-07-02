@@ -2,8 +2,6 @@ $material-popup-background: #fff;
 $material-popup-top: 20%;
 $material-popup-width: 50%;
 $material-popup-centring: -$material-popup-width/2;
-$material-popup-min-height: 400px;
-$material-popup-vertical-centring: -$material-popup-min-height/2;
 $material-popup-max-height: 650px;
 $material-popup-color: #25313b;
 $material-popup-border-color: #3b4e5e;
@@ -16,18 +14,26 @@ $material-popup-offset: 50px;
   -o-#{$name}: #{$argument};
   #{$name}: #{$argument};
 }
+@mixin vendor-arg-prefix($name, $argument) {
+  #{$name}: -webkit-#{$argument};
+  #{$name}: -ms-#{$argument};
+  #{$name}: -moz-#{$argument};
+  #{$name}: -o-#{$argument};
+  #{$name}: #{$argument};
+}
 
 material-popup {
   /** POPUP **/
   .popup {
     z-index: 100;
     position: absolute;
-    left: 50%;
-    top: 50%;
-    margin-top: $material-popup-vertical-centring;
+    left: 0;
+    top: 25%;
+    right: 0;
     width: $material-popup-width;
-    margin-left: $material-popup-centring;
-    min-height: $material-popup-min-height;
+    min-width: 300px;
+    margin: auto;
+    @include vendor-arg-prefix(height, 'fit-content');
     background-color: $material-popup-background;
     overflow-y: auto;
     will-change: width, height;
@@ -49,26 +55,31 @@ material-popup {
         @include vendor-prefix(transition,'transform .2s cubic-bezier(0.23, 1, 0.32, 1),opacity .2s');
       }
     }
-    /** CLOSE **/
-    .close {
-      cursor: pointer;
-      width: 24px;
-      height: 24px;
-      position: absolute;
-      left: 100%;
-      margin-left: -29px;
-      top: 3px;
-    }
     /** CONTENT STYLING **/
-    .content {
+    >.content {
       padding: 10px;
       color: $material-popup-color;
       .material-popup-title {
-        font-size: 20px;
-        padding: 0px 0px 10px 0;
-        text-align: center;
-        border-bottom: 1px solid $material-popup-border-color;
-        text-transform: uppercase;
+        padding: 24px 24px 0;
+        margin: 0;
+        font-size: 2.5rem;
+      }
+      .material-popup-content {
+        padding: 20px 24px 24px;
+        margin: 0;
+      }
+      .material-popup-action {
+        padding: 8px 8px 8px 24px;
+        margin: 0;
+        >* {
+          margin-right: 8px;
+        }
+        >*:first-child {
+          margin-right: 0;
+        }
+        display: flex;
+        flex-direction: row-reverse;
+        flex-wrap: wrap;
       }
     }
   }

@@ -69,8 +69,17 @@
                     <div class="text">Open</div>
                 </material-button>
                 <material-popup name="popupOne">
-                    <p>Accerso alius sententia ut mihi, phasmatis of interregnum ego dico, solvo meus mens mei,
+                    <h1 class="material-popup-title">TITLE</h1>
+                    <p class="material-popup-content">Accerso alius sententia ut mihi, phasmatis of interregnum ego dico, solvo meus mens mei,
                         ego dico phasmatis audite meus placitum meus mens quod iacio (Nombre de la persona)</p>
+                    <div class="material-popup-action">
+                        <material-button onclick="openPopup()">
+                            Ok
+                        </material-button>
+                        <material-button onclick="openPopup()">
+                            Cancel
+                        </material-button>
+                    </div>
                 </material-popup>
             </div>
             <div class="item" style="margin-top: 8px">
@@ -153,7 +162,7 @@
         });
         function openDropdown(){
             var dropdown = findTag(mounted,'dropdown');
-            !dropdown.opened?dropdown.open():dropdown.close(); 
+            !dropdown.opened?dropdown.open():dropdown.close();
         }
         function openDropdownTwo(){
             var dropdown = findTag(mounted,'dropdown2');
