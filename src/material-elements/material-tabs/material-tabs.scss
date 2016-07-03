@@ -3,6 +3,7 @@ $material-tabs-selected-button-text-color: #61bdcc;
 $material-tabs-line-wrapper-background: #c2c7b6;
 $material-tabs-line-background: #61bdcc;
 $material-tabs-button-background: #070731;
+$material-tabs-font-size: 16px;
 // Prefixer
 @mixin vendor-prefix($name, $argument) {
   -webkit-#{$name}: #{$argument};
@@ -26,7 +27,7 @@ material-tabs {
       .content{
         position: relative;
         .text {
-          font-size:0.8vw;
+          font-size:$material-tabs-font-size;
         }
       }
       &.selected {
