@@ -59,7 +59,7 @@
          * Set line left style.
          */
         this.setLinePosition = ()=>{
-            this.line.style.left = this.line.getBoundingClientRect().width * (this.selected) + 'px';
+            this.line.style.left = (100/this.tabs.length).toFixed(2) * (this.selected) +'%';
         }
         /**
          * Cut symbols
