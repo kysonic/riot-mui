@@ -8,7 +8,7 @@
         <yield></yield>
     <script type="es6">
         // Basics
-        this.selected = 0;
+        this.selected = opts.__selected||0;
         this.tabs = [];
         // Attributes
         if(opts.tabs) {
@@ -25,6 +25,13 @@
             this.setWidth();
             this.setLinePosition();
         });
+
+        this.on('update',(val)=>{
+            if(opts.__selected!==this.selected){
+                this.changeTab(opts.__selected);
+            }
+        });
+
         /**
          * Set width on tab buttons and line
          * @param

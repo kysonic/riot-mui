@@ -1,12 +1,3 @@
-riot.tag2('material-card', '<div class="title" if="{titleExist}"> <content select=".material-card-title"></content> </div> <yield></yield>', '', '', function(opts) {
-var _this = this;
-
-this.titleExist = false;
-this.on('mount', function () {
-    _this.update({ titleExist: !!_this.root.querySelector('.material-card-title') });
-});
-this.mixin('content');
-});
 riot.tag2('material-button', '<material-waves onclick="{click}" onmousedown="{launch}" center="{opts.wavesCenter}" rounded="{opts.rounded}" opacity="{opts.wavesOpacity}" color="{opts.wavesColor}" duration="{opts[\'waves-duration\']}"></material-waves> <div class="content"><yield></yield></div>', '', '', function(opts) {
 var _this = this;
 
@@ -32,6 +23,15 @@ this.click = function () {
 };
 
 this.mixin('dynamicAttributes');
+});
+riot.tag2('material-card', '<div class="title" if="{titleExist}"> <content select=".material-card-title"></content> </div> <yield></yield>', '', '', function(opts) {
+var _this = this;
+
+this.titleExist = false;
+this.on('mount', function () {
+    _this.update({ titleExist: !!_this.root.querySelector('.material-card-title') });
+});
+this.mixin('content');
 });
 riot.tag2('material-checkbox', '<div class="{checkbox:true,checked:checked}" onclick="{toggle}"> <div class="checkmark"></div> </div> <div class="label" onclick="{toggle}"><yield></yield></div> <input type="hidden" name="{opts.name}" value="{checked}">', '', '', function(opts) {
 var _this = this;
@@ -322,7 +322,7 @@ riot.tag2('material-spinner', '<svg class="loader-circular" height="50" width="5
 riot.tag2('material-tabs', '<material-button each="{tab,k in tabs}" onclick="{parent.onChangeTab}" class="{selected:parent.selected==k}" waves-opacity="{parent.opts.wavesOpacity}" waves-duration="{parent.opts.wavesDuration}" waves-center="{parent.opts.wavesCenter}" waves-color="{parent.opts.wavesColor}"> <div class="text" title="{tab.title}">{parent.opts.cut ? parent.cut(tab.title) : tab.title}</div> </material-button> <div class="line-wrapper" if="{opts.useline}"> <div class="line" name="line"></div> </div> <yield></yield>', '', '', function(opts) {
 var _this = this;
 
-this.selected = 0;
+this.selected = opts.__selected || 0;
 this.tabs = [];
 
 if (opts.tabs) {
@@ -336,6 +336,12 @@ if (opts.tabs) {
 this.on('mount', function () {
     _this.setWidth();
     _this.setLinePosition();
+});
+
+this.on('update', function (val) {
+    if (opts.__selected !== _this.selected) {
+        _this.changeTab(opts.__selected);
+    }
 });
 
 this.setWidth = function () {
