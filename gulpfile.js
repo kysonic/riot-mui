@@ -6,23 +6,19 @@ var minifyCss = require('gulp-minify-css');
 var sourcemaps = require('gulp-sourcemaps');
 var minify = require('gulp-minify');
 var babel = require('gulp-babel');
+var eventStream = require('event-stream');
+var del = require('del');
 
-gulp.task('riot', function () {
-    gulp.src('./src/**/*.tag')
-        .pipe(riot({brackets:'{{ }}'}))
+gulp.task('bundle', function () {
+    tagsStream = gulp.src('./src/**/*.tag')
+        .pipe(riot({brackets:'{{ }}'}));
+    es6Stream = gulp.src('./src/**/*.es6')
+        .pipe(babel())
+    eventStream.merge(tagsStream, es6Stream)
         .pipe(concat('riot-mui.js'))
         .pipe(minify())
         .pipe(sourcemaps.write())
-        .pipe(gulp.dest('./build/js/'));
-});
-
-gulp.task('mixins', function () {
-    gulp.src('./src/**/*.es6')
-        .pipe(babel())
-        .pipe(concat('riot-mui-mixins.js'))
-        .pipe(minify())
-        .pipe(sourcemaps.write())
-        .pipe(gulp.dest('./build/js/'));
+        .pipe(gulp.dest('./build/js'));
 });
 
 gulp.task('sass', function () {
@@ -33,3 +29,6 @@ gulp.task('sass', function () {
         .pipe(sourcemaps.write())
         .pipe(gulp.dest('./build/styles/'));
 });
+
+gulp.task('clean', function() { del('build/'); })
+gulp.task('build', ['bundle', 'sass']);

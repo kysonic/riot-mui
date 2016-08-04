@@ -2,11 +2,9 @@
     <div name="popup" class="{popup:true,opening:opening}" if="{opened}">
         <div class="content">
             <content select=".material-popup-title"></content>
-            <div class="close" onclick="{close}">
-                <i class="material-icons">close</i>
-            </div>
             <yield></yield>
         </div>
+        <div select=".material-popup-action"></div>
     </div>
     <div class="overlay" onclick="{close}" if="{opened}"></div>
     <script type="es6">

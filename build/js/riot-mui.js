@@ -24,6 +24,94 @@ this.click = function () {
 
 this.mixin('dynamicAttributes');
 });
+/**
+ * Bound class contain methods for
+ * receiving bounds of DOM element.
+ */
+'use strict';
+
+var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+var Bound = (function () {
+    function Bound() {
+        _classCallCheck(this, Bound);
+    }
+
+    _createClass(Bound, [{
+        key: 'receiveBound',
+
+        /**
+         * Get Bounds
+         * @returns {*}
+         */
+        value: function receiveBound() {
+            if (!this.container) console.error('Yor class must contain a container. It is DOM Element. Define please this.container property.');
+            var document,
+                window,
+                box,
+                doc = this.container && this.container.ownerDocument;
+            // Get document
+            document = doc.documentElement;
+            // Get container
+            if (typeof this.container.getBoundingClientRect !== typeof undefined) {
+                box = this.container.getBoundingClientRect();
+            }
+            window = this.getWindow(doc);
+            // Return BoundingRect with additional properties.
+            return this.mix(box, {
+                size: Math.max(box.width, box.height),
+                offsetTop: box.top + window.pageYOffset - document.clientTop,
+                offsetLeft: box.left + window.pageXOffset - document.clientLeft
+            });
+        }
+
+        /**
+         * Window or not?
+         * @param o - supposing object
+         * @returns {boolean}
+         */
+    }, {
+        key: 'isWindow',
+        value: function isWindow(o) {
+            return o !== null && o === o.window;
+        }
+
+        /**
+         * Get window method
+         * @param e - supposing object
+         * @returns {*}
+         */
+    }, {
+        key: 'getWindow',
+        value: function getWindow(o) {
+            return this.isWindow(o) ? o : o.nodeType === 9 && o.defaultView;
+        }
+
+        /**
+         * Simple mixin. Unfortunately, babel doesn't support Object.assign \ or mixin
+         * @param so
+         * @param to
+         * @returns {*}
+         */
+    }, {
+        key: 'mix',
+        value: function mix(so, to) {
+            for (var key in so) {
+                // only copy if not already present
+                if (!(key in to)) {
+                    to[key] = so[key];
+                }
+            }
+            return to;
+        }
+    }]);
+
+    return Bound;
+})();
+
+riot.mixin('Bound', Bound);
 riot.tag2('material-card', '<div class="title" if="{titleExist}"> <content select=".material-card-title"></content> </div> <yield></yield>', '', '', function(opts) {
 var _this = this;
 
@@ -33,6 +121,48 @@ this.on('mount', function () {
 });
 this.mixin('content');
 });
+'use strict';
+
+var CollectionMixin = {
+    /**
+     * Filter collection by criteria
+     * @params prop - collection name
+     * @params criteria - object (Which field should be filtred)
+     */
+    filter: function filter(prop, criteria) {
+        return this[prop].filter(function (item) {
+            var criteriaPass = false;
+            Object.keys(criteria).forEach(function (k) {
+                var v = criteria[k];
+                var regexp = new RegExp('' + v, 'i');
+                criteriaPass = regexp.test(item[k]);
+            });
+            return criteriaPass;
+        });
+    },
+    /**
+     * Find something in collection
+     * @params prop - collection name
+     * @params criteria - object (Which field should be filtred)
+     */
+    find: function find(data, criteria) {
+        var searched = {};
+        var i = 0;
+        data.forEach(function (e) {
+            Object.keys(criteria).forEach(function (k) {
+                var v = criteria[k];
+                if (e[k] == v) {
+                    searched.e = e;
+                    searched.k = i;
+                }
+            });
+            i++;
+        });
+        return searched;
+    }
+};
+
+riot.mixin('collection', CollectionMixin);
 riot.tag2('material-checkbox', '<div class="{checkbox:true,checked:checked}" onclick="{toggle}"> <div class="checkmark"></div> </div> <div class="label" onclick="{toggle}"><yield></yield></div> <input type="hidden" name="{opts.name}" value="{checked}">', '', '', function(opts) {
 var _this = this;
 
@@ -46,12 +176,37 @@ this.toggle = function () {
     _this.trigger('toggle', _this.checked);
 };
 });
+'use strict';
+
+var Content = {
+    init: function init() {
+        var _this = this;
+
+        this.on('mount', function () {
+            [].forEach.call(_this.root.querySelectorAll('content'), function (node) {
+                var selector = node.getAttribute('select');
+                [].forEach.call(_this.root.querySelectorAll(selector), function (content) {
+                    node.parentNode.insertBefore(content, node.nextSibling);
+                });
+                node.parentNode.removeChild(node);
+            });
+        });
+    }
+};
+riot.mixin('content', Content);
 riot.tag2('material-combo', '<material-input name="input"></material-input> <material-dropdown-list selected="{opts.selected}" name="dropdown"></material-dropdown-list> <input type="hidden" value="{value}" name="{opts.name || \'combo\'}"> <div name="options" hidden if="{!isParsed}"> <yield></yield> </div>', '', '', function(opts) {
 var _this = this;
 
 this.items = [];
 this.isParsed = true;
 this.title = null;
+var lastValue = this.value;
+var valueChanged = function valueChanged() {
+    if (_this.value !== lastValue) {
+        lastValue = _this.value;
+        _this.root.dispatchEvent(new CustomEvent('change', { value: _this.value }));
+    }
+};
 
 this.getOptions = function () {
     Array.prototype.forEach.call(_this.options.children, function (option, key) {
@@ -62,6 +217,7 @@ this.getOptions = function () {
             if (option.getAttribute('isSelected') != null) {
                 _this.tags.dropdown.update({ selected: key });
                 _this.update({ value: item.value || item.title });
+                valueChanged();
                 _this.title = item.title;
             }
         }
@@ -73,6 +229,7 @@ this.getOptions = function () {
         _this.update({ hValue: _this.tags.dropdown.items[_this.tags.dropdown.selected].value || _this.tags.dropdown.items[_this.tags.dropdown.selected].title });
     }
     _this.update({ isParsed: true });
+    valueChanged();
 };
 
 this.getOptions();
@@ -92,8 +249,8 @@ this.on('mount', function () {
 });
 
 this.tags.dropdown.on('selectChanged', function (selected) {
-    console.log(selected);
     _this.update({ value: _this.tags.dropdown.items[selected].value || _this.tags.dropdown.items[selected].title });
+    valueChanged();
     _this.tags.input.update({ value: _this.tags.dropdown.items[selected].title });
 
     setTimeout(function () {
@@ -117,6 +274,46 @@ this.tags.input.on('focusChanged', function (focus) {
 
 this.mixin('collection');
 });
+
+/**
+ * The mixin ables to update root tag attributes
+ * if in this.dynamicAttributes array contains
+ * name of attribute, which equals variable into tag instance
+ * Example:
+ * <my-tag disabled="true"></my-tag>
+ * <my-tag>
+ *     ....
+ *     <script>
+ *         this.disabled = true;
+ *         this.dynamicAttributes = ['disabled'];
+ *         setTimeout(function(){
+ *              this.update({disabled:false});
+ *         }.bind(this),1000);
+ *     </script>
+ * </my-tag>
+ * In this example disabled attribute of my-tag
+ * will be changed after 1s and we will see following HTML
+ * <my-tag disabled="false"></my-tag>
+ */
+'use strict';
+
+var DynamicAttributesMixin = {
+    init: function init() {
+        var _this = this;
+
+        this.on('update', function (updated) {
+            if (updated && _this.dynamicAttributes) {
+                _this.dynamicAttributes.forEach(function (key) {
+                    if (updated[key] != undefined) {
+                        _this.root.setAttribute(key, updated[key]);
+                    }
+                });
+            }
+        });
+    }
+};
+
+riot.mixin('dynamicAttributes', DynamicAttributesMixin);
 riot.tag2('material-dropdown', '<div name="dropdown" class="{dropdown:true,opening:opening}" if="{opened}"> <yield></yield> </div>', '', '', function(opts) {
 var _this = this;
 
@@ -138,6 +335,42 @@ this.close = function () {
     }, 200);
 };
 });
+'use strict';
+
+var RiotHelpers = {
+    /**
+     * Find tag in pack
+     */
+    findTag: function findTag(pack, name) {
+        var searched = null;
+        pack.forEach(function (tag) {
+            if (tag.root.getAttribute('name').toLowerCase() == name.toLowerCase() || tag.root.tagName.toLowerCase() == name.toLowerCase()) {
+                searched = tag;
+            }
+        });
+        return searched;
+    },
+    /**
+     * By the default riot don't support a camel case options
+     * but in some cases we just use camel case, like a options
+     * for instance
+     */
+    turnHyphensOptsToCamelCase: function turnHyphensOptsToCamelCase(opts) {
+        for (var p in opts) {
+            if (/-/.test(p)) {
+                var camelCased = p.replace(/-([a-z])/g, function (g) {
+                    return g[1].toUpperCase();
+                });
+                opts[camelCased] = opts[p];
+                delete opts[p];
+            }
+        }
+    }
+};
+
+riot.findTag = RiotHelpers.findTag;
+
+riot.mixin('helpers', RiotHelpers);
 riot.tag2('material-dropdown-list', '<ul class="{dropdown-content:true,opening:opening}" if="{opened}"> <li each="{item,key in items}" class="{selected:parent.selected==key}"> <span if="{!item.link}" onclick="{parent.select}">{item.title}</span> <a if="{item.link}" href="{item.link}" onclick="{parent.select}" title="{item.title}">{item.title}</a> </li> </ul> <div name="overlay" if="{opts.extraclose && opened}" onclick="{close}" class="material-dropdown-list-overlay"></div>', '', '', function(opts) {
 var _this = this;
 
@@ -179,6 +412,62 @@ this.close = function () {
     }, 200);
 };
 });
+'use strict';
+
+var ValidateMixin = Object.defineProperties({
+    init: function init() {
+        if (!this.opts) console.debug('Sorry, but for using validate mixin you should add following code in your component: this.opts = opts;');
+        if (this.opts && this.opts.valid) {
+            this.validationType = typeof this[this.opts.valid] == 'function' ? 'Function' : 'Regexp';
+            if (this.validationType === 'Regexp') {
+                try {
+                    this.validationRegexp = eval(this.opts.valid);
+                } catch (e) {
+                    throw new Error('Something wrong with your regular expression!. Checkout --- ' + e);
+                }
+            }
+            if (this.validationType === 'Function') {
+                this.validationFunction = this[this.opts.valid] || false;
+            }
+        } else if (this.opts && Object.keys(this.base).indexOf(this.opts.type) != -1) {
+            this.validationType = 'Type';
+        }
+    },
+    validate: function validate(value) {
+        if (this.validationType) {
+            return this['validateBy' + this.validationType](value);
+        }
+        return null;
+    },
+    validateByFunction: function validateByFunction(value) {
+        if (this.validationFunction) {
+            return this.validationFunction(value);
+        }
+    },
+    validateByRegexp: function validateByRegexp(value) {
+        if (this.validationRegexp) {
+            return this.validationRegexp.test(value);
+        }
+    },
+    validateByType: function validateByType(value) {
+        return this.base[this.opts.type].test(value);
+    }
+}, {
+    base: {
+        get: function get() {
+            return {
+                'email': /^(([\w\.\-_]+)@[\w\-\_]+(\.\w+){1,}|)$/i,
+                'number': /^(\d+|)$/i,
+                'tel': /^((\+|\d)?([\d\-\(\)\#])|)+$/i,
+                'url': /([--:\w?@%&+~#=]*\.[a-z]{2,4}\/{0,2})((?:[?&](?:\w+)=(?:\w+))+|[--:\w?@%&+~#=]+)?/i
+            };
+        },
+        configurable: true,
+        enumerable: true
+    }
+});
+
+riot.mixin('validate', ValidateMixin);
 riot.tag2('material-input', '<div class="label-placeholder"></div> <div class="{input-content:true,not-empty:value,error:error}"> <label for="input" name="label" if="{opts.label}">{opts.label}</label> <input type="{opts.type||\'text\'}" disabled="{disabled}" placeholder="{opts.placeholder}" onkeyup="{changeValue}" value="{value}" autocomplete="off" name="{opts.name||\'default-input\'}" required="{required}"> <div class="iconWrapper" name="iconWrapper" if="{opts.icon}"> <material-button name="iconButton" center="true" waves-center="true" waves-color="{opts[\'waves-color\']||\'#fff\'}" rounded="true" waves-opacity="{opts[\'waves-opacity\']||\'0.6\'}" waves-duration="{opts[\'waves-duration\']||\'600\'}"> <yield></yield> </material-button> </div> </div> <div class="{underline:true,focused:focused,error:error}"> <div class="unfocused-line"></div> <div class="focused-line"></div> </div>', '', '', function(opts) {
 var _this = this;
 
@@ -239,7 +528,7 @@ riot.tag2('material-navbar', '<div class="nav-wrapper"> <yield></yield> </div>',
 riot.tag2('material-pane', '<material-navbar style="height:{opts.materialNavbarHeight || \'60px\'};line-height: {opts.materialNavbarHeight || \'60px\'};background-color:{opts.materialNavbarColor || \'#ccc\'}"> <content select=".material-pane-left-bar"></content> <content select=".material-pane-title"></content> <content select=".material-pane-right-bar"></content> </material-navbar> <div class="content"> <content select=".material-pane-content"></content> <yield></yield> </div>', '', '', function(opts) {
 this.mixin('content');
 });
-riot.tag2('material-popup', '<div name="popup" class="{popup:true,opening:opening}" if="{opened}"> <div class="content"> <content select=".material-popup-title"></content> <div class="close" onclick="{close}"> <i class="material-icons">close</i> </div> <yield></yield> </div> </div> <div class="overlay" onclick="{close}" if="{opened}"></div>', '', '', function(opts) {
+riot.tag2('material-popup', '<div name="popup" class="{popup:true,opening:opening}" if="{opened}"> <div class="content"> <content select=".material-popup-title"></content> <yield></yield> </div> <div select=".material-popup-action"></div> </div> <div class="overlay" onclick="{close}" if="{opened}"></div>', '', '', function(opts) {
 var _this = this;
 
 this.opened = opts.opened || false;
@@ -432,8 +721,6 @@ var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_ag
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var Bound = riot.mixin('Bound');
 
 var Wave = (function (_Bound) {
     _inherits(Wave, _Bound);

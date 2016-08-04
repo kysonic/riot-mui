@@ -1,8 +1,6 @@
 <material-waves>
     <div id="waves" name="waves"></div>
     <script type="es6">
-        // Get Bound Class from riot mixin source
-        var Bound = riot.mixin('Bound');
         /**
          * Wave class. Contain wave node and
          * all of waves logic.

@@ -10,6 +10,13 @@
         this.items = [];
         this.isParsed = true;
         this.title = null;
+        var lastValue = this.value;
+        const valueChanged = ()=>{
+          if(this.value !== lastValue) {
+            lastValue = this.value;
+            this.root.dispatchEvent(new CustomEvent('change', {value: this.value}));
+          }
+        }
         // Yielding
         this.getOptions = ()=>{
             // Get all options if it exits
@@ -21,6 +28,7 @@
                     if(option.getAttribute('isSelected')!=null) {
                         this.tags.dropdown.update({selected:key});
                         this.update({value:item.value || item.title});
+                        valueChanged();
                         this.title = item.title;
                     }
                 }
@@ -32,6 +40,7 @@
                 this.update({hValue:this.tags.dropdown.items[this.tags.dropdown.selected].value || this.tags.dropdown.items[this.tags.dropdown.selected].title});
             }
             this.update({isParsed:true});
+            valueChanged();
         }
         // Setup options
         this.getOptions();
@@ -56,8 +65,8 @@
          * update material-input and hidden
          */
         this.tags.dropdown.on('selectChanged',(selected)=>{
-            console.log(selected);
             this.update({value:this.tags.dropdown.items[selected].value || this.tags.dropdown.items[selected].title});
+            valueChanged();
             this.tags.input.update({value:this.tags.dropdown.items[selected].title});
             // After animation end
             setTimeout(()=>{
