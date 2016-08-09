@@ -554,7 +554,6 @@ this.close = function () {
 };
 this.mixin('content');
 });
-
 riot.tag2('material-snackbar', '<div class="{toast:true,error:toast.isError,opening:toast.opening}" onclick="{parent.removeToastByClick}" each="{toast,key in toasts}"> {toast.message} </div>', '', '', function(opts) {
 var _this = this;
 
@@ -650,7 +649,7 @@ this.changeTab = function (index) {
 };
 
 this.setLinePosition = function () {
-    _this.line.style.left = _this.line.getBoundingClientRect().width * _this.selected + 'px';
+    _this.line.style.left = (100 / _this.tabs.length).toFixed(2) * _this.selected + '%';
 };
 
 this.cut = function (title) {
