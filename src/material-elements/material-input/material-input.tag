@@ -24,7 +24,7 @@
         this.name = opts.name || 'input';
         // Not supported types
         this.notSupportedTypes = ['date','color','datetime','month','range','time'];
-        if(this.notSupportedTypes.indexOf(opts.type)!=-1) throw new Error(`Sorry but we not support ${date} type yet!`);
+        if(this.notSupportedTypes.indexOf(opts.type)!=-1) throw new Error(`Sorry but we not support ${opts.type} type yet!`);
         // Icons
         this.update({showIcon:false});
         // Ready
