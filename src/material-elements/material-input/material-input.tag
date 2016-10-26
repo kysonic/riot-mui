@@ -67,6 +67,7 @@
          * @param e
          */
         this.iconClickHandler = (e)=>{
+            if(this.opts.iconClicked && typeof this.opts.iconClicked === 'function') this.opts.iconClicked.call(this,e);
             this.trigger('iconClick',e);
         }
         // Validation

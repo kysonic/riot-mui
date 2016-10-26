@@ -511,6 +511,7 @@ this.changeValue = function (e) {
 };
 
 this.iconClickHandler = function (e) {
+    if (_this.opts.iconClicked) _this.opts.iconClicked.call(_this, e);
     _this.trigger('iconClick', e);
 };
 

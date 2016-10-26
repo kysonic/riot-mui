@@ -38,7 +38,7 @@
     <div class="wrapper">
         <div class="row">
             <div class="item">
-                <material-input icon="true" name="custom-input" waves-color="#2f6975" label="Icon input">
+                <material-input icon="true" name="custom-input"  waves-color="#2f6975" label="Icon input">
                     <i class="material-icons">search</i>
                 </material-input>
             </div>
@@ -147,6 +147,7 @@
 
     <script src="https://cdn.jsdelivr.net/riot/2.3/riot+compiler.min.js"></script>
     <script src="../../build/js/riot-mui.js"></script>
+
     <script>
         var mounted = null;
         window.addEventListener('load',function(){
@@ -160,10 +161,16 @@
             button.on('waveend',function(){
                 console.log('Wave has eneded');
             });
+
+            input.opts.iconClicked = function(e){
+                console.log('Custom handler. Can be transmitted through attributes',e);
+            }
+
             input.on('iconClick',function(e){
                console.log(e,'ICON CLICK!');
             });
         });
+
         function openDropdown(){
             var dropdown = findTag(mounted,'dropdown');
             !dropdown.opened?dropdown.open():dropdown.close();
