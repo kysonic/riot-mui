@@ -1,6 +1,6 @@
 {
   "name": "riot-mui",
-  "version": "0.0.16",
+  "version": "0.0.17",
   "description": "Set of material ui components for riot js.",
   "main": "build/js/riot-mui-min.js",
   "author": "Anton Miroshnichenko",

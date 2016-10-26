@@ -5,7 +5,7 @@
         <input type="{opts.type||'text'}" disabled="{disabled}" placeholder="{opts.placeholder}" onkeyup="{changeValue}" value="{value}" autocomplete="off" name="{opts.name||'default-input'}" required="{required}"/>
         <div class="iconWrapper" name="iconWrapper" if="{opts.icon}" >
             <material-button name="iconButton" center="true" waves-center="true" waves-color="{opts['waves-color']||'#fff'}"
-                             rounded="true" waves-opacity="{opts['waves-opacity']||'0.6'}" waves-duration="{opts['waves-duration']||'600'}">
+                             rounded="true" onclick="{iconClickHandler}" waves-opacity="{opts['waves-opacity']||'0.6'}" waves-duration="{opts['waves-duration']||'600'}">
                 <yield></yield>
             </material-button>
         </div>
@@ -24,7 +24,7 @@
         this.name = opts.name || 'input';
         // Not supported types
         this.notSupportedTypes = ['date','color','datetime','month','range','time'];
-        if(this.notSupportedTypes.indexOf(opts.type)!=-1) throw new Error(`Sorry but we not support ${opts.type} type yet!`);
+        if(this.notSupportedTypes.indexOf(opts.type)!=-1) throw new Error(`Sorry but we do not support ${opts.type} type yet!`);
         // Icons
         this.update({showIcon:false});
         // Ready
@@ -61,6 +61,13 @@
             if(opts.valuechanged&&(typeof(opts.valuechanged)==="function")){
                 opts.valuechanged(this[this.n].value);
             }
+        }
+        /**
+         * Fire clicking on icon to outside world
+         * @param e
+         */
+        this.iconClickHandler = (e)=>{
+            this.trigger('iconClick',e);
         }
         // Validation
         this.on('update',(updated)=>{

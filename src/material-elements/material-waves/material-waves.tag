@@ -9,7 +9,7 @@
             constructor(container,opts,e) {
                 super();
                 // Initialize
-                if(!container) console.error('You should to set container to the wave!');
+                if(!container) console.error('You should set container to the wave!');
                 this.container = container;
                 // Throw the components options
                 this.maxOpacity = opts.opacity || 0.6;
@@ -112,7 +112,7 @@
                 this._events.push(e.target.addEventListener('mouseleave',()=>this.trigger('hold')));
             }
         });
-        // Hold the ripple. After it will be removed.
+        // Hold the ripple. It will be removed later.
         this.on('hold',()=>{
             // The last of waves
             if(this._waves[this._waves.length-1]) this._waves[this._waves.length-1].waveOut(this.waveOut);

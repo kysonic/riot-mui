@@ -31,4 +31,4 @@ gulp.task('sass', function () {
 });
 
 gulp.task('clean', function() { del('build/'); })
-gulp.task('build', ['bundle', 'sass']);
+gulp.task('build', ['clean','bundle', 'sass']);

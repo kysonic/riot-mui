@@ -38,7 +38,7 @@
     <div class="wrapper">
         <div class="row">
             <div class="item">
-                <material-input icon="true" name="custom" waves-color="#2f6975" label="Icon input">
+                <material-input icon="true" name="custom-input" waves-color="#2f6975" label="Icon input">
                     <i class="material-icons">search</i>
                 </material-input>
             </div>
@@ -146,18 +146,22 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/riot/2.3/riot+compiler.min.js"></script>
-    <script src="../../build/js/riot-mui-mixins-min.js"></script>
     <script src="../../build/js/riot-mui.js"></script>
     <script>
         var mounted = null;
         window.addEventListener('load',function(){
             mounted = riot.mount('*');
             var button = findTag(mounted,'button');
+            var input = findTag(mounted,'custom-input');
+
             button.on('wavestart',function(waveInstance){
                 console.log('Wave has started',waveInstance);
             });
             button.on('waveend',function(){
                 console.log('Wave has eneded');
+            });
+            input.on('iconClick',function(e){
+               console.log(e,'ICON CLICK!');
             });
         });
         function openDropdown(){
