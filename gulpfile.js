@@ -30,5 +30,12 @@ gulp.task('sass', function () {
         .pipe(gulp.dest('./build/styles/'));
 });
 
-gulp.task('clean', function() { del('build/'); })
+gulp.task('watch', function(){
+   gulp.watch('./src/**/*.tag',['bundle']);
+   gulp.watch('./src/**/*.es6',['bundle']);
+   gulp.watch('./src/**/*.scss',['sass']);
+});
+
+gulp.task('clean', function() { del('build/'); });
 gulp.task('build', ['clean','bundle', 'sass']);
+gulp.task('default',['watch']);
