@@ -1,5 +1,5 @@
 <material-popup>
-    <div name="popup" class="{popup:true,opening:opening}" if="{opened}">
+    <div ref="popup" class="{popup:true,opening:opening} {opts.animation || 'top'}" if="{opened}">
         <div class="content">
             <content select=".material-popup-title"></content>
             <yield></yield>
@@ -10,8 +10,6 @@
     <script type="es6">
         // Basics
         this.opened = opts.opened || false;
-        // Attributes
-        this.popup.classList.add(opts.animation || 'top');
         /**
          * Ready
          */

@@ -1,12 +1,10 @@
 <material-dropdown>
-    <div name="dropdown" class="{dropdown:true,opening:opening}" if="{opened}">
+    <div ref="dropdown" class="{dropdown:true,opening:opening} {opts.animation || 'top'}" if="{opened}">
         <yield></yield>
     </div>
     <script type="es6">
         // Basics
         this.opened = opts.opened || false;
-        // Attributes
-        this.dropdown.classList.add(opts.animation || 'top');
         /**
          * Open dropdown
          */

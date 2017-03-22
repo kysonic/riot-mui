@@ -38,22 +38,22 @@
     <div class="wrapper">
         <div class="row">
             <div class="item">
-                <material-input icon="true" name="custom-input"  waves-color="#2f6975" label="Icon input">
+                <material-input icon="true" ref="custom-input"  waves-color="#2f6975" label="Icon input">
                     <i class="material-icons">search</i>
                 </material-input>
             </div>
             <div class="item">
-                <material-button name="button">
+                <material-button ref="button">
                     <div class="text">BUTTON</div>
                 </material-button>
             </div>
             <div class="item">
                 <div class="item">
                     <div class="button-container">
-                        <material-button name="buttonOne" onclick="openDropdown()">
+                        <material-button ref="buttonOne" onclick="openDropdown()">
                             <div class="text">Toggle Dropdown</div>
                         </material-button><br>
-                        <material-dropdown name="dropdown" name="dropDownOne">
+                        <material-dropdown ref="dropdown" ref="dropDownOne">
                             <p>DropDown content</p>
                         </material-dropdown>
                     </div>
@@ -68,7 +68,7 @@
                 <material-button onclick="openPopup()">
                     <div class="text">Open</div>
                 </material-button>
-                <material-popup name="popupOne">
+                <material-popup ref="popupOne">
                     <h1 class="material-popup-title">TITLE</h1>
                     <p class="material-popup-content">Accerso alius sententia ut mihi, phasmatis of interregnum ego dico, solvo meus mens mei,
                         ego dico phasmatis audite meus placitum meus mens quod iacio (Nombre de la persona)</p>
@@ -148,7 +148,7 @@
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/riot/2.6.7/riot+compiler.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/riot/3.3.2/riot+compiler.min.js"></script>
     <script src="build/js/riot-mui.js"></script>
 
     <script>
@@ -193,7 +193,7 @@
         function findTag(pack,name){
             var searched = null;
             pack.forEach(function(tag){
-                if((tag.root.getAttribute('name') && tag.root.getAttribute('name').toLowerCase()==name.toLowerCase())
+                if((tag.root.getAttribute('ref') && tag.root.getAttribute('ref').toLowerCase()==name.toLowerCase())
                         || (tag.root.tagName && tag.root.tagName.toLowerCase()==name.toLowerCase())) {
                     searched = tag;
                 }
