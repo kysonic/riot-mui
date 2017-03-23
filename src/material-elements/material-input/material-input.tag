@@ -2,7 +2,7 @@
     <div class="label-placeholder"></div>
     <div class="{input-content:true,not-empty:value,error:error}">
         <label for="input" ref="label" if="{opts.label}">{opts.label}</label>
-        <input type="{opts.type||'text'}" disabled="{disabled}" placeholder="{opts.placeholder}" onkeyup="{changeValue}" value="{value}" autocomplete="off" ref="{opts.name||'default-input'}" required="{required}"/>
+        <input type="{opts.type||'text'}" disabled="{disabled}" placeholder="{opts.placeholder}" onkeyup="{changeValue}" value="{value}" autocomplete="off" ref="{opts.ref||'default-input'}" required="{required}"/>
         <div class="iconWrapper" ref="iconWrapper" if="{opts.icon}" >
             <material-button ref="iconButton" center="true" waves-center="true" waves-color="{opts['waves-color']||'#fff'}"
                              rounded="true" onclick="{iconClickHandler}" waves-opacity="{opts['waves-opacity']||'0.6'}" waves-duration="{opts['waves-duration']||'600'}">
@@ -21,7 +21,7 @@
         this.opts = opts;
         this.required="";
         // From options
-        this.name = opts.name || 'input';
+        this.name = opts.ref || 'input';
         // Not supported types
         this.notSupportedTypes = ['date','color','datetime','month','range','time'];
         if(this.notSupportedTypes.indexOf(opts.type)!=-1) throw new Error(`Sorry but we do not support ${opts.type} type yet!`);
@@ -36,7 +36,7 @@
                 required: opts.required||false
             });
 
-            this.n = opts.name||'default-input';
+            this.n = opts.ref||'default-input';
             this.refs[this.n].addEventListener('focus',this.changeFocus);
             this.refs[this.n].addEventListener('blur',this.changeFocus);
         });

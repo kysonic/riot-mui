@@ -3,7 +3,7 @@
             <div class="text" title="{tab.title}">{parent.opts.cut ? parent.cut(tab.title) : tab.title}</div>
         </material-button>
         <div class="line-wrapper" if="{opts.useline}">
-            <div class="line" name="line"></div>
+            <div class="line" ref="line"></div>
         </div>
         <yield></yield>
     <script type="es6">
@@ -31,7 +31,7 @@
          */
         this.setWidth = ()=>  {
             [].forEach.call(this.root.querySelectorAll('material-button'),(node)=>{
-                node.style.width = this.line.style.width = (100/this.tabs.length).toFixed(2) +'%';
+                node.style.width = this.refs.line.style.width = (100/this.tabs.length).toFixed(2) +'%';
             });
         }
         /**
@@ -59,7 +59,7 @@
          * Set line left style.
          */
         this.setLinePosition = ()=>{
-            this.line.style.left = (100/this.tabs.length).toFixed(2) * (this.selected) +'%';
+            this.refs.line.style.left = (100/this.tabs.length).toFixed(2) * (this.selected) +'%';
         }
         /**
          * Cut symbols

@@ -1,10 +1,10 @@
 <material-textarea>
     <div class="label-placeholder"></div>
     <div class="{textarea-content:true,not-empty:value,error:error}">
-        <label for="textarea" name="label" if="{opts.label}">{opts.label}</label>
-        <div class="mirror" name="mirror"></div>
+        <label for="textarea" ref="label" if="{opts.label}">{opts.label}</label>
+        <div class="mirror" ref="mirror"></div>
         <div class="textarea-container">
-            <textarea disabled="{disabled}" name="{opts.name||'default-textarea'}" value="{value}"></textarea>
+            <textarea disabled="{disabled}" ref="{opts.ref||'default-textarea'}" value="{value}"></textarea>
         </div>
     </div>
     <div class="{underline:true,focused:focused,error:error}">
@@ -19,22 +19,22 @@
         // Ready
         this.on('mount',()=>{
             // Set max height to mirror, if we have max-rows option.
-            if(opts.maxRows) this.mirror.style.maxHeight = opts.maxRows*this[this.n].getBoundingClientRect().height + 'px';
-            this.n = opts.name||'default-textarea';
+            if(opts.maxRows) this.refs.mirror.style.maxHeight = opts.maxRows*this.refs[this.n].getBoundingClientRect().height + 'px';
+            this.n = opts.ref||'default-textarea';
             // Defaults
-            this[this.n].scrollTop = this[this.n].scrollHeight;
+            this.refs[this.n].scrollTop = this.refs[this.n].scrollHeight;
             // Add event listeners to input. It is wat which will help us
             // to provide focus\blur on material-input
-            this[this.n].addEventListener('focus',this.changeFocus);
-            this[this.n].addEventListener('blur',this.changeFocus);
-            this[this.n].addEventListener('input',this.inputHandler);
+            this.refs[this.n].addEventListener('focus',this.changeFocus);
+            this.refs[this.n].addEventListener('blur',this.changeFocus);
+            this.refs[this.n].addEventListener('input',this.inputHandler);
         })
         /**
          * When element focus changed update expressions.
          */
         this.changeFocus = (e)=>{
            if(this.disabled) return false;
-           let focused = this[this.n]==document.activeElement;
+           let focused = this.refs[this.n]==document.activeElement;
            this.update({focused:focused});
            this.trigger('focusChanged',focused);
         }
@@ -43,8 +43,8 @@
          * @param e
          */
         this.inputHandler = (e)=>{
-            let value = this[this.n].value;
-            this.mirror.innerHTML = this.format(value);
+            let value = this.refs[this.n].value;
+            this.refs.mirror.innerHTML = this.format(value);
             this.update({value:value});
             this.trigger('valueChanged',value);
         }
@@ -55,7 +55,6 @@
                     this.isValid(this.validate(updated.value));
                 }
             }
-        });
         /**
          * Behevior after validation
          * @param isValid - (true/false)
@@ -69,6 +68,7 @@
         this.format = (value)=>{
             return value.replace(/\n/g,'<br/>&nbsp;');
         }
+        });
         this.mixin('validate');
     </script>
 </material-textarea>

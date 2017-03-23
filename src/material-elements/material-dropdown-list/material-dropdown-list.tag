@@ -5,7 +5,7 @@
             <a if="{item.link}" href="{item.link}" onclick="{parent.select}" title="{item.title}">{item.title}</a>
         </li>
     </ul>
-    <div name="overlay" if="{opts.extraclose && opened}" onclick="{close}" class="material-dropdown-list-overlay"></div>
+    <div ref="overlay" if="{opts.extraclose && opened}" onclick="{close}" class="material-dropdown-list-overlay"></div>
     <script type="es6">
         // Basics
         this.opened = false;
@@ -37,7 +37,7 @@
          */
         this.open = ()=>{
             this.update({opened:true,opening:true});
-            if(this.opts.extraclose) document.body.appendChild(this.overlay);
+            if(this.opts.extraclose) document.body.appendChild(this.refs.overlay);
             setTimeout(()=>{
                 this.update({opening:false});
             },0);

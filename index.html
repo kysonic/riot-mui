@@ -98,16 +98,16 @@
                 </material-combo>
             </div>
             <div class="item">
-                <material-checkbox name="checker">
+                <material-checkbox ref="checker">
                     Label
                 </material-checkbox>
             </div>
             <div class="item" style="margin-top: 26px">
                 <div class="button-container">
-                    <material-button name="buttonOne" onclick="openDropdownTwo()">
+                    <material-button ref="buttonOne" onclick="openDropdownTwo()">
                         <div class="text">Toggle Dropdown</div>
                     </material-button><br>
-                    <material-dropdown-list items="[\{title:'One'\},\{title:'Two'\}]" name="dropdown2" name="dropDownOne">
+                    <material-dropdown-list items="[\{title:'One'\},\{title:'Two'\}]" ref="dropdown2" ref="dropDownOne">
                         <p>DropDown content</p>
                     </material-dropdown-list>
                 </div>
@@ -134,7 +134,7 @@
                 <material-button onclick="launchToast()">
                     <div class="text">Launch</div>
                 </material-button>
-                <material-snackbar name="snackbar"></material-snackbar>
+                <material-snackbar ref="snackbar"></material-snackbar>
             </div>
             <div class="item">
                 <material-textarea label="Textarea"></material-textarea>

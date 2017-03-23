@@ -3,7 +3,7 @@
         <div class="checkmark"></div>
     </div>
     <div class="label" onclick="{toggle}"><yield></yield></div>
-    <input type="hidden" name="{opts.name}" value="{checked}">
+    <input type="hidden" ref="{opts.ref}" value="{checked}">
     <script type="es6">
         this.checked = opts.checked || false;
         // Attributes
