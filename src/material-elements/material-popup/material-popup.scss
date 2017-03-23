@@ -26,7 +26,7 @@ material-popup {
   /** POPUP **/
   .popup {
     z-index: 100;
-    position: absolute;
+    position: fixed;
     left: 0;
     top: 25%;
     right: 0;
