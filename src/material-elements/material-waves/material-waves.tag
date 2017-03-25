@@ -1,5 +1,5 @@
 <material-waves>
-    <div id="waves" name="waves"></div>
+    <div id="waves" ref="waves"></div>
     <script type="es6">
         /**
          * Wave class. Contain wave node and
@@ -101,7 +101,7 @@
         this._events = [];
         // Launch the ripple
         this.on('launch',(e)=>{
-            var wave = new Wave(this.waves,opts,e);
+            var wave = new Wave(this.refs.waves,opts,e);
             this._waves.push(wave);
             this.trigger('wavestart',wave);
             if(this.parent&&this.parent.opts&&this.parent.opts.wavestart){

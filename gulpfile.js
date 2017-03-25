@@ -12,10 +12,10 @@ var del = require('del');
 gulp.task('bundle', function () {
     tagsStream = gulp.src('./src/**/*.tag')
         .pipe(riot({brackets:'{{ }}'}));
-    es6Stream = gulp.src('./src/**/*.es6')
-        .pipe(babel())
+    es6Stream = gulp.src('./src/**/*.es6');
     eventStream.merge(tagsStream, es6Stream)
         .pipe(concat('riot-mui.js'))
+        .pipe(babel({presets:['es2015']}))
         .pipe(minify())
         .pipe(sourcemaps.write())
         .pipe(gulp.dest('./build/js'));

@@ -5,7 +5,7 @@ let RiotHelpers = {
      findTag(pack,name){
          var searched = null;
          pack.forEach(function(tag){
-             if(tag.root.getAttribute('name').toLowerCase()==name.toLowerCase() || tag.root.tagName.toLowerCase()==name.toLowerCase()) {
+             if(tag.root.getAttribute('name').toLowerCase()==name.toLowerCase() || tag.root.tagName.toLowerCase()==name.toLowerCase() || tag.root.getAttribute('ref').toLowerCase()==name.toLowerCase()) {
                  searched = tag;
              }
          });
