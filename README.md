@@ -16,7 +16,7 @@ We have moved to Riot v3! Version 2 is no longer supported. Big thanks [Joxit](h
 
 [https://github.com/kysonic/riot-mui-page](https://github.com/kysonic/riot-mui-page)
 
-##How to get riot-mui?
+## How to get riot-mui?
 
 Github:
 ```
@@ -30,7 +30,7 @@ Bower:
 ```
   bower install riot-mui 
 ```
-##Getting started
+## Getting started
 
 If you use Browserify (or presumably other NPM-based bundlers), you can simply require('riot-mui') and all tags and mixins will be registered with Riot.js
 
@@ -70,7 +70,7 @@ require('material-elements/material-button/material-button.tag');
 
 Learn more about riot-mui [here](https://github.com/kysonic/riot-mui/tree/master/examples).
 
-##A few words about styling
+## A few words about styling
 
 All components styles located in Sass file which has same name like a component file.
 All components styles encapsulated using tag name like a name space of component. 
