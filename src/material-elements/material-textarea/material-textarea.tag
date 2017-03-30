@@ -4,7 +4,7 @@
         <label for="textarea" ref="label" if="{opts.label}">{opts.label}</label>
         <div class="mirror" ref="mirror"></div>
         <div class="textarea-container">
-            <textarea disabled="{disabled}" ref="{opts.ref||'default-textarea'}" value="{value}"></textarea>
+            <textarea disabled="{disabled}" onkeyup="{changeValue}" ref="{opts.ref||'default-textarea'}" value="{value}"></textarea>
         </div>
     </div>
     <div class="{underline:true,focused:focused,error:error}">
@@ -22,6 +22,8 @@
             if(opts.maxRows) this.refs.mirror.style.maxHeight = opts.maxRows*this.refs[this.n].getBoundingClientRect().height + 'px';
             this.n = opts.ref||'default-textarea';
             // Defaults
+            this.value = opts.value || '';
+            this.mirror.innerHTML = this.format(this.value);
             this.refs[this.n].scrollTop = this.refs[this.n].scrollHeight;
             // Add event listeners to input. It is wat which will help us
             // to provide focus\blur on material-input
@@ -46,8 +48,15 @@
             let value = this.refs[this.n].value;
             this.refs.mirror.innerHTML = this.format(value);
             this.update({value:value});
-            this.trigger('valueChanged',value);
         }
+
+        this.changeValue = (e) => {
+          this.trigger('valueChanged',this[this.n].value,e);
+          if(opts.valuechanged&&(typeof(opts.valuechanged)==="function")){
+            opts.valuechanged(this[this.n].value);
+          }
+        }
+
         // Validation
         this.on('update',(updated)=>{
             if(updated && updated.value!=undefined) {
