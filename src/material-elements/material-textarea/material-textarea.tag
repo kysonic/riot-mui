@@ -4,7 +4,7 @@
         <label for="textarea" ref="label" if="{opts.label}">{opts.label}</label>
         <div class="mirror" ref="mirror"></div>
         <div class="textarea-container">
-            <textarea disabled="{disabled}" onkeyup="{changeValue}" ref="{opts.ref||'default-textarea'}" value="{value}"></textarea>
+            <textarea disabled="{disabled}" onkeyup="{changeValue}" ref="{opts.ref||'default-textarea'}"></textarea>
         </div>
     </div>
     <div class="{underline:true,focused:focused,error:error}">
@@ -23,13 +23,15 @@
             this.n = opts.ref||'default-textarea';
             // Defaults
             this.value = opts.value || '';
-            this.mirror.innerHTML = this.format(this.value);
+            this.refs.mirror.innerHTML = this.format(this.value);
+            this.refs[this.n].value = this.value;
             this.refs[this.n].scrollTop = this.refs[this.n].scrollHeight;
             // Add event listeners to input. It is wat which will help us
             // to provide focus\blur on material-input
             this.refs[this.n].addEventListener('focus',this.changeFocus);
             this.refs[this.n].addEventListener('blur',this.changeFocus);
             this.refs[this.n].addEventListener('input',this.inputHandler);
+            this.update({value:this.value});
         })
         /**
          * When element focus changed update expressions.
@@ -51,12 +53,25 @@
         }
 
         this.changeValue = (e) => {
-          this.trigger('valueChanged',this[this.n].value,e);
+          this.trigger('valueChanged',this.refs[this.n].value,e);
           if(opts.valuechanged&&(typeof(opts.valuechanged)==="function")){
-            opts.valuechanged(this[this.n].value);
+            opts.valuechanged(this.refs[this.n].value);
           }
         }
 
+        /**
+        * Behevior after validation
+        * @param isValid - (true/false)
+        */
+        this.isValid = (isValid)=>{
+        this.update({error:!isValid});
+        }
+        /**
+        * Format the value of textarea
+        */
+        this.format = (value)=>{
+        return value.replace(/\n/g,'<br/>&nbsp;');
+        }
         // Validation
         this.on('update',(updated)=>{
             if(updated && updated.value!=undefined) {
@@ -64,19 +79,6 @@
                     this.isValid(this.validate(updated.value));
                 }
             }
-        /**
-         * Behevior after validation
-         * @param isValid - (true/false)
-         */
-        this.isValid = (isValid)=>{
-            this.update({error:!isValid});
-        }
-        /**
-         * Format the value of textarea
-         */
-        this.format = (value)=>{
-            return value.replace(/\n/g,'<br/>&nbsp;');
-        }
         });
         this.mixin('validate');
     </script>
