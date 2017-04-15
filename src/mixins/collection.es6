@@ -1,4 +1,4 @@
-let CollectionMixin = {
+export default class CollectionMixin {
     /**
      * Filter collection by criteria
      * @params prop - collection name
@@ -14,7 +14,7 @@ let CollectionMixin = {
             });
             return criteriaPass;
         })
-    },
+    }
     /**
      * Find something in collection
      * @params prop - collection name

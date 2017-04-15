@@ -1,9 +1,12 @@
 {
   "name": "riot-mui",
-  "version": "0.0.17",
+  "version": "0.1.0",
   "description": "Set of material ui components for riot js.",
   "main": "build/js/riot-mui-min.js",
   "author": "Anton Miroshnichenko",
+  "scripts": {
+    "build": "./node_modules/webpack/bin/webpack.js"
+  },
   "contributors": [
     "Tim Garthwaite <tim@mividstudios.com> (https://github.com/mividtim)"
   ],
@@ -12,16 +15,15 @@
   "devDependencies": {
     "babel": "^6.23.0",
     "babel-core": "^6.24.0",
-    "babel-preset-es2015": "^6.24.0",
-    "del": "^2.2.0",
-    "event-stream": "^3.3.2",
-    "gulp": "^3.9.0",
-    "gulp-babel": "^6.1.2",
-    "gulp-concat": "^2.6.1",
-    "gulp-minify": "0.0.15",
-    "gulp-minify-css": "^1.2.4",
-    "gulp-riot": "^1.1.0",
-    "gulp-sass": "^2.0.4",
-    "gulp-sourcemaps": "^1.6.0"
+    "babel-loader": "^7.0.0-beta.1",
+    "babel-preset-es2015-riot": "^1.1.0",
+    "css-loader": "^0.28.0",
+    "extract-text-webpack-plugin": "^2.1.0",
+    "node-sass": "^4.5.2",
+    "riotjs-loader": "^4.0.0",
+    "sass-loader": "^6.0.3",
+    "style-loader": "^0.16.1",
+    "webpack": "^2.3.3",
+    "webpack-dev-server": "^2.3.2"
   }
 }

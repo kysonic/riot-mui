@@ -2,7 +2,7 @@
  * Bound class contain methods for
  * receiving bounds of DOM element.
  */
-class Bound {
+export default class Bound {
     /**
      * Get Bounds
      * @returns {*}

@@ -18,7 +18,7 @@
  * will be changed after 1s and we will see following HTML
  * <my-tag disabled="false"></my-tag>
  */
-let DynamicAttributesMixin = {
+export default class DynamicAttributesMixin {
     init(){
         this.on('update', (updated)=>{
             if(updated && this.dynamicAttributes) {
