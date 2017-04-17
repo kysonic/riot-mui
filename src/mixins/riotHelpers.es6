@@ -1,4 +1,4 @@
-let RiotHelpers = {
+export default class RiotHelpers {
     /**
      * Find tag in pack
      */
@@ -10,7 +10,7 @@ let RiotHelpers = {
              }
          });
          return searched;
-     },
+     }
     /**
      * By the default riot don't support a camel case options
      * but in some cases we just use camel case, like a options

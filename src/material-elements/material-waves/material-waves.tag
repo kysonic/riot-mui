@@ -1,6 +1,7 @@
 <material-waves>
     <div id="waves" ref="waves"></div>
     <script type="es6">
+        import Bound from '../../mixins/bound.es6'
         /**
          * Wave class. Contain wave node and
          * all of waves logic.
