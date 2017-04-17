@@ -5,7 +5,7 @@
   "main": "build/js/riot-mui-min.js",
   "author": "Anton Miroshnichenko",
   "scripts": {
-    "build": "./node_modules/webpack/bin/webpack.js"
+    "build": "webpack"
   },
   "contributors": [
     "Tim Garthwaite <tim@mividstudios.com> (https://github.com/mividtim)"
