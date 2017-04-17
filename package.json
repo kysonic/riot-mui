@@ -5,6 +5,7 @@
   "main": "build/js/riot-mui-min.js",
   "author": "Anton Miroshnichenko",
   "scripts": {
+    "start": "webpack-dev-server",
     "build": "webpack"
   },
   "contributors": [
