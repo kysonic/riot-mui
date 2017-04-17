@@ -12,6 +12,10 @@ Any person who loves Riot and material UI willing to be a part of this project -
 
 We have moved to Riot v3! Version 2 is no longer supported. Big thanks [Joxit](https://github.com/Joxit) for this update. 
 
+### News 
+
+- Webpack in da house! Now if you want to launch riot MUI just run `npm start`. (Global webpack, webpack-dev-server required...) 
+
 ### Source code of demo pages is placed here: 
 
 [https://github.com/kysonic/riot-mui-page](https://github.com/kysonic/riot-mui-page)
