@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 36);
+/******/ 	return __webpack_require__(__webpack_require__.s = 38);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -443,6 +443,17 @@ riot.tag2('material-dropdown', '<div ref="dropdown" class="{dropdown:true,openin
 "use strict";
 
 
+riot.tag2('material-footer', '<content select=".material-footer-sections"></content> <div class="mini-footer"> <content select=".material-footer-logo"></content> <content select=".material-footer-link-list"></content> </div> <yield></yeild>', '', '', function (opts) {
+  this.mixin('content');
+});
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
 riot.tag2('material-input', '<div class="label-placeholder"></div> <div class="{input-content:true,not-empty:value,error:error}"> <label for="input" ref="label" if="{opts.label}">{opts.label}</label> <input type="{opts.type||\'text\'}" disabled="{disabled}" placeholder="{opts.placeholder}" onkeyup="{changeValue}" riot-value="{value}" autocomplete="off" ref="{opts.ref||\'default-input\'}" required="{required}"> <div class="iconWrapper" ref="iconWrapper" if="{opts.icon}"> <material-button ref="iconButton" center="true" waves-center="true" waves-color="{opts[\'waves-color\']||\'#fff\'}" rounded="true" onclick="{iconClickHandler}" waves-opacity="{opts[\'waves-opacity\']||\'0.6\'}" waves-duration="{opts[\'waves-duration\']||\'600\'}"> <yield></yield> </material-button> </div> </div> <div class="{underline:true,focused:focused,error:error}"> <div class="unfocused-line"></div> <div class="focused-line"></div> </div>', '', '', function (opts) {
     var _this = this;
 
@@ -518,7 +529,7 @@ riot.tag2('material-input', '<div class="label-placeholder"></div> <div class="{
 });
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -527,7 +538,7 @@ riot.tag2('material-input', '<div class="label-placeholder"></div> <div class="{
 riot.tag2('material-navbar', '<div class="nav-wrapper"> <yield></yield> </div>', '', 'role="toolbar"', function (opts) {});
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -538,7 +549,7 @@ riot.tag2('material-pane', '<material-navbar riot-style="height:{opts.materialNa
 });
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -578,7 +589,7 @@ riot.tag2('material-popup', '<div ref="popup" class="{popup:true,opening:opening
 });
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -657,7 +668,7 @@ riot.tag2('material-snackbar', '<div class="{toast:true,error:toast.isError,open
 });
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -666,7 +677,7 @@ riot.tag2('material-snackbar', '<div class="{toast:true,error:toast.isError,open
 riot.tag2('material-spinner', '<svg class="loader-circular" height="50" width="50"> <circle class="loader-path" cx="25" cy="25.2" r="19.9" fill="none" stroke-width="{opts.strokewidth||3}" stroke-miterlimit="10"></circle> </svg>', '', '', function (opts) {});
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -740,7 +751,7 @@ riot.tag2('material-tabs', '<material-button each="{tab,k in tabs}" onclick="{pa
 });
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -821,7 +832,7 @@ riot.tag2('material-textarea', '<div class="label-placeholder"></div> <div class
 });
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1002,7 +1013,7 @@ riot.tag2('material-waves', '<div id="waves" ref="waves"></div>', '', '', functi
 });
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1067,7 +1078,7 @@ exports.default = CollectionMixin;
 riot.mixin('collection', CollectionMixin);
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1091,7 +1102,7 @@ var Content = {
 riot.mixin('content', Content);
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1151,7 +1162,7 @@ exports.default = DynamicAttributesMixin;
 riot.mixin('dynamicAttributes', DynamicAttributesMixin);
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1210,7 +1221,7 @@ riot.findTag = RiotHelpers.findTag;
 riot.mixin('helpers', RiotHelpers);
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1290,12 +1301,6 @@ exports.default = ValidateMixin;
 
 
 riot.mixin('validate', ValidateMixin);
-
-/***/ }),
-/* 21 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
 
 /***/ }),
 /* 22 */
@@ -1383,17 +1388,29 @@ riot.mixin('validate', ValidateMixin);
 
 /***/ }),
 /* 36 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 37 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 __webpack_require__(0);
-__webpack_require__(16);
 __webpack_require__(17);
 __webpack_require__(18);
 __webpack_require__(19);
 __webpack_require__(20);
+__webpack_require__(21);
 
 __webpack_require__(1);
 __webpack_require__(2);
@@ -1401,7 +1418,6 @@ __webpack_require__(3);
 __webpack_require__(4);
 __webpack_require__(6);
 __webpack_require__(5);
-__webpack_require__(7);
 __webpack_require__(8);
 __webpack_require__(9);
 __webpack_require__(10);
@@ -1410,15 +1426,15 @@ __webpack_require__(12);
 __webpack_require__(13);
 __webpack_require__(14);
 __webpack_require__(15);
+__webpack_require__(16);
+__webpack_require__(7);
 
-__webpack_require__(21);
 __webpack_require__(22);
 __webpack_require__(23);
 __webpack_require__(24);
-__webpack_require__(26);
 __webpack_require__(25);
 __webpack_require__(27);
-__webpack_require__(28);
+__webpack_require__(26);
 __webpack_require__(29);
 __webpack_require__(30);
 __webpack_require__(31);
@@ -1426,6 +1442,9 @@ __webpack_require__(32);
 __webpack_require__(33);
 __webpack_require__(34);
 __webpack_require__(35);
+__webpack_require__(36);
+__webpack_require__(37);
+__webpack_require__(28);
 
 /***/ })
 /******/ ]);
