@@ -20,6 +20,7 @@ require('./material-elements/material-spinner/material-spinner.tag');
 require('./material-elements/material-tabs/material-tabs.tag');
 require('./material-elements/material-textarea/material-textarea.tag');
 require('./material-elements/material-waves/material-waves.tag');
+require('./material-elements/material-footer/material-footer.tag');
 
 require('./material-elements/material-button/material-button.scss');
 require('./material-elements/material-card/material-card.scss');
@@ -36,3 +37,4 @@ require('./material-elements/material-spinner/material-spinner.scss');
 require('./material-elements/material-tabs/material-tabs.scss');
 require('./material-elements/material-textarea/material-textarea.scss');
 require('./material-elements/material-waves/material-waves.scss');
+require('./material-elements/material-footer/material-footer.scss');
